@@ -103,7 +103,11 @@ define([
 	}
 
 	function drawGrid() {
-		context.clearRect(0, 0, canvas.width, canvas.height);
+		context.fillStyle = '#908f8f';
+		context.fillRect(0, 0, canvas.width, canvas.height);
+
+		context.fillStyle = 'cornflowerblue';
+
 
 		var cols, rows;
 		cols = grid.length;
@@ -114,21 +118,42 @@ define([
 				drawCell(i, j, grid[i][j]);
 			}
 		}
+
 	}
 
 	function drawCell(x, y, cell) {
 
 		if (cell.state == 0) {
 			var cx, cy;
+			//straddle those pixels
 			cx = x * config.cell.width + 0.5;
 			cy = y * config.cell.height + 0.5;
+
 			context.beginPath();
-			context.strokeStyle = "#000";
+			context.strokeStyle = "#747473";
 			context.moveTo(cx, cy);
+			context.lineTo(cx, cy + config.cell.height);
+			context.stroke();
+
+			context.beginPath();
+			context.strokeStyle = "#adacac";
+			context.moveTo(cx + 1, cy);
+			context.lineTo(cx + 1, cy + config.cell.height);
+			context.stroke();
+
+
+
+			context.beginPath();
+			context.strokeStyle = "#adacac";
+			context.moveTo(cx + 1, cy);
 			context.lineTo(cx + config.cell.width, cy);
 			context.stroke();
 
-			
+			context.beginPath();
+			context.strokeStyle = "#747473";
+			context.moveTo(cx, cy + config.cell.height - 1);
+			context.lineTo(cx + config.cell.width, cy + config.cell.height - 1);
+			context.stroke();
 
 		} else if (cell.state == 1) {
 			context.fillRect(x * config.cell.width, y * config.cell.height, config.cell.width, config.cell.height);

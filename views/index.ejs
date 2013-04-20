@@ -3,12 +3,15 @@
 <head>
 	<title>collab-sequencer</title>
 	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<script data-main="scripts/app" src="/javascripts/libs/requirejs/require.js"></script>
 </head>
 <body>
 	<h1>collab-sequencer</h1>
 
-	<script src="//documentcloud.github.io/backbone/backbone.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<div id="app">
+		<canvas id="canvas" width="800" height="200"></canvas>
+	</div>
+	
 	<script src="/javascripts/collab-sequencer.js"></script>
 </body>
 </html>

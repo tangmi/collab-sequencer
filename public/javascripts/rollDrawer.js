@@ -106,7 +106,6 @@ define([
 		context.fillStyle = '#908f8f';
 		context.fillRect(0, 0, canvas.width, canvas.height);
 
-		context.fillStyle = 'cornflowerblue';
 
 
 		var cols, rows;
@@ -122,41 +121,53 @@ define([
 	}
 
 	function drawCell(x, y, cell) {
+		var cx, cy;
+		//straddle those pixels
+		cx = x * config.cell.width + 0.5;
+		cy = y * config.cell.height + 0.5;
+
+
+		//left
+		context.beginPath();
+		context.strokeStyle = "#adacac";
+		context.moveTo(cx, cy);
+		context.lineTo(cx, cy + config.cell.height - 2);
+		context.stroke();
+
+		//right
+		context.beginPath();
+		context.strokeStyle = "#747473";
+		context.moveTo(cx + config.cell.width - 1, cy);
+		context.lineTo(cx + config.cell.width - 1, cy + config.cell.height);
+		context.stroke();
+
+		//top
+		context.beginPath();
+		context.strokeStyle = "#adacac";
+		context.moveTo(cx + 1, cy);
+		context.lineTo(cx + config.cell.width, cy);
+		context.stroke();
+
+		//bottom
+		context.beginPath();
+		context.strokeStyle = "#747473";
+		context.moveTo(cx, cy + config.cell.height - 1);
+		context.lineTo(cx + config.cell.width, cy + config.cell.height - 1);
+		context.stroke();
+
+
 
 		if (cell.state == 0) {
-			var cx, cy;
-			//straddle those pixels
-			cx = x * config.cell.width + 0.5;
-			cy = y * config.cell.height + 0.5;
 
-			context.beginPath();
-			context.strokeStyle = "#747473";
-			context.moveTo(cx, cy);
-			context.lineTo(cx, cy + config.cell.height);
-			context.stroke();
-
-			context.beginPath();
-			context.strokeStyle = "#adacac";
-			context.moveTo(cx + 1, cy);
-			context.lineTo(cx + 1, cy + config.cell.height);
-			context.stroke();
-
-
-
-			context.beginPath();
-			context.strokeStyle = "#adacac";
-			context.moveTo(cx + 1, cy);
-			context.lineTo(cx + config.cell.width, cy);
-			context.stroke();
-
-			context.beginPath();
-			context.strokeStyle = "#747473";
-			context.moveTo(cx, cy + config.cell.height - 1);
-			context.lineTo(cx + config.cell.width, cy + config.cell.height - 1);
-			context.stroke();
 
 		} else if (cell.state == 1) {
-			context.fillRect(x * config.cell.width, y * config.cell.height, config.cell.width, config.cell.height);
+
+
+			context.fillStyle = 'pink';
+			context.strokeStyle = "red";
+
+			context.fillRect(cx + 3, cy + 2, config.cell.width - 7, config.cell.height - 6);
+			context.strokeRect(cx + 3, cy + 2, config.cell.width - 7, config.cell.height - 6);
 		}
 
 	}

@@ -1,7 +1,7 @@
 define([
 
 ], function () {
-	object = {};
+	var object = {};
 
 	function Cell(state) {
 		this.state = state;

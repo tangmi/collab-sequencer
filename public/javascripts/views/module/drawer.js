@@ -1,4 +1,4 @@
-define(['jquery'], function($) {
+define(['jquery', 'views/module/player'], function($, Player) {
 	var Drawer = {
 
 		initialize: function(rows, columns) {

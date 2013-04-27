@@ -1,4 +1,4 @@
-define([], function() {
+define(['views/module/drawer'], function(Drawer) {
 	var Player = {
 
 		sounds: [],
@@ -20,7 +20,7 @@ define([], function() {
 
 				sound.load();
 
-				_this = this;
+				var _this = this;
 				sound.addEventListener('canplay', function() { // When audio has loaded enough to play
 					_this._updateLoadState();
 				});

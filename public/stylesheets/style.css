@@ -32,11 +32,13 @@ a {
 
 
 }
-.row {
+.column {
 	padding: 0;
 	margin: 0;
 	font-size: 0;
+	display: inline-block;
 }
+
 .cell {
 	background: #ffffff; /* Old browsers */
 	background: -moz-radial-gradient(center, ellipse cover, #ffffff 0%, #ededed 100%); /* FF3.6+ */
@@ -48,10 +50,10 @@ a {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
 
-	display: inline-block;
+	display: block;
 	width: 25px;
 	height: 20px;
-	margin: 2px;
+	margin: 4px 2px;
 
 	font-size: 0px;
 	overflow: hidden;
@@ -60,6 +62,11 @@ a {
 
 	box-shadow: 0px 1px #9E9E9E, 0px -1px #9E9E9E;
 }
+
+.cell:first-of-type, .cell:last-of-type {
+	margin: 2px;
+}
+
 
 .cell.cell-selected {
 	background: #fdff54; /* Old browsers */
@@ -78,7 +85,7 @@ a {
 }
 
 #tick {
-	background-color: red;
+	background-color: #D6C720;
 	position: absolute;
 	top: 0;
 	height: 100%;

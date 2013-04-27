@@ -7,8 +7,11 @@ define(['jquery'], function($) {
 		},
 
 		setupDom: function(rows, columns) {
-			//create the roll object
-			var roll = $("#roll");
+			//create a roll div
+			var roll = $("<div></div>", {
+				id: "roll"
+			});
+			$("#app").append(roll);
 
 			//create all the rows
 			for (var i = 0; i < columns; i++) {

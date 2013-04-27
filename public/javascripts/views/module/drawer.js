@@ -4,8 +4,6 @@ define(['jquery'], function($) {
 		initialize: function(rows, columns) {
 			this.setupDom(rows, columns);
 
-
-
 		},
 
 		setupDom: function(rows, columns) {
@@ -13,14 +11,14 @@ define(['jquery'], function($) {
 			var roll = $("#roll");
 
 			//create all the rows
-			for (var i = 0; i < rows; i++) {
-				var temp = $("<div></div>", {
-					id: "row-" + i,
-					class: "row"
+			for (var i = 0; i < columns; i++) {
+				var temp = $("<ul></ul>", {
+					id: "column-" + i,
+					class: "column"
 				});
 				//create all the cells
-				for(var j = 0; j < columns; j++) {
-					temp.append($("<div></div>", {
+				for(var j = 0; j < rows; j++) {
+					temp.append($("<li></li>", {
 						id: "cell-" + i + "-" + j,
 						class: "cell"
 						,text: "(" + i + "," + j + ")"
@@ -35,10 +33,13 @@ define(['jquery'], function($) {
 		},
 
 		setTickPosition: function(column) {
+
+			/* this might be an expensive way of getting this info */
 			var rollPadding = parseInt($("#roll").css('padding-left').replace(/[^-\d\.]/g, ''))
 			var nodeWidth = parseInt($("#cell-0-0").css('width').replace(/[^-\d\.]/g, ''));
 			var margin = parseInt($("#cell-0-0").css('margin-right').replace(/[^-\d\.]/g, ''))
 				+ parseInt($("#cell-0-0").css('margin-left').replace(/[^-\d\.]/g, ''));
+
 
 			$("#tick").css({
 				left: rollPadding + column * (nodeWidth + margin) + "px"

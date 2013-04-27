@@ -55,4 +55,7 @@ node_modules
 
 ### WebStorm ###
 .idea/
+
+### project build
 public/javascripts/libs/
+public/javascripts/collab-sequencer.build.js

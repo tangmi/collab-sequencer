@@ -1,8 +1,10 @@
 ({
-	baseUrl: '.',
-	mainConfigFile: 'app.js',
+	baseUrl: 'public/javascripts',
 	name: 'app',
-	out: 'app.min.js',
-	logLevel: 0,
-	preserveLicenseComments: false
+	out: 'public/javascripts/collab-sequencer.build.js',
+	paths: {
+		jquery: "empty:",
+		underscore: "empty:",
+		backbone: "empty:"
+	}
 })

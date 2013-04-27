@@ -1,8 +1,11 @@
-require([
+define([
 	'jquery',
 	'underscore',
 	'backbone'
 ], function($, _, Backbone) {
+
+	/* Notes are initialized with a pitch, time and user name */
+
 	var Note = Backbone.Model.extend({
 		defaults : {
 			pitch : 'c',
@@ -11,7 +14,7 @@ require([
 		},
 
 		initialize : function() {
-			console.log('here I am');
+			//this.id = this.get('pitch') + this.get('time'); /* String hash */
 		}
 	});
 

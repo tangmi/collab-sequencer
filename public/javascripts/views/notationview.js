@@ -1,6 +1,8 @@
 define([
-	'backbone'
-], function(Backbone) {
+	'backbone',
+	'views/module/drawer',
+	'views/module/player'
+], function(Backbone, Drawer, Player) {
 
 	var View = Backbone.View.extend({
 		initialize: function () {

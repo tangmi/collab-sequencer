@@ -4,9 +4,15 @@ require([
 	'backbone'
 ], function($, _, Backbone) {
 	var Note = Backbone.Model.extend({
-		defaults : {pitch : 'c', user : 'Anonymous', time : 0},
+		defaults : {
+			pitch : 'c',
+			time : 0, //column
+			user : 'Gus'
+		},
 
-		initialize : function() { console.log('here I am'); }
+		initialize : function() {
+			console.log('here I am');
+		}
 	});
 
 	return Note;

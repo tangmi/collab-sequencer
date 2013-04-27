@@ -1,13 +1,13 @@
 define([
 	'backbone',
 	'views/module/drawer',
-	'views/module/player'
-], function(Backbone, Drawer, Player) {
+	'views/module/player',
+	'collections/notecollection'
+], function(Backbone, Drawer, Player, NoteCollection) {
 
 	var View = Backbone.View.extend({
 		initialize: function () {
 
-			alert("hi gus");
 		},
 
 
@@ -99,16 +99,7 @@ define([
 
 			*/
 
-
-
-
-
 	});
-
-	console.log(View.toSource());
-
-
-//	new NotationView();
 
 	return View;
 });

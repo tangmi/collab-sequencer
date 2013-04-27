@@ -2,15 +2,33 @@ define([
 	'backbone',
 	'views/module/drawer',
 	'views/module/player',
-	'collections/notecollection'
-], function(Backbone, Drawer, Player, NoteCollection) {
+	'collections/notecollection',
+	'models/note'
+], function(Backbone, Drawer, Player, NoteCollection, Note) {
 
 	var View = Backbone.View.extend({
+		
+		//Collection : holds a notecollection
 
 		el: "#app",
 
-		initialize: function () {
 
+		initialize: function () {
+			/* populate collection with all notes */
+
+			var allNotes = [];
+			var noteNames = ['c', 'd', 'e', 'f', 'g', 'a', 'b'];
+			var endTime = 16;
+
+			for (var i = 0; i < 16; i++) {
+				for (var j = 0; j < noteNames.length; j++) {
+					allNotes.push(  {pitch : noteNames[j], time : i, user : 'GUS' });
+				}
+			}
+
+			this.collection = new NoteCollection();
+			this.collection.add(allNotes);
+			
 			//create a roll div
 			var roll = $("<div></div>", {
 				id: "roll"
@@ -43,12 +61,12 @@ define([
 
 
 		removeNote : function() {
-
+			/* call drawer remove */
 		},
 
 
 		placeNote : function() {
-
+			/* CALL draw add */
 		},
 
 
@@ -60,65 +78,6 @@ define([
 		pause : function() {
 
 		}
-
-
-
-					/*
-
-			RollDrawer.create();
-
-			var notes = Backbone.Model.extend({
-
-			});
-
-
-
-
-			function onMouseMove(e) {
-				var pos = getMousePos(e);
-
-				var cellPos = RollDrawer.getCellPos(pos.x, pos.y);
-
-
-			}
-
-			function onMouseDown(e) {
-
-				var pos = getMousePos(e);
-				var cellPos = RollDrawer.getCellPos(pos.x, pos.y);
-
-				if (e.button === 0) {
-					//left click
-
-					RollDrawer.setCell(cellPos.x, cellPos.y, 1);
-
-
-				} else if (e.button == 2) {
-					//right click
-
-					RollDrawer.setCell(cellPos.x, cellPos.y, 0);
-
-				}
-			}
-
-
-			function getMousePos(e) {
-				var rect = RollDrawer.getCanvas().getBoundingClientRect();
-				return {
-					x: e.clientX - rect.left,
-					y: e.clientY - rect.top
-				};
-			}
-
-			$('#canvas').bind('contextmenu', function(){
-				// disable right click menu
-				return false;
-			});
-
-			$(document).mousemove(onMouseMove);
-			$(document).mousedown(onMouseDown);
-
-			*/
 
 	});
 

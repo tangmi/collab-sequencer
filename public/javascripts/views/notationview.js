@@ -6,7 +6,28 @@ define([
 ], function(Backbone, Drawer, Player, NoteCollection) {
 
 	var View = Backbone.View.extend({
+
+		el: "#app",
+
 		initialize: function () {
+
+			//create a roll div
+			var roll = $("<div></div>", {
+				id: "roll"
+			});
+			$("#app").append(roll);
+
+			Drawer.initialize(10, 32);
+
+			Drawer.add(1,2);
+
+			Drawer.add(5, 10);
+
+			Drawer.remove(1, 2);
+
+
+
+			Drawer.setTickPosition(6);
 
 		},
 

@@ -6,7 +6,41 @@ define([
 		initialize: function () {
 
 			alert("hi gus");
+		},
+
+
+		events : {
 			/*
+			rightclick a highlighted note : removeNote
+			click an unhighlighted note : placeNote
+			click play : play
+			click pause : pause
+			*/
+		},
+
+
+		removeNote : function() {
+
+		},
+
+
+		placeNote : function() {
+
+		},
+
+
+		play : function() {
+
+		},
+
+
+		pause : function() {
+
+		}
+
+
+
+					/*
 
 			RollDrawer.create();
 
@@ -63,7 +97,7 @@ define([
 
 			*/
 
-		}
+
 
 
 

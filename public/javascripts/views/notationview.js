@@ -10,6 +10,9 @@ define([
 		
 		//Collection : holds a notecollection
 
+		el: "#app",
+
+
 		initialize: function () {
 			/* populate collection with all notes */
 
@@ -26,6 +29,24 @@ define([
 			this.collection = new NoteCollection();
 			this.collection.add(allNotes);
 			
+			//create a roll div
+			var roll = $("<div></div>", {
+				id: "roll"
+			});
+			$("#app").append(roll);
+
+			Drawer.initialize(10, 32);
+
+			Drawer.add(1,2);
+
+			Drawer.add(5, 10);
+
+			Drawer.remove(1, 2);
+
+
+
+			Drawer.setTickPosition(6);
+
 		},
 
 

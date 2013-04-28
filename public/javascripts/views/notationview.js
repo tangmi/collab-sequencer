@@ -3,8 +3,9 @@ define([
 	'views/module/drawer',
 	'views/module/player',
 	'collections/notecollection',
-	'models/note'
-], function(Backbone, Drawer, Player, NoteCollection, Note) {
+	'models/note',
+	'views/noteview'
+], function(Backbone, Drawer, Player, NoteCollection, Note, NoteView) {
 
 	var View = Backbone.View.extend({
 		
@@ -14,6 +15,24 @@ define([
 
 
 		initialize: function () {
+			
+			/* Render the board */
+			var roll = $("<div></div>", {
+				id: "roll"
+			});
+			$(this.el).append(roll);
+
+			Drawer.initialize(10, 32);
+
+			Drawer.add(1,2);
+
+			Drawer.add(5, 10);
+
+			Drawer.remove(1, 2);
+
+			Drawer.setTickPosition(6);
+
+
 			/* populate collection with all notes */
 
 			var allNotes = [];
@@ -28,24 +47,20 @@ define([
 
 			this.collection = new NoteCollection();
 			this.collection.add(allNotes);
+
+			//associate all notes with an element and render them
+
+			this.collection.each(this.renderNote);
+
+		},
+
+		renderNote : function(noteModel) {
 			
-			//create a roll div
-			var roll = $("<div></div>", {
-				id: "roll"
-			});
-			$("#app").append(roll);
+			/*Drawer.add*/
 
-			Drawer.initialize(10, 32);
-
-			Drawer.add(1,2);
-
-			Drawer.add(5, 10);
-
-			Drawer.remove(1, 2);
-
-
-
-			Drawer.setTickPosition(6);
+			var row = ['c', 'd', 'e', 'f', 'g', 'a', 'b', 'c'].indexOf(noteModel.get('pitch'));
+			var rowid = '#cell-' + row + '-' + noteModel.get('time');
+			noteView = new NoteView( {el : $(rowid), model : noteModel} );
 
 		},
 

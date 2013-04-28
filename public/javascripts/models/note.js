@@ -8,13 +8,10 @@ define([
 
 	var Note = Backbone.Model.extend({
 		defaults : {
-			pitch : 'c',
+			pitch : 0,
 			time : 0, //column
-			user : 'Gus'
-		},
-
-		initialize : function() {
-			//this.id = this.get('pitch') + this.get('time'); /* String hash */
+			user : 'Gus',
+			highlighted : false
 		}
 	});
 

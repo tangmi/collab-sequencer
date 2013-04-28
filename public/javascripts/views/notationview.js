@@ -15,32 +15,24 @@ define([
 
 
 		initialize: function () {
-				
+
 			/* Render the board */
 			var roll = $("<div></div>", {
 				id: "roll"
 			});
 			$(this.el).append(roll);
-
 			Drawer.initialize(10, 32);
-
-			Drawer.add(1,2);
-
-			Drawer.add(5, 10);
-
-			Drawer.remove(1, 2);
-
 			Drawer.setTickPosition(6);
 
 			/* populate collection with all notes */
 
 			var allNotes = [];
-			var noteNames = ['c', 'd', 'e', 'f', 'g', 'a', 'b'];
+			//var noteNames = ['c', 'd', 'e', 'f', 'g', 'a', 'b'];
 			var endTime = 16;
 
-			for (var i = 0; i < 16; i++) {
-				for (var j = 0; j < noteNames.length; j++) {
-					allNotes.push(  {pitch : noteNames[j], time : i, user : 'GUS' });
+			for (var i = 0; i < 32; i++) {
+				for (var j = 0; j < 10; j++) {
+					allNotes.push(  {pitch : i, time : j, user : 'GUS' });
 				}
 			}
 
@@ -65,9 +57,7 @@ define([
 		renderNote : function(noteModel) {
 			
 			/*Drawer.add*/
-
-			var row = ['c', 'd', 'e', 'f', 'g', 'a', 'b', 'c'].indexOf(noteModel.get('pitch'));
-			var rowid = '#cell-' + row + '-' + noteModel.get('time');
+			var rowid = '#cell-' + noteModel.get('pitch') + '-' + noteModel.get('time');
 			noteView = new NoteView( {el : $(rowid), model : noteModel} );
 
 		},
@@ -75,23 +65,10 @@ define([
 
 		events : {
 			/*
-			rightclick a highlighted note : removeNote
-			click an unhighlighted note : placeNote
 			click play : play
 			click pause : pause
 			*/
 		},
-
-
-		removeNote : function() {
-			/* call drawer remove */
-		},
-
-
-		placeNote : function() {
-			/* CALL draw add */
-		},
-
 
 		play : function() {
 

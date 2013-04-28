@@ -8,11 +8,18 @@ define([
 	var View = Backbone.View.extend({
 		
 		events : {
-			'click' : 'highlight'
+			'click' : 'highlight',
+			'dblclick' : 'unHighlight'
 		},
 
 		highlight : function() {
-			this.$el.css({'background-color' : 'red'});
+			Drawer.add(this.model.get('pitch'), this.model.get('time'));
+			this.model.set('highlighted', true);
+		},
+
+		unHighlight : function() {
+			Drawer.remove(this.model.get('pitch'), this.model.get('time'));
+			this.model.set('highlighted', true);
 		}
 
 	});

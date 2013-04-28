@@ -1,3 +1,8 @@
+/*
+	note: app.js will compile this with node-sass via middleware to /public/stylesheets/style.build.css
+	do not edit /public/stylesheets/style.css as it will not do anything useful
+*/
+
 body {
     padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;

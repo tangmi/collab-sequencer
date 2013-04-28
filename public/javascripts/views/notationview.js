@@ -38,7 +38,7 @@ define([
 
 			Drawer.add(1,2);
 
-			Drawer.add(5, 10);
+			Drawer.add(10, 5);
 
 			Drawer.remove(1, 2);
 

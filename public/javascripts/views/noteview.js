@@ -7,19 +7,30 @@ define([
 
 	var View = Backbone.View.extend({
 		
+		initialize : function() {
+			_.bindAll(this, 'render');
+			this.model.on('change:highlighted', this.render);
+		},
+
+		render : function() {
+			if (this.model.get('highlighted')) {
+				Drawer.add(this.model.get('pitch'), this.model.get('time'));
+			} else {
+				Drawer.remove(this.model.get('pitch'), this.model.get('time'));
+			}
+		},
+
 		events : {
 			'click' : 'highlight',
-			'dblclick' : 'unHighlight'
+			'dblclick' : 'unhighlight'
 		},
 
 		highlight : function() {
-			Drawer.add(this.model.get('pitch'), this.model.get('time'));
 			this.model.set('highlighted', true);
 		},
 
-		unHighlight : function() {
-			Drawer.remove(this.model.get('pitch'), this.model.get('time'));
-			this.model.set('highlighted', true);
+		unhighlight : function() {
+			this.model.set('highlighted', false);
 		}
 
 	});

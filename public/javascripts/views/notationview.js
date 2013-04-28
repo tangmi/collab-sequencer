@@ -15,7 +15,7 @@ define([
 
 
 		initialize: function () {
-			
+				
 			/* Render the board */
 			var roll = $("<div></div>", {
 				id: "roll"
@@ -32,7 +32,6 @@ define([
 
 			Drawer.setTickPosition(6);
 
-
 			/* populate collection with all notes */
 
 			var allNotes = [];
@@ -48,7 +47,16 @@ define([
 			this.collection = new NoteCollection();
 			this.collection.add(allNotes);
 
+
 			//associate all notes with an element and render them
+
+			Drawer.initialize(10, 32);
+			Player.initialize(10);
+
+
+			Drawer.add(1,2);
+
+			Drawer.add(10, 5);
 
 			this.collection.each(this.renderNote);
 

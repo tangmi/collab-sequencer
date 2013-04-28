@@ -8,7 +8,8 @@
     "dependencies": {
         "express": "3.0.6",
         "ejs": "*",
-        "redis": "latest"
+        "redis": "latest",
+        "node-sass": "latest"
     },
-	"engine": "node >= 0.8.14"
+	"engine": "node >= 0.10.x"
 }

@@ -23,6 +23,7 @@ define([
 			$(this.el).append(roll);
 			Drawer.initialize(10, 32);
 			Drawer.setTickPosition(6);
+			Player.initialize(10);
 
 			/* populate collection with all notes */
 
@@ -38,17 +39,6 @@ define([
 
 			this.collection = new NoteCollection();
 			this.collection.add(allNotes);
-
-
-			//associate all notes with an element and render them
-
-			Drawer.initialize(10, 32);
-			Player.initialize(10);
-
-
-			Drawer.add(1,2);
-
-			Drawer.add(10, 5);
 
 			this.collection.each(this.renderNote);
 

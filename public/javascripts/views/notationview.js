@@ -1,6 +1,3 @@
-var currentTime = 0;
-var maxTime = 32
-
 define([
 	'backbone',
 	'views/module/drawer',
@@ -20,6 +17,10 @@ define([
 
 		el: "#app",
 
+		currentTime : 0,
+		
+		maxTime : 32,
+
 		tempo : 100, /* ms per tick change */
 
 		_playInterval : null,
@@ -28,7 +29,7 @@ define([
 
 			/* Render the board */
 			var notes = 11;
-			Drawer.initialize(notes, maxTime);
+			Drawer.initialize(notes, this.maxTime);
 			Player.initialize(notes);
 
 			/* populate collection with all notes */
@@ -37,7 +38,7 @@ define([
 			//var noteNames = ['c', 'd', 'e', 'f', 'g', 'a', 'b'];
 			var endTime = 16;
 
-			for (var i = 0; i < maxTime; i++) {
+			for (var i = 0; i < this.maxTime; i++) {
 				for (var j = 0; j < notes; j++) {
 					allNotes.push(  {pitch : j, time : i, user : 'GUS' });
 				}
@@ -66,24 +67,12 @@ define([
 
 		play : function() {
 			if (!this._playInterval) {
+				var _this = this;
 				this._playInterval = setInterval(
 					function () {
-						Drawer.setTickPosition(currentTime);
-
-						var i,
-							tags = document.getElementById("column-" + currentTime).getElementsByClassName("cell"),
-							size = tags.length;
-
-						var pitches = [];
-						for(i = 0; i < size; i++) {
-							var tag = tags[i];
-							if(tag.className.indexOf("cell-selected") >= 0) {
-								pitches.push(tag.id.replace(/cell-(.*)-/, ""));
-							}
-						}
-						Player.play(pitches);
-
-						currentTime = (currentTime + 1) % maxTime;
+						Drawer.setTickPosition(_this.currentTime);
+						Player.play(_this.collection.findNotesByTime(_this.currentTime));
+						_this.currentTime = (_this.currentTime + 1) % _this.maxTime;
 					}, this.tempo);
 			}
 

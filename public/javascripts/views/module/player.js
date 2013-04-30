@@ -39,6 +39,8 @@ define(['views/module/drawer'], function(Drawer) {
 				_this._updateLoadState();
 			});
 
+
+
 			this.sounds[index] = sound;
 		},
 
@@ -73,6 +75,7 @@ define(['views/module/drawer'], function(Drawer) {
 			if(!this._isReady) {
 				this._deferredQueue.push(this.sounds[pitch]);
 			} else {
+				this.sounds[pitch].currentTime=0;
 				this.sounds[pitch].play()
 			}
 		}

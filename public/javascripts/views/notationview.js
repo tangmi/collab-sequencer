@@ -27,6 +27,16 @@ define([
 
 		initialize: function () {
 
+			/* Generate controls */
+			var controls = $("<div></div>", {
+				id: 'controls'
+			});
+
+			controls.append($("<button></button>", { id: 'play', text: 'Play' }));
+
+			this.$el.append(controls);
+
+
 			/* Render the board */
 			var notes = 11;
 			Drawer.initialize(notes, this.maxTime);
@@ -60,9 +70,21 @@ define([
 		},
 
 
+		isPlaying: false,
 		events : {
-			'click #play' : 'play',
-			'click #pause' : 'pause'
+			'click #play' : 'togglePlay'
+		},
+
+		togglePlay: function() {
+			if(this.isPlaying) {
+				this.isPlaying = false;
+				this.play();
+				$("#play").html("Pause");
+			} else {
+				this.isPlaying = true;
+				this.pause();
+				$("#play").html("Play");
+			}
 		},
 
 		play : function() {
@@ -75,7 +97,6 @@ define([
 						_this.currentTime = (_this.currentTime + 1) % _this.maxTime;
 					}, this.tempo);
 			}
-
 		},
 
 		pause : function() {

@@ -27,9 +27,9 @@ define([
 		initialize: function () {
 
 			/* Render the board */
-			Drawer.initialize(11, maxTime);
-			Drawer.setTickPosition(6);
-			Player.initialize(11);
+			var notes = 11;
+			Drawer.initialize(notes, maxTime);
+			Player.initialize(notes);
 
 			/* populate collection with all notes */
 
@@ -38,7 +38,7 @@ define([
 			var endTime = 16;
 
 			for (var i = 0; i < maxTime; i++) {
-				for (var j = 0; j < 10; j++) {
+				for (var j = 0; j < notes; j++) {
 					allNotes.push(  {pitch : j, time : i, user : 'GUS' });
 				}
 			}
@@ -69,6 +69,20 @@ define([
 				this._playInterval = setInterval(
 					function () {
 						Drawer.setTickPosition(currentTime);
+
+						var i,
+							tags = document.getElementById("column-" + currentTime).getElementsByClassName("cell"),
+							size = tags.length;
+
+						var pitches = [];
+						for(i = 0; i < size; i++) {
+							var tag = tags[i];
+							if(tag.className.indexOf("cell-selected") >= 0) {
+								pitches.push(tag.id.replace(/cell-(.*)-/, ""));
+							}
+						}
+						Player.play(pitches);
+
 						currentTime = (currentTime + 1) % maxTime;
 					}, this.tempo);
 			}

@@ -55,7 +55,7 @@ define(['jquery', 'views/module/player'], function($, Player) {
 
 		add: function(pitch, time) {
 			$("#cell-" + time + "-" + pitch).addClass("cell-selected");
-			Player.playRow([pitch]);
+			Player.playPitch([pitch]);
 		},
 
 		remove: function(pitch, time) {

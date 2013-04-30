@@ -64,16 +64,16 @@ define(['views/module/drawer'], function(Drawer) {
 
 		play: function(rowsToPlay) {
 			for (var i = 0; i < rowsToPlay.length; i++) {
-				var row = rowsToPlay[i];
-				this.playRow(row);
+				var column = rowsToPlay[i];
+				this.playPitch(column);
 			}
 		},
 
-		playRow: function(column) {
+		playPitch: function(pitch) {
 			if(!this._isReady) {
-				this._deferredQueue.push(this.sounds[column]);
+				this._deferredQueue.push(this.sounds[pitch]);
 			} else {
-				this.sounds[column].play()
+				this.sounds[pitch].play()
 			}
 		}
 

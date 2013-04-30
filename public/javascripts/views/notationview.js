@@ -27,8 +27,9 @@ define([
 		initialize: function () {
 
 			/* Render the board */
-			Drawer.initialize(10, maxTime);
-			Player.initialize(10);
+			Drawer.initialize(11, maxTime);
+			Drawer.setTickPosition(6);
+			Player.initialize(11);
 
 			/* populate collection with all notes */
 
@@ -38,7 +39,7 @@ define([
 
 			for (var i = 0; i < maxTime; i++) {
 				for (var j = 0; j < 10; j++) {
-					allNotes.push(  {pitch : i, time : j, user : 'GUS' });
+					allNotes.push(  {pitch : j, time : i, user : 'GUS' });
 				}
 			}
 
@@ -52,7 +53,7 @@ define([
 		renderNote : function(noteModel) {
 			
 			/*Drawer.add*/
-			var rowid = '#cell-' + noteModel.get('pitch') + '-' + noteModel.get('time');
+			var rowid = '#cell-' + noteModel.get('time') + '-' + noteModel.get('pitch');
 			noteView = new NoteView( {el : $(rowid), model : noteModel} );
 
 		},

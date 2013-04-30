@@ -54,12 +54,12 @@ define(['jquery', 'views/module/player'], function($, Player) {
 		},
 
 		add: function(pitch, time) {
-			$("#cell-" + pitch + "-" + time).addClass("cell-selected");
-			Player.playRow([0]);
+			$("#cell-" + time + "-" + pitch).addClass("cell-selected");
+			Player.playRow([pitch]);
 		},
 
 		remove: function(pitch, time) {
-			$("#cell-" + pitch + "-" + time).removeClass("cell-selected");
+			$("#cell-" + time + "-" + pitch).removeClass("cell-selected");
 		}
 
 	};

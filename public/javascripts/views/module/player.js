@@ -6,27 +6,40 @@ define(['views/module/drawer'], function(Drawer) {
 		initialize: function(rows) {
 			this._filesToLoad = rows;
 
-			this.setupAudioElements(rows);
+			this.setupAudioElements();
 
 		},
 
-		setupAudioElements: function(rows) {
+		setupAudioElements: function() {
 
-			for (var i = 0; i < rows; i++) {
-				var sound = new Audio();
-				sound.src = '/sounds/hit.wav';
-				sound.id = 'audio-' + i;
+			this._loadSound(0, "808/hconga.wav");
+			this._loadSound(1, "808/mconga.wav");
+			this._loadSound(2, "808/lconga.wav");
+			this._loadSound(3, "808/htom.wav");
+			this._loadSound(4, "808/mtom.wav");
+			this._loadSound(5, "808/ltom.wav");
+			this._loadSound(6, "808/cymbal.wav");
+			this._loadSound(7, "808/ohihat.wav");
+			this._loadSound(8, "808/chihat.wav");
+			this._loadSound(9, "808/sdrum.wav");
+			this._loadSound(10, "808/kdrum.wav");
+			this._loadSound(11, "hit.wav");
 
-				sound.load();
+		},
 
-				var _this = this;
-				sound.addEventListener('canplay', function() { // When audio has loaded enough to play
-					_this._updateLoadState();
-				});
+		_loadSound: function(index, path) {
+			var sound = new Audio();
+			sound.src = '/sounds/' + path;
+			sound.id = 'audio-' + index;
 
-				this.sounds[i] = sound;
+			sound.load();
 
-			}
+			var _this = this;
+			sound.addEventListener('canplay', function() { // When audio has loaded enough to play
+				_this._updateLoadState();
+			});
+
+			this.sounds[index] = sound;
 		},
 
 		_filesToLoad: 0,
@@ -56,12 +69,11 @@ define(['views/module/drawer'], function(Drawer) {
 			}
 		},
 
-		playRow: function(row) {
-			console.log("this._isReady = " + this._isReady);
+		playRow: function(column) {
 			if(!this._isReady) {
-				this._deferredQueue.push(this.sounds[row]);
+				this._deferredQueue.push(this.sounds[column]);
 			} else {
-				this.sounds[row].play()
+				this.sounds[column].play()
 			}
 		}
 

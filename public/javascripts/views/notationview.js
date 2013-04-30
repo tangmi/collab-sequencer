@@ -25,9 +25,9 @@ define([
 				id: "roll"
 			});
 			$(this.el).append(roll);
-			Drawer.initialize(10, 32);
+			Drawer.initialize(11, 32);
 			Drawer.setTickPosition(6);
-			Player.initialize(10);
+			Player.initialize(11);
 
 			/* populate collection with all notes */
 
@@ -36,8 +36,8 @@ define([
 			var endTime = 16;
 
 			for (var i = 0; i < 32; i++) {
-				for (var j = 0; j < 10; j++) {
-					allNotes.push(  {pitch : i, time : j, user : 'GUS' });
+				for (var j = 0; j < 11; j++) {
+					allNotes.push(  {pitch : j, time : i, user : 'GUS' });
 				}
 			}
 
@@ -51,7 +51,7 @@ define([
 		renderNote : function(noteModel) {
 			
 			/*Drawer.add*/
-			var rowid = '#cell-' + noteModel.get('pitch') + '-' + noteModel.get('time');
+			var rowid = '#cell-' + noteModel.get('time') + '-' + noteModel.get('pitch');
 			noteView = new NoteView( {el : $(rowid), model : noteModel} );
 
 		},

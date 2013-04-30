@@ -14,7 +14,6 @@ define([
 
 		render : function() {
 			if (this.model.get('highlighted')) {
-				console.log(this.model.get('pitch') + ", " + this.model.get('time'));
 				Drawer.add(this.model.get('pitch'), this.model.get('time'));
 			} else {
 				Drawer.remove(this.model.get('pitch'), this.model.get('time'));
@@ -22,8 +21,13 @@ define([
 		},
 
 		events : {
-			'click' : 'highlight',
-			'dblclick' : 'unhighlight'
+			'click': 'toggle'
+//			'click' : 'highlight',
+//			'dblclick' : 'unhighlight'
+		},
+
+		toggle: function() {
+			this.model.set('highlighted', !this.model.get('highlighted'));
 		},
 
 		highlight : function() {

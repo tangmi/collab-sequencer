@@ -8,7 +8,11 @@ define([
 ], function(Backbone, Drawer, Player, NoteCollection, Note, NoteView) {
 
 	var View = Backbone.View.extend({
-		
+
+
+		// javascript game loop
+		// http://nokarma.org/2011/02/02/javascript-game-development-the-game-loop/index.html
+
 		//Collection : holds a notecollection
 
 		el: "#app",

@@ -8,7 +8,6 @@ define(['views/module/drawer'], function(Drawer) {
 
 			this.setupAudioElements(rows);
 
-
 		},
 
 		setupAudioElements: function(rows) {

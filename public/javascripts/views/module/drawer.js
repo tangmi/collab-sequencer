@@ -1,26 +1,26 @@
 define(['jquery', 'views/module/player'], function($, Player) {
 	var Drawer = {
 
-		initialize: function(rows, columns) {
-			this.setupDom(rows, columns);
+		initialize: function(pitch, time) {
+			this.setupDom(pitch, time);
 
 		},
 
-		setupDom: function(rows, columns) {
+		setupDom: function(pitch, time) {
 			//create a roll div
 			var roll = $("<div></div>", {
 				id: "roll"
 			});
 			$("#app").append(roll);
 
-			//create all the rows
-			for (var i = 0; i < columns; i++) {
+			//create all the pitch
+			for (var i = 0; i < time; i++) {
 				var temp = $("<ul></ul>", {
 					id: "column-" + i,
 					class: "column"
 				});
 				//create all the cells
-				for(var j = 0; j < rows; j++) {
+				for(var j = 0; j < pitch; j++) {
 					temp.append($("<li></li>", {
 						id: "cell-" + i + "-" + j,
 						class: "cell"
@@ -35,26 +35,31 @@ define(['jquery', 'views/module/player'], function($, Player) {
 			}));
 		},
 
-		setTickPosition: function(column) {
+		setTickPosition: function(time) {
 
-			/* this might be an expensive way of getting this info */
-			var rollPadding = parseInt($("#roll").css('padding-left').replace(/[^-\d\.]/g, ''))
-			var nodeWidth = parseInt($("#cell-0-0").css('width').replace(/[^-\d\.]/g, ''));
-			var margin = parseInt($("#cell-0-0").css('margin-right').replace(/[^-\d\.]/g, ''))
-				+ parseInt($("#cell-0-0").css('margin-left').replace(/[^-\d\.]/g, ''));
+			var j,
+				atags = document.getElementsByClassName("cell"),
+				atotal = atags.length;
+			for ( j = 0; j < atotal; j++ ) {
+				atags[j].className = atags[j].className.replace("cell-highlighted","");
+			}
 
+			var i,
+				tags = document.getElementById("column-" + time).getElementsByTagName("li"),
+				total = tags.length;
+			for ( i = 0; i < total; i++ ) {
+				tags[i].className = tags[i].className + " cell-highlighted";
+			}
 
-			$("#tick").css({
-				left: rollPadding + column * (nodeWidth + margin) + "px"
-			});
 		},
 
-		add: function(row, column) {
-			$("#cell-" + row + "-" + column).addClass("cell-selected");
+		add: function(pitch, time) {
+			$("#cell-" + pitch + "-" + time).addClass("cell-selected");
+			Player.playRow([0]);
 		},
 
-		remove: function(row, column) {
-			$("#cell-" + row + "-" + column).removeClass("cell-selected");
+		remove: function(pitch, time) {
+			$("#cell-" + pitch + "-" + time).removeClass("cell-selected");
 		}
 
 	};

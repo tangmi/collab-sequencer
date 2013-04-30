@@ -21,8 +21,13 @@ define([
 		},
 
 		events : {
-			'click' : 'highlight',
-			'dblclick' : 'unhighlight'
+			'click': 'toggle'
+//			'click' : 'highlight',
+//			'dblclick' : 'unhighlight'
+		},
+
+		toggle: function() {
+			this.model.set('highlighted', !this.model.get('highlighted'));
 		},
 
 		highlight : function() {

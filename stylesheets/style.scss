@@ -15,7 +15,6 @@ a {
 }
 
 
-
 #app {
 	background: #565656; /* Old browsers */
 	background: -moz-linear-gradient(top, #565656 0%, #191919 100%); /* FF3.6+ */
@@ -28,6 +27,12 @@ a {
 	border-radius: 4px;
 }
 
+
+#controls {
+	background-color : indianred;
+	width : 100%;
+	height : 25px;
+}
 
 #roll {
 	position: relative;

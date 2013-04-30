@@ -1,3 +1,6 @@
+var currentTime = 0;
+var maxTime = 32
+
 define([
 	'backbone',
 	'views/module/drawer',
@@ -17,15 +20,14 @@ define([
 
 		el: "#app",
 
+		tempo : 100, /* ms per tick change */
+
+		_playInterval : null,
 
 		initialize: function () {
 
 			/* Render the board */
-			var roll = $("<div></div>", {
-				id: "roll"
-			});
-			$(this.el).append(roll);
-			Drawer.initialize(11, 32);
+			Drawer.initialize(11, maxTime);
 			Drawer.setTickPosition(6);
 			Player.initialize(11);
 
@@ -35,8 +37,8 @@ define([
 			//var noteNames = ['c', 'd', 'e', 'f', 'g', 'a', 'b'];
 			var endTime = 16;
 
-			for (var i = 0; i < 32; i++) {
-				for (var j = 0; j < 11; j++) {
+			for (var i = 0; i < maxTime; i++) {
+				for (var j = 0; j < 10; j++) {
 					allNotes.push(  {pitch : j, time : i, user : 'GUS' });
 				}
 			}
@@ -58,19 +60,24 @@ define([
 
 
 		events : {
-			/*
-			click play : play
-			click pause : pause
-			*/
+			'click #play' : 'play',
+			'click #pause' : 'pause'
 		},
 
 		play : function() {
+			if (!this._playInterval) {
+				this._playInterval = setInterval(
+					function () {
+						Drawer.setTickPosition(currentTime);
+						currentTime = (currentTime + 1) % maxTime;
+					}, this.tempo);
+			}
 
 		},
 
-
 		pause : function() {
-
+			clearInterval(this._playInterval);
+			this._playInterval = null;
 		}
 
 	});

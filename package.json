@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "start": "node app",
-        "postinstall": "./node_modules/.bin/bower install; ./node_modules/.bin/r.js -o ./build.js"
+        "prepublish": "./node_modules/.bin/bower install; ./node_modules/.bin/r.js -o ./build.js"
     },
     "dependencies": {
         "express": "3.0.6",

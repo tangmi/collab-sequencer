@@ -31,11 +31,7 @@ module.exports = function (grunt) {
             coffeeTest: {
                 files: ['test/spec/{,*/}*.coffee'],
                 tasks: ['coffee:test']
-            },
-            compass: {
-                files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass']
-            },
+            },ƒ
             livereload: {
                 files: [
                     '<%= yeoman.app %>/*.html',
@@ -125,23 +121,6 @@ module.exports = function (grunt) {
                     src: '*.coffee',
                     dest: 'test/spec'
                 }]
-            }
-        },
-        compass: {
-            options: {
-                sassDir: '<%= yeoman.app %>/styles',
-                cssDir: '.tmp/styles',
-                imagesDir: '<%= yeoman.app %>/images',
-                javascriptsDir: '<%= yeoman.app %>/scripts',
-                fontsDir: '<%= yeoman.app %>/styles/fonts',
-                importPath: 'app/libs',
-                relativeAssets: true
-            },
-            dist: {},
-            server: {
-                options: {
-                    debugInfo: true
-                }
             }
         },
         requirejs: {
@@ -268,7 +247,6 @@ module.exports = function (grunt) {
             'coffee:dist',
             'createDefaultTemplate',
             'jst',
-            'compass:server',
             'livereload-start',
             'connect:livereload',
             'open',
@@ -281,7 +259,6 @@ module.exports = function (grunt) {
         'coffee',
         'createDefaultTemplate',
         'jst',
-        'compass',
         'connect:test',
         'mocha'
     ]);
@@ -291,7 +268,6 @@ module.exports = function (grunt) {
         'coffee',
         'createDefaultTemplate',
         'jst',
-        'compass:dist',
         'useminPrepare',
         'requirejs',
         'imagemin',

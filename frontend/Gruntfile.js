@@ -214,11 +214,6 @@ module.exports = function (grunt) {
                 }]
             }
         },
-        bower: {
-            all: {
-                rjsConfig: '<%= yeoman.app %>/scripts/main.js'
-            }
-        },
         jst: {
             options: {
                 amd: true

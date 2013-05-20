@@ -31,7 +31,7 @@ module.exports = function (grunt) {
             coffeeTest: {
                 files: ['test/spec/{,*/}*.coffee'],
                 tasks: ['coffee:test']
-            },ƒ
+            },
             livereload: {
                 files: [
                     '<%= yeoman.app %>/*.html',

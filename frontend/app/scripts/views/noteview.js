@@ -14,16 +14,14 @@ define([
 
 		render : function() {
 			if (this.model.get('highlighted')) {
-				Drawer.add(this.model.get('pitch'), this.model.get('time'));
+				Drawer.add(this.model);
 			} else {
-				Drawer.remove(this.model.get('pitch'), this.model.get('time'));
+				Drawer.remove(this.model);
 			}
 		},
 
 		events : {
 			'click': 'toggle'
-//			'click' : 'highlight',
-//			'dblclick' : 'unhighlight'
 		},
 
 		toggle: function() {

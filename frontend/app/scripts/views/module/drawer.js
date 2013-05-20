@@ -1,28 +1,29 @@
 define(['jquery', 'views/module/player'], function($, Player) {
 	var Drawer = {
 
-		initialize: function(pitch, time) {
-			this.setupDom(pitch, time);
+		initialize: function(pitch, time, name) {
+			this.setupDom(pitch, time, name);
 
 		},
 
-		setupDom: function(pitch, time) {
+		setupDom: function(pitch, time, name) {
 			//create a roll div
 			var roll = $("<div></div>", {
-				id: "roll"
-			});
+				id: name,
+				class : "roll"
+			}).hide();
 			$("#app").append(roll);
 
 			//create all the pitch
 			for (var i = 0; i < time; i++) {
 				var temp = $("<ul></ul>", {
-					id: "column-" + i,
+					id: "column-" + i + "-" + name,
 					class: "column"
 				});
 				//create all the cells
 				for(var j = 0; j < pitch; j++) {
 					temp.append($("<li></li>", {
-						id: "cell-" + i + "-" + j,
+						id: "cell-" + i + "-" + j + "-" + name,
 						class: "cell"
 						,text: "(" + i + "," + j + ")"
 					}));
@@ -35,7 +36,7 @@ define(['jquery', 'views/module/player'], function($, Player) {
 			}));
 		},
 
-		setTickPosition: function(time) {
+		setTickPosition: function(time, type) {
 
 			var j,
 				atags = document.getElementsByClassName("cell"),
@@ -45,7 +46,7 @@ define(['jquery', 'views/module/player'], function($, Player) {
 			}
 
 			var i,
-				tags = document.getElementById("column-" + time).getElementsByTagName("li"),
+				tags = document.getElementById("column-" + time + "-" + type).getElementsByTagName("li"),
 				total = tags.length;
 			for ( i = 0; i < total; i++ ) {
 				tags[i].className = tags[i].className + " cell-highlighted";
@@ -53,13 +54,18 @@ define(['jquery', 'views/module/player'], function($, Player) {
 
 		},
 
-		add: function(pitch, time) {
-			$("#cell-" + time + "-" + pitch).addClass("cell-selected");
-			Player.playPitch([pitch]);
+		add: function(model) {
+			console.log('click');
+			$("#cell-" + model.get("time") + 
+				"-" + model.get("pitch") +
+				"-" + model.get("type")).addClass("cell-selected");
+			Player.playPitch([model.get("pitch")]);
 		},
 
-		remove: function(pitch, time) {
-			$("#cell-" + time + "-" + pitch).removeClass("cell-selected");
+		remove: function(model) {
+			$("#cell-" + model.get("time") + 
+				"-" + model.get("pitch") +
+				"-" + model.get("type")).removeClass("cell-selected");
 		}
 
 	};

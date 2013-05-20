@@ -57,5 +57,5 @@ node_modules
 .idea/
 
 ### project build
-public/javascripts/libs/
-public/javascripts/collab-sequencer.build.js
+frontend/.tmp/*
+frontend/app/libs/*

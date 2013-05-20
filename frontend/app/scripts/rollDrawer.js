@@ -16,7 +16,7 @@ define([
 				grid[i][j] = new Cell(0);
 			}
 		}
-	}
+	};
 
 	var config = {
 		cell: {
@@ -42,18 +42,18 @@ define([
 
 	object.getCanvas = function () {
 		return canvas;
-	}
+	};
 
 	object.getContext = function () {
 		return context;
-	}
+	};
 
 	object.getCellPos = function (mx, my) {
 		return {
 			x: Math.floor(mx / config.cell.width),
 			y: Math.floor(my / config.cell.height)
-		}
-	}
+		};
+	};
 
 	var interval;
 	object.create = function () {
@@ -129,42 +129,42 @@ define([
 
 		//left
 		context.beginPath();
-		context.strokeStyle = "#adacac";
+		context.strokeStyle = '#adacac';
 		context.moveTo(cx, cy);
 		context.lineTo(cx, cy + config.cell.height - 2);
 		context.stroke();
 
 		//right
 		context.beginPath();
-		context.strokeStyle = "#747473";
+		context.strokeStyle = '#747473';
 		context.moveTo(cx + config.cell.width - 1, cy);
 		context.lineTo(cx + config.cell.width - 1, cy + config.cell.height);
 		context.stroke();
 
 		//top
 		context.beginPath();
-		context.strokeStyle = "#adacac";
+		context.strokeStyle = '#adacac';
 		context.moveTo(cx + 1, cy);
 		context.lineTo(cx + config.cell.width, cy);
 		context.stroke();
 
 		//bottom
 		context.beginPath();
-		context.strokeStyle = "#747473";
+		context.strokeStyle = '#747473';
 		context.moveTo(cx, cy + config.cell.height - 1);
 		context.lineTo(cx + config.cell.width, cy + config.cell.height - 1);
 		context.stroke();
 
 
 
-		if (cell.state == 0) {
+		if (cell.state === 0) {
 
 
 		} else if (cell.state == 1) {
 
 
 			context.fillStyle = 'pink';
-			context.strokeStyle = "red";
+			context.strokeStyle = 'red';
 
 			context.fillRect(cx + 3, cy + 2, config.cell.width - 7, config.cell.height - 6);
 			context.strokeRect(cx + 3, cy + 2, config.cell.width - 7, config.cell.height - 6);

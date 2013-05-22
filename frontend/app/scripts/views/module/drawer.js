@@ -7,12 +7,16 @@ define(['jquery', 'views/module/player'], function($, Player) {
 		},
 
 		setupDom: function(pitch, time, name) {
+
+			var rolls = $("#rolls");
+
 			//create a roll div
 			var roll = $("<div></div>", {
 				id: name,
 				class : "roll"
 			}).hide();
-			$("#app").append(roll);
+			rolls.append(roll);
+
 
 			//create all the pitch
 			for (var i = 0; i < time; i++) {

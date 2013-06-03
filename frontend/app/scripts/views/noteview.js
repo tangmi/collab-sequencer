@@ -26,6 +26,7 @@ define([
 
 		toggle: function() {
 			this.model.set('highlighted', !this.model.get('highlighted'));
+			this.model.save();
 		},
 
 		highlight : function() {

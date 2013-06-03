@@ -22,7 +22,9 @@ require.config({
 
 
 define([
-		'views/notationview'
-], function(NotationView) {
+		'views/notationview',
+		'backbone'
+], function(NotationView, Backbone) {
+	Backbone.emulateHTTP = true;
 	new NotationView();
 });

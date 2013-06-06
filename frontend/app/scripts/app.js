@@ -20,6 +20,10 @@ require.config({
 });
 
 
+//configuration for all everything everywhere
+var config = {
+	endpoint: 'http://localhost:3000'
+}
 
 define([
 		'views/notationview',

@@ -16,7 +16,7 @@ define(['backbone', 'models/note'], function(Backbone, Note) {
 
 		model : Note,
 
-		url : 'http://10.150.31.177:3000/get',
+		url : config.endpoint + '/get',
 
 		findNotesByTime : function(t) {
 			return _.map( this.where({time : t, highlighted : true}),

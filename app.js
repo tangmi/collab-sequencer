@@ -1,17 +1,18 @@
 var express = require('express');
-var routes = require('./routes');
+// var routes = require('./routes');
+var api = require('./routes/api');
 var http = require('http');
 var path = require('path');
 
 // var sass = require('node-sass');
 var fs = require('fs');
 
+var collection = require('./collection');
+
 var app = express();
 
 app.configure(function() {
 	app.set('port', process.env.PORT || 3000);
-	// app.set('views', __dirname + '/views');
-	// app.set('view engine', 'ejs');
 	app.use(express.favicon());
 	app.use(express.logger('dev'));
 	app.use(express.bodyParser());
@@ -23,76 +24,22 @@ app.configure(function() {
 
 });
 
-
 app.configure('production', function() {});
 
 app.configure('development', function() {
 	app.use(express.errorHandler());
 });
 
-// app.get('/', routes.index);
-
-
-var data = {};
-/*
-	data.instrument.time.pitch = {
-		user, highlighted
-	}
-*/
-
 http.createServer(app).listen(app.get('port'), function() {
-	console.log("Express server listening on port " + app.get('port'));
-
-
-	var pitches = 10, //0-10
-		times = 31, //0-31
-		user = 'GUS',
-		types = ['drums', 'synth'];
-
-	for (var i in types) {
-		var type = types[i];
-		data[type] = [];
-
-		var t = 0;
-		for (t = 0; t <= times; t++) {
-			data[type][t] = [];
-
-			var p = 0;
-			for (p = 0; p <= pitches; p++) {
-				data[type][t][p] = {
-					'_toString': '#cell-' + t + '-' + p + '-' + type,
-					'user': user,
-					'highlighted': false
-				}
-			}
-		}
-	}
-
-	// console.log(dataToJson(data));
-
+	console.log("Collab-sequencer server listening on port " + app.get('port'));
+	collection.initialize();
 });
-
-var dataToJson = function(data) {
-	var out = [];
-	var type, t, p;
-	for(type in data) {
-		for(t in data[type]) {
-			for(p in data[type][t]) {
-				var note = data[type][t][p];
-				out.push('{"pitch":' + p + ',"time":' + t + ',"user":"' + note.user + '","type":"' + type + '","highlighted":' + note.highlighted + '}');
-			}
-		}
-	}
-	return '[' + out.join(',') + ']';
-}
 
 //CORS
 app.all('/*', function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 	res.header('Access-Control-Allow-Headers', 'Content-Type');
-	// console.log("CORS");
-
 	next();
 });
 
@@ -107,7 +54,6 @@ var redis = require("redis");
 var client = redis.createClient(redisConfig.port, redisConfig.host, redisConfig.options);
 
 // client.hmset('gus', {'count': 0});
-
 app.get('/gus', function(req, res) {
 	client.hgetall("gus", function(err, obj) {
 		var count = Number(obj.count) + 1;
@@ -158,43 +104,8 @@ app.get('/reset/random', function(req, res) {
 	res.send(generateBaseCollection(true));
 });
 
-
-
-//saving
-app.post('/add', function(req, res) {
-
-	var p = req.body.pitch,
-		t = req.body.time,
-		type = req.body.type;
-
-	data[type][t][p].highlighted = req.body.highlighted;
-	data[type][t][p].user = req.body.user;
-
-	console.log("=> " + data[type][t][p].user + ": set " + data[type][t][p]._toString + " to " + data[type][t][p].highlighted);
-
-});
-
-
-
-
-app.get('/get', function(req, res) {
-	res.setHeader('Content-Type', 'application/json');
-	res.send(dataToJson(data));
-});
-
-
-//manual toglging of stuff
-app.get('/toggle/:type/:time/:pitch', function(req, res) {
-	res.setHeader('Content-Type', 'text/plain');
-
-	var p = req.params.pitch,
-		t = req.params.time,
-		type = req.params.type;
-
-	data[type][t][p].highlighted = !data[type][t][p].highlighted;
-	data[type][t][p].user = "SYSTEM";
-
-	console.log("=> " + data[type][t][p].user + ": set " + data[type][t][p]._toString + " to " + data[type][t][p].highlighted);
-
-	res.send("=> " + data[type][t][p].user + ": set " + data[type][t][p]._toString + " to " + data[type][t][p].highlighted);
-});
+//API
+app.post('/add', api.add);
+app.get('/get', api.get);
+app.get('/toggle/:type/:time/:pitch', api.toggle);
+app.get('/render', api.render);

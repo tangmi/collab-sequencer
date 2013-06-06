@@ -6,7 +6,7 @@ define([
 
 	var Note = Backbone.Model.extend({
 		
-		url : 'http://10.150.31.177:3000/add',
+		url : config.endpoint + '/add',
 
 		defaults : {
 			pitch : 0, 			//To be interpreted, a little more durable for octaves / drums

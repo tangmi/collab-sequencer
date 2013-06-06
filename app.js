@@ -69,13 +69,20 @@ app.get('/gus', function(req, res) {
 });
 
 
+app.get('/reset', function(req, res) {
+	res.setHeader('Content-Type', 'application/json');
+	collection.initialize();
+	res.send(200);
+});
 
-//testing code
-var generateBaseCollection = function(random) {
+//@Deprecated
+app.get('/reset/random', function(req, res) {
+	res.setHeader('Content-Type', 'application/json');
+
 	var pitches = 10,
 		times = 31,
 		user = 'GUS',
-		types = ['drums', ''];
+		types = ['drums', 'synth'];
 
 	var out = [];
 
@@ -85,23 +92,13 @@ var generateBaseCollection = function(random) {
 		for (t = 0; t <= times; t++) {
 			var p = 0;
 			for (p = 0; p <= pitches; p++) {
-				var val = random ? (Math.random() > 0.5 ? 'false' : 'true') : false;
+				var val = Math.random() > 0.5 ? 'false' : 'true';
 				out.push('{"pitch":' + p + ',"time":' + t + ',"user":"' + user + '","type":"' + type + '","highlighted":' + val + '}');
 			}
 		}
 	}
 
-	return '[' + out.join(',') + ']';
-}
-
-app.get('/reset', function(req, res) {
-	res.setHeader('Content-Type', 'application/json');
-	res.send(generateBaseCollection(false));
-});
-
-app.get('/reset/random', function(req, res) {
-	res.setHeader('Content-Type', 'application/json');
-	res.send(generateBaseCollection(true));
+	res.send('[' + out.join(',') + ']');
 });
 
 //API

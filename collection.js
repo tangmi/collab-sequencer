@@ -1,5 +1,14 @@
 exports.data = {};
 
+/*
+
+	We store the roll as time 'slices', containing some constant number of pitches
+
+	data[instrument][time][pitch] = {
+		user, highlighted
+	}
+
+*/
 
 var generateBaseCollection = function(random) {
 	var pitches = 10, //0-10
@@ -10,11 +19,9 @@ var generateBaseCollection = function(random) {
 	for (var i in types) {
 		var type = types[i];
 		exports.data[type] = [];
-
 		var t = 0;
 		for (t = 0; t <= times; t++) {
 			exports.data[type][t] = [];
-
 			var p = 0;
 			for (p = 0; p <= pitches; p++) {
 				exports.data[type][t][p] = {

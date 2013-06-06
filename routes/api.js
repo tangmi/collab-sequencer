@@ -6,6 +6,18 @@ exports.get = function(req, res) {
 	res.send(collection.toJson());
 };
 
+exports.getModel = function(req, res) {
+	res.setHeader('Content-Type', 'application/json');
+
+	var p = req.params.pitch,
+		t = req.params.time,
+		type = req.params.type;
+
+	console.log(type + " " + t + " " + p)
+
+	res.send(collection.getModel(type, t, p));
+};
+
 
 exports.add = function(req, res) {
 
@@ -33,9 +45,13 @@ exports.toggle = function (req, res) {
 	collection.data[type][t][p].highlighted = !collection.data[type][t][p].highlighted;
 	collection.data[type][t][p].user = "SYSTEM";
 
-	console.log("=> " + collection.data[type][t][p].user + ": set " + collection.data[type][t][p]._toString + " to " + collection.data[type][t][p].highlighted);
 
-	res.send(collection.render() + '\n' + "=> " + collection.data[type][t][p].user + ": set " + collection.data[type][t][p]._toString + " to " + collection.data[type][t][p].highlighted);
+
+	var note = collection.data[type][t][p];
+	var msg = "=> " + note.user + ": set " + note._toString + " to " + note.highlighted;
+	console.log(msg);
+
+	res.send(collection.render() + '\n' + msg);
 };
 
 exports.render = function(req, res) {

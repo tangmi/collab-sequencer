@@ -1,4 +1,3 @@
-exports.data = {};
 
 /*
 
@@ -9,6 +8,8 @@ exports.data = {};
 	}
 
 */
+exports.data = {};
+
 
 var generateBaseCollection = function(random) {
 	var pitches = 10, //0-10
@@ -25,7 +26,7 @@ var generateBaseCollection = function(random) {
 			var p = 0;
 			for (p = 0; p <= pitches; p++) {
 				exports.data[type][t][p] = {
-					'_toString': '#cell-' + t + '-' + p + '-' + type,
+					'_toString': '#cell-' + t + '-' + p + '-' + type, //this is purely for niceness, could be a method on collection
 					'user': user,
 					'highlighted': false
 				}
@@ -34,23 +35,65 @@ var generateBaseCollection = function(random) {
 	}
 }
 
+
+var toObject = function() {
+	var data = exports.data;
+	var object = [];
+	for (type in data) {
+		for (t in data[type]) {
+			for (p in data[type][t]) {
+				var note = data[type][t][p];
+
+				object.push({
+					pitch: new Number(p),
+					time: new Number(t),
+					user: note.user,
+					type: type,
+					highlighted: note.highlighted
+				});
+
+			}
+		}
+	}
+	return object;
+}
+
 exports.initialize = function() {
 	generateBaseCollection();
 	// console.log(dataToJson(data));
 };
 
+exports.getModel = function(type, time, pitch) {
+
+	var note = exports.data[type][time][pitch];
+
+	var model = {
+		pitch: new Number(pitch),
+		time: new Number(time),
+		user: note.user,
+		type: type,
+		highlighted: note.highlighted
+	};
+
+	return JSON.stringify(model);
+	
+};
+
 exports.toJson = function() {
-	var out = [];
-	var type, t, p;
-	for(type in this.data) {
-		for(t in this.data[type]) {
-			for(p in this.data[type][t]) {
-				var note = this.data[type][t][p];
-				out.push('{"pitch":' + p + ',"time":' + t + ',"user":"' + note.user + '","type":"' + type + '","highlighted":' + note.highlighted + '}');
-			}
-		}
-	}
-	return '[' + out.join(',') + ']';
+
+	return JSON.stringify(toObject());
+
+	// var out = [];
+	// var type, t, p;
+	// for(type in this.data) {
+	// 	for(t in this.data[type]) {
+	// 		for(p in this.data[type][t]) {
+	// 			var note = this.data[type][t][p];
+	// 			out.push('{"pitch":' + p + ',"time":' + t + ',"user":"' + note.user + '","type":"' + type + '","highlighted":' + note.highlighted + '}');
+	// 		}
+	// 	}
+	// }
+	// return '[' + out.join(',') + ']';
 };
 
 
@@ -58,11 +101,12 @@ exports.toJson = function() {
 exports.render = function() {
 	var temp = {};
 	var out = '';
-	for(type in exports.data) {
+	//inverts the matrix
+	for (type in exports.data) {
 		temp[type] = [];
-		for(t in exports.data[type]) {
-			for(p in exports.data[type][t]) {
-				if(typeof(temp[type][p]) === 'undefined') {
+		for (t in exports.data[type]) {
+			for (p in exports.data[type][t]) {
+				if (typeof(temp[type][p]) === 'undefined') {
 					temp[type][p] = [];
 				}
 				temp[type][p][t] = exports.data[type][t][p];
@@ -70,11 +114,12 @@ exports.render = function() {
 		}
 	}
 
-	for(type in temp) {
+	//renders matrix
+	for (type in temp) {
 		console.log(temp[type]);
 		out += type + '\n';
-		for(t in temp[type]) {
-			for(p in temp[type][t]) {
+		for (t in temp[type]) {
+			for (p in temp[type][t]) {
 				var note = temp[type][t][p];
 				out += note.highlighted ? 'X' : '.';
 				out += ' ';

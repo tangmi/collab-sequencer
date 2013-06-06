@@ -70,6 +70,12 @@ define([
 			// }));
 
 			// this.$el.append(controls);
+			var _this = this;
+			collection.bind('reset', function() { 
+				_this._initializeTab('drums');
+				_this._initializeTab('synth');
+			});
+
 
 			this._initializeTab('drums');
 			this._initializeTab('synth');
@@ -89,7 +95,7 @@ define([
 			var allNotes = [];
 			var endTime = 16;
 
-			for (var i = 0; i < maxTime; i++) {
+			/*for (var i = 0; i < maxTime; i++) {
 				for (var j = 0; j < notes; j++) {
 					allNotes.push({
 						pitch: j,
@@ -98,9 +104,9 @@ define([
 						type: tabName
 					});
 				}
-			}
+			}*/
 
-			collection.add(allNotes);
+			//collection.add(allNotes);
 
 			_.each(collection.where({
 				type: tabName
@@ -116,6 +122,7 @@ define([
 				el: $(rowid),
 				model: noteModel
 			});
+			noteView.render();
 
 		},
 
@@ -153,6 +160,7 @@ define([
 				this.pause();
 				$("#play").html("Play");
 			}
+			console.log(JSON.stringify(collection.toJSON()));
 		},
 
 		play: function() {

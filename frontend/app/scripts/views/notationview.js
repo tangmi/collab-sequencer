@@ -77,16 +77,15 @@ define([
 			});
 
 
-			this._initializeTab('drums');
-			this._initializeTab('synth');
+			this._initializeTab('drums', 11);
+			this._initializeTab('synth', 7);
 
 			this.selectTab('drums')
 
 		},
 
-		_initializeTab: function(tabName) {
+		_initializeTab: function(tabName, notes) {
 
-			var notes = 11;
 			Drawer.initialize(notes, maxTime, tabName);
 			Player.initialize(notes);
 
@@ -147,6 +146,7 @@ define([
 
 				$(".tab").removeClass('selected');
 				$("#" + tab + "_button").addClass('selected');
+				Drawer.setTickPosition(currentTime, currentTab);
 			}
 		},
 
@@ -167,14 +167,6 @@ define([
 			if (!this._playInterval) {
 				nextTick = (new Date).getTime();
 				this._playInterval = window.setInterval(this._interval, 0);
-
-				// var _this = this;
-				// this._playInterval = setInterval(
-				// 	function () {
-				// 		Drawer.setTickPosition(_this.currentTime, _this.currentTab);
-				// 		Player.play(_this.collection.findNotesByTime(_this.currentTime));
-				// 		_this.currentTime = (_this.currentTime + 1) % _this.maxTime;
-				// 	}, this.tempo);
 			}
 		},
 

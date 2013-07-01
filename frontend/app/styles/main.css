@@ -18,7 +18,9 @@ a {
 
 
 #app {
-	width: 1090px;
+	font-family: 'Carrois Gothic SC', sans-serif;
+
+	width: 1100px;
 	margin: 0 auto;
 
 	background: #565656; /* Old browsers */
@@ -37,7 +39,6 @@ a {
 }
 
 #app h1 {
-	font-family: 'Carrois Gothic SC', sans-serif;
 	margin: 0 10px 0 0;
 	color: #ededed;
 	float: right;
@@ -85,43 +86,50 @@ a {
 	font-size:1em;
 }
 
+.tab {
+	width: 100px;
+	height: 20px;
+	opacity: 0.5;
+	display: inline-block;
 
-#tabs button {
-	border-radius: 2px;
-	border: 0px;
-	
-	background: #ffffff; /* Old browsers */
-	background: -moz-radial-gradient(center, ellipse cover, #ffffff 0%, #ededed 100%); /* FF3.6+ */
-	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#ffffff), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
-	background: -webkit-radial-gradient(center, ellipse cover, #ffffff 0%,#ededed 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-radial-gradient(center, ellipse cover, #ffffff 0%,#ededed 100%); /* Opera 12+ */
-	background: -ms-radial-gradient(center, ellipse cover, #ffffff 0%,#ededed 100%); /* IE10+ */
-	background: radial-gradient(ellipse at center, #ffffff 0%,#ededed 100%); /* W3C */
-	box-shadow: 0px 1px #9E9E9E, 0px -1px #6B6B6B;
+	text-align: center;
+	font-size: 12pt;
+	color: white;
+	margin-right: 4px;
+	padding: 5px 0;
+
+	cursor: pointer;
+
 }
-#tabs button.selected {
-	background: #96d1ff; /* Old browsers */
-	background: -moz-radial-gradient(center, ellipse cover, #96d1ff 0%, #4e9ee0 100%); /* FF3.6+ */
-	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#96d1ff), color-stop(100%,#4e9ee0)); /* Chrome,Safari4+ */
-	background: -webkit-radial-gradient(center, ellipse cover, #96d1ff 0%,#4e9ee0 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-radial-gradient(center, ellipse cover, #96d1ff 0%,#4e9ee0 100%); /* Opera 12+ */
-	background: -ms-radial-gradient(center, ellipse cover, #96d1ff 0%,#4e9ee0 100%); /* IE10+ */
-	background: radial-gradient(ellipse at center, #96d1ff 0%,#4e9ee0 100%); /* W3C */
+.tab.selected {
+	opacity: 1.0;
+}
+.tab:not(.selected) {
+	-webkit-box-shadow: inset 0px -5px 16px #565656;
+	-moz-box-shadow: inset 0px -5px 16px #565656;
+	box-shadow: inset 0px -5px 16px #565656;
+	padding-top: 3px;
 }
 
+#drums_button, #drums {
+	background-color: #c0392b;
+}
+
+#synth_button, #synth {
+	background-color: #e67e22;
+}
 
 
 
 .roll {
 	position: relative;
+	padding: 6px;
 }
 .roll .column {
 	padding: 0;
 	margin: 0;
 	font-size: 0;
 	display: inline-block;
-
-
 }
 
 

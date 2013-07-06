@@ -21,7 +21,6 @@ app.configure(function() {
 	app.use(express.session());
 	app.use(app.router);
 	app.use(express.static(path.join(__dirname, 'frontend/app')));
-
 });
 
 app.configure('production', function() {});
@@ -35,39 +34,13 @@ http.createServer(app).listen(app.get('port'), function() {
 	collection.initialize();
 });
 
-//CORS
-app.all('/*', function(req, res, next) {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-	res.header('Access-Control-Allow-Headers', 'Content-Type');
-	next();
-});
-
-
-
-// var redisConfig = {
-// 	port: 6379,
-// 	host: '127.0.0.1',
-// 	options: {}
-// };
-// var redis = require("redis");
-// var client = redis.createClient(redisConfig.port, redisConfig.host, redisConfig.options);
-
-// client.hmset('gus', {'count': 0});
-// app.get('/gus', function(req, res) {
-// 	client.hgetall("gus", function(err, obj) {
-// 		var count = Number(obj.count) + 1;
-// 		res.send('goodbye gus, #' + count);
-
-// 		client.hmset('gus', {
-// 			'count': count
-// 		});
-
-// 	});
-
-// 	console.log("somebody connected");
+// //CORS
+// app.all('/*', function(req, res, next) {
+// 	res.header('Access-Control-Allow-Origin', '*');
+// 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+// 	res.header('Access-Control-Allow-Headers', 'Content-Type');
+// 	next();
 // });
-
 
 app.get('/reset', function(req, res) {
 	res.setHeader('Content-Type', 'application/json');

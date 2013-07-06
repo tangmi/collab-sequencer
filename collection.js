@@ -1,8 +1,4 @@
-var redisConfig = {
-	port: 6379,
-	host: '127.0.0.1',
-	options: {}
-};
+var redisConfig = require('./configuration').redis;
 var redis = require("redis");
 var client = redis.createClient(redisConfig.port, redisConfig.host, redisConfig.options);
 

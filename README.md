@@ -9,10 +9,12 @@ built using:
 * backbone/underscore
 * requirejs
 * jquery
-* sass
+* redis
 
 grab all dependencies by building on any unix system with node installed:
 
 ```bash
-sh ./build.sh
+npm start
 ```
+
+requires a redis server running (see `configuration.js`)

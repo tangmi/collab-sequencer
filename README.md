@@ -14,6 +14,7 @@ built using:
 grab all dependencies by building on any unix system with node installed:
 
 ```bash
+npm install
 npm start
 ```
 

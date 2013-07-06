@@ -80,7 +80,8 @@ define([
 			this._initializeTab('drums', 11);
 			this._initializeTab('synth', 7);
 
-			this.selectTab('drums')
+			this.selectTab('drums');
+
 
 		},
 
@@ -151,16 +152,15 @@ define([
 		},
 
 		togglePlay: function() {
-			if (this.isPlaying) {
-				this.isPlaying = false;
+			if (!this.isPlaying) {
+				this.isPlaying = true;
 				this.play();
 				$("#play").html("Pause");
 			} else {
-				this.isPlaying = true;
+				this.isPlaying = false;
 				this.pause();
 				$("#play").html("Play");
 			}
-			console.log(JSON.stringify(collection.toJSON()));
 		},
 
 		play: function() {

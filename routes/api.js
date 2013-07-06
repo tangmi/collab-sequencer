@@ -10,7 +10,7 @@ var collection = require('../collection');
 
 exports.get = function(req, res) {
 	res.setHeader('Content-Type', 'application/json');
-	res.send(collection.toJson());
+	res.send(collection.getData());
 };
 
 exports.getModel = function(req, res) {

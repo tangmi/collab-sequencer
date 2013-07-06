@@ -60,3 +60,4 @@ node_modules
 ### project build
 frontend/.tmp/*
 frontend/app/libs/*
+dump.rdb

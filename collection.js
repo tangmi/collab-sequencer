@@ -105,8 +105,12 @@ exports.getModel = function(type, time, pitch) {
 		highlighted: note.highlighted
 	};
 
-	return JSON.stringify(model);
+	return model;
 
+};
+
+exports.getData = function() {
+	return toObject();
 };
 
 exports.toJson = function() {

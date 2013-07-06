@@ -45,28 +45,28 @@ app.all('/*', function(req, res, next) {
 
 
 
-var redisConfig = {
-	port: 6379,
-	host: '127.0.0.1',
-	options: {}
-};
-var redis = require("redis");
-var client = redis.createClient(redisConfig.port, redisConfig.host, redisConfig.options);
+// var redisConfig = {
+// 	port: 6379,
+// 	host: '127.0.0.1',
+// 	options: {}
+// };
+// var redis = require("redis");
+// var client = redis.createClient(redisConfig.port, redisConfig.host, redisConfig.options);
 
 // client.hmset('gus', {'count': 0});
-app.get('/gus', function(req, res) {
-	client.hgetall("gus", function(err, obj) {
-		var count = Number(obj.count) + 1;
-		res.send('goodbye gus, #' + count);
+// app.get('/gus', function(req, res) {
+// 	client.hgetall("gus", function(err, obj) {
+// 		var count = Number(obj.count) + 1;
+// 		res.send('goodbye gus, #' + count);
 
-		client.hmset('gus', {
-			'count': count
-		});
+// 		client.hmset('gus', {
+// 			'count': count
+// 		});
 
-	});
+// 	});
 
-	console.log("somebody connected");
-});
+// 	console.log("somebody connected");
+// });
 
 
 app.get('/reset', function(req, res) {

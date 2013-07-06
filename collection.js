@@ -1,3 +1,10 @@
+var redisConfig = {
+	port: 6379,
+	host: '127.0.0.1',
+	options: {}
+};
+var redis = require("redis");
+var client = redis.createClient(redisConfig.port, redisConfig.host, redisConfig.options);
 
 /*
 
@@ -10,8 +17,36 @@
 */
 exports.data = {};
 
+exports.storeCollection = function(user) {
+	if(!user) {
+		user = '';
+	}
+	client.hmset('cs-data', {
+		'collection': JSON.stringify(exports.data)
+	});
+	console.log('=>', user + ':', 'Storing collection');
+	// console.log('=>', user + ':', 'Store collection', '\n' + exports.render(exports.data));
+};
+
+exports.getCollection = function(user) {
+	if(!user) {
+		user = '';
+	}
+	client.hgetall('cs-data', function(err, obj) {
+
+		if(obj) {
+			exports.data = JSON.parse(obj.collection);
+		} else {
+			generateBaseCollection();
+			exports.storeCollection();
+		}
+		console.log('=>', user + ':', 'Retrieved collection');
+		// console.log('=>', user + ':', 'Get collection', '\n' + exports.render(exports.data));
+	});
+};
 
 var generateBaseCollection = function(random) {
+	//TODO fix pitches to they are per intstrument
 	var pitches = 10, //0-10
 		times = 31, //0-31
 		user = 'GUS',
@@ -58,11 +93,6 @@ var toObject = function() {
 	return object;
 }
 
-exports.initialize = function() {
-	generateBaseCollection();
-	// console.log(dataToJson(data));
-};
-
 exports.getModel = function(type, time, pitch) {
 
 	var note = exports.data[type][time][pitch];
@@ -76,7 +106,7 @@ exports.getModel = function(type, time, pitch) {
 	};
 
 	return JSON.stringify(model);
-	
+
 };
 
 exports.toJson = function() {
@@ -116,7 +146,7 @@ exports.render = function() {
 
 	//renders matrix
 	for (type in temp) {
-		console.log(temp[type]);
+		// console.log(temp[type]);
 		out += type + '\n';
 		for (t in temp[type]) {
 			for (p in temp[type][t]) {
@@ -130,4 +160,10 @@ exports.render = function() {
 	}
 
 	return out;
+};
+
+
+exports.initialize = function() {
+	exports.getCollection('SYSTEM');
+	// console.log(dataToJson(data));
 };

@@ -1,5 +1,12 @@
 var collection = require('../collection');
 
+// function Note(pitch, time, type, user, highlighted) {
+// 	this.pitch = pitch;
+// 	this.time = time;
+// 	this.type = type;
+// 	this.user = user;
+// 	this.highlighted = highlighted;
+// }
 
 exports.get = function(req, res) {
 	res.setHeader('Content-Type', 'application/json');
@@ -20,7 +27,6 @@ exports.getModel = function(req, res) {
 
 
 exports.add = function(req, res) {
-
 	var p = req.body.pitch,
 		t = req.body.time,
 		type = req.body.type;
@@ -30,6 +36,7 @@ exports.add = function(req, res) {
 
 	console.log("=> " + collection.data[type][t][p].user + ": set " + collection.data[type][t][p]._toString + " to " + collection.data[type][t][p].highlighted);
 
+	collection.storeCollection(collection.data[type][t][p].user);
 	res.send(200);
 };
 
@@ -51,6 +58,7 @@ exports.toggle = function (req, res) {
 	var msg = "=> " + note.user + ": set " + note._toString + " to " + note.highlighted;
 	console.log(msg);
 
+	collection.storeCollection(note.user);
 	res.send(collection.render() + '\n' + msg);
 };
 

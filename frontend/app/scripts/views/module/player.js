@@ -5,9 +5,10 @@ define(['views/module/drawer'], function(Drawer) {
 
 		initialize: function(rows) {
 			this._filesToLoad = rows;
+			this._loadCount =  0,
+			this._isReady = false;
 
 			this.setupAudioElements();
-
 		},
 
 		setupAudioElements: function() {

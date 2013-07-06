@@ -66,3 +66,7 @@ exports.render = function(req, res) {
 	res.setHeader('Content-Type', 'text/plain');
 	res.send(collection.render());
 };
+
+exports.clear = function() {
+	collection.generateBaseCollection();
+};

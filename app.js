@@ -75,35 +75,10 @@ app.get('/reset', function(req, res) {
 	res.send(200);
 });
 
-//@Deprecated
-app.get('/reset/random', function(req, res) {
-	res.setHeader('Content-Type', 'application/json');
-
-	var pitches = 10,
-		times = 31,
-		user = 'GUS',
-		types = ['drums', 'synth'];
-
-	var out = [];
-
-	for (var i in types) {
-		var type = types[i];
-		var t = 0;
-		for (t = 0; t <= times; t++) {
-			var p = 0;
-			for (p = 0; p <= pitches; p++) {
-				var val = Math.random() > 0.5 ? 'false' : 'true';
-				out.push('{"pitch":' + p + ',"time":' + t + ',"user":"' + user + '","type":"' + type + '","highlighted":' + val + '}');
-			}
-		}
-	}
-
-	res.send('[' + out.join(',') + ']');
-});
-
 //API
 app.post('/add', api.add);
 app.get('/get', api.get);
 app.get('/get/:type/:time/:pitch', api.getModel);
 app.get('/toggle/:type/:time/:pitch', api.toggle);
 app.get('/render', api.render);
+app.get('/clear', api.clear);

@@ -37,7 +37,7 @@ exports.getCollection = function(user) {
 		if(obj) {
 			exports.data = JSON.parse(obj.collection);
 		} else {
-			generateBaseCollection();
+			exports.generateBaseCollection();
 			exports.storeCollection();
 		}
 		console.log('=>', user + ':', 'Retrieved collection');
@@ -45,7 +45,7 @@ exports.getCollection = function(user) {
 	});
 };
 
-var generateBaseCollection = function(random) {
+exports.generateBaseCollection = function() {
 	//TODO fix pitches to they are per intstrument
 	var pitches = 10, //0-10
 		times = 31, //0-31

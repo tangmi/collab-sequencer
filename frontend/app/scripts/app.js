@@ -28,7 +28,7 @@ var config = {
 		nextTick: 0,
 		currentTime: 0,
 		maxTime: 32,
-		bpm: 40
+		bpm: 200
 	}
 };
 
@@ -43,12 +43,12 @@ define([
 		tabs: [{
 				name: 'drums',
 				notes: 10,
-				initShow: false,
+				initShow: true,
 				color: 'red'
 			}, {
 				name: 'synth',
 				notes: 7,
-				initShow: true,
+				initShow: false,
 				color: 'green'
 			}, {
 				name: 'dickballs',

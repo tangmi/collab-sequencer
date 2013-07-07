@@ -20,7 +20,7 @@ define([
 				$("#cell-" + this.model.get("time") +
 					"-" + this.model.get("pitch") +
 					"-" + this.model.get("type")).addClass("cell-selected");
-				Player.playPitch([this.model.get("pitch")]);
+
 			}
 		},
 
@@ -29,6 +29,9 @@ define([
 		},
 
 		toggle: function() {
+			if (!this.model.get('highlighted')) {
+				Player.playPitch([this.model.get("pitch")]);
+			}
 			this.model.set('highlighted', !this.model.get('highlighted'));
 			this.model.save();
 		},

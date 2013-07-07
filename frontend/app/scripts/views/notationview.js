@@ -17,7 +17,7 @@ define([
 
 
 		initialize: function() {
-			$("#tempo").val(this.bpm);
+			$("#tempo").val(timing.bpm);
 
 			this.tabs = this.options.tabs;
 			this.currentTab = this.tabs[0].name;
@@ -29,11 +29,10 @@ define([
 					_this._hookUpTab(_this.tabs[i].name);
 				}
 			});
-
+			this.setTickPosition(0, false);
 		},
 
 		_hookUpTab: function(tabName) {
-			console.log(tabName);
 			_.each(this.collection.where({
 				type: tabName
 			}), this._hookUpNote);
@@ -69,7 +68,7 @@ define([
 
 				$(".tab").removeClass('selected');
 				$("#" + tab + "_button").addClass('selected');
-				this.setTickPosition(timing.currentTime);
+				this.setTickPosition(timing.currentTime, false);
 			}
 		},
 
@@ -113,7 +112,8 @@ define([
 			this.setTickPosition(timing.currentTime);
 		},
 
-		setTickPosition: function(time) {
+		setTickPosition: function(time, isPlayed) {
+			if (isPlayed === undefined) { isPlayed = true };
 			if (time >= 0 && time < timing.maxTime) {
 				var j,
 					atags = document.getElementsByClassName("cell"),
@@ -128,7 +128,9 @@ define([
 				for (i = 0; i < total; i++) {
 					tags[i].className = tags[i].className + " cell-highlighted";
 				}
-				Player.play(this.collection.findNotesByTime(time));
+				if (isPlayed) {
+					Player.play(this.collection.findNotesByTime(time));
+				}
 			}
 		},
 

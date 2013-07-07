@@ -18,11 +18,6 @@ define([
 
 			this._generateControls();
 
-			//Create interactive controls and then bind a view to them
-			new NotationView({
-				tabs: options.tabs
-			});
-
 			for (var i = 0; i < options.tabs.length; i++) {
 				this._generateTab(options.tabs[i]);
 			}
@@ -54,6 +49,11 @@ define([
 
 			//Same deal here, would rather keep one global object
 			window.config.timing.skipTicks /= window.config.timing.bpm;
+
+			//Create interactive controls and then bind a view to them
+			new NotationView({
+				tabs: options.tabs
+			});
 		},
 
 		_generateControls: function() {
@@ -67,7 +67,7 @@ define([
 
 			$controls.append($("<input>", {
 				id: 'tempo',
-				type: 'text'
+				type: 'text',
 			}));
 
 			$controls.append($("<div></div>", {
@@ -123,8 +123,12 @@ define([
 
 
 			//set color of tab/roll
-			$roll.css({ 'background-color' : tabData.color});
-			$newTab.css({ 'background-color' : tabData.color});
+			$roll.css({
+				'background-color': tabData.color
+			});
+			$newTab.css({
+				'background-color': tabData.color
+			});
 
 
 			Player.initialize(tabData.notes);

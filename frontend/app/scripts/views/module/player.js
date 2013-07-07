@@ -1,4 +1,4 @@
-define(['views/module/drawer'], function(Drawer) {
+define([], function() {
 	var Player = {
 
 		sounds: [],

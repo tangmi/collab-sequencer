@@ -111,16 +111,6 @@ a {
 	padding-top: 3px;
 }
 
-#drums_button, #drums {
-	background-color: #c0392b;
-}
-
-#synth_button, #synth {
-	background-color: #e67e22;
-}
-
-
-
 .roll {
 	position: relative;
 	padding: 6px;

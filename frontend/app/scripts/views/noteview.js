@@ -1,26 +1,30 @@
 define([
-	'backbone',
-	'views/module/drawer',
-	'views/module/player',
-	'models/note'
-], function(Backbone, Drawer, Player, Note) {
+		'backbone',
+		'views/module/player',
+		'models/note'
+], function(Backbone, Player, Note) {
 
 	var View = Backbone.View.extend({
-		
-		initialize : function() {
+
+		initialize: function() {
 			_.bindAll(this, 'render');
 			this.model.on('change:highlighted', this.render);
 		},
 
-		render : function() {
-			if (this.model.get('highlighted')) {
-				Drawer.add(this.model);
+		render: function() {
+			if (!this.model.get('highlighted')) {
+				$("#cell-" + this.model.get("time") +
+					"-" + this.model.get("pitch") +
+					"-" + this.model.get("type")).removeClass("cell-selected");
 			} else {
-				Drawer.remove(this.model);
+				$("#cell-" + this.model.get("time") +
+					"-" + this.model.get("pitch") +
+					"-" + this.model.get("type")).addClass("cell-selected");
+				Player.playPitch([this.model.get("pitch")]);
 			}
 		},
 
-		events : {
+		events: {
 			'click': 'toggle'
 		},
 
@@ -29,11 +33,11 @@ define([
 			this.model.save();
 		},
 
-		highlight : function() {
+		highlight: function() {
 			this.model.set('highlighted', true);
 		},
 
-		unhighlight : function() {
+		unhighlight: function() {
 			this.model.set('highlighted', false);
 		}
 

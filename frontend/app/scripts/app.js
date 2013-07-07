@@ -22,13 +22,48 @@ require.config({
 
 //configuration for all everything everywhere
 var config = {
-	endpoint: 'http://localhost:3000'
-}
+	endpoint: 'http://localhost:3000',
+	timing: {
+		skipTicks: 60000, //calculated later
+		nextTick: 0,
+		currentTime: 0,
+		maxTime: 32,
+		bpm: 40
+	}
+};
 
 define([
-		'views/notationview',
+		'mainSetup',
 		'backbone'
-], function(NotationView, Backbone) {
+], function(mainSetup, Backbone) {
 	Backbone.emulateHTTP = true;
-	new NotationView();
+
+
+	var initialConfig = {
+		tabs: [{
+				name: 'drums',
+				notes: 10,
+				initShow: false,
+				color: 'red'
+			}, {
+				name: 'synth',
+				notes: 7,
+				initShow: true,
+				color: 'green'
+			}, {
+				name: 'dickballs',
+				notes: 2,
+				initShow: false,
+				color: 'black '
+			}, {
+				name: 'cornbread',
+				notes: 3,
+				initShow: false,
+				color: 'purple'
+			}
+		]
+	};
+
+	mainSetup.init(initialConfig);
+
 });

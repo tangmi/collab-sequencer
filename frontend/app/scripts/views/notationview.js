@@ -1,122 +1,47 @@
 define([
 		'backbone',
-		'views/module/drawer',
 		'views/module/player',
 		'collections/notecollection',
 		'models/note',
 		'views/noteview'
-], function(Backbone, Drawer, Player, NoteCollection, Note, NoteView) {
+], function(Backbone, Player, NoteCollection, Note, NoteView) {
 
-
-	//these mush be scoped to this file, cannot be scoped to the backbone object, currently.
-	currentTime = 0;
-	currentTab = "";
-	maxTime = 32;
-	bpm = 100;
-	nextTick = 0;
-	skipTicks = 60000 / bpm;
-	collection = new NoteCollection();
-
-	$("#tempo").keyup(function() {
-		bpm = $("#tempo").val();
-		if(bpm > 0) {
-			nextTick = (new Date).getTime();
-			skipTicks = 60000 / bpm;
-			// console.log("bpm = " + bpm);
-		}
-	});
+	var timing = window.config.timing;
 
 	var View = Backbone.View.extend({
 
-
-		// javascript game loop
-		// http://nokarma.org/2011/02/02/javascript-game-development-the-game-loop/index.html
-
-		//Collection : holds a notecollection
-
+		//tabs: (passed dynamically in initialization) list of tabs
 		el: "#app",
+		collection: new NoteCollection(),
+		currentTab: "",
 
-		// currentTime: 0,
-
-		// currentTab: "drums",
-
-		// maxTime: 32,
-
-		// tempo: 100,
-		/* ms per tick change */
-
-		_playInterval: null,
 
 		initialize: function() {
-			$("#tempo").val(bpm);
-			// /* Generate controls */
-			// var controls = $("<div></div>", {
-			// 	id: 'controls'
-			// });
+			$("#tempo").val(this.bpm);
 
-			// controls.append($("<button></button>", {
-			// 	id: 'play',
-			// 	text: 'Play'
-			// }));
-			// controls.append($("<button></button>", {
-			// 	id: 'synth_button',
-			// 	text: 'Synth',
-			// 	class: 'tab'
-			// }));
-			// controls.append($("<button></button>", {
-			// 	id: 'drums_button',
-			// 	text: 'Drums',
-			// 	class: 'tab'
-			// }));
-
-			// this.$el.append(controls);
+			this.tabs = this.options.tabs;
+			this.currentTab = this.tabs[0].name;
 			var _this = this;
-			collection.bind('reset', function() { 
-				_this._initializeTab('drums');
-				_this._initializeTab('synth');
+
+			//a collection is reset when it is first loaded in
+			this.collection.bind('reset', function() {
+				for (var i = 0; i < _this.tabs.length; i++) {
+					_this._hookUpTab(_this.tabs[i].name);
+				}
 			});
 
-
-			this._initializeTab('drums', 11);
-			this._initializeTab('synth', 7);
-
-			this.selectTab('drums');
-
-
 		},
 
-		_initializeTab: function(tabName, notes) {
-
-			Drawer.initialize(notes, maxTime, tabName);
-			Player.initialize(notes);
-
-			/* populate collection with all notes */
-
-			var allNotes = [];
-			var endTime = 16;
-
-			/*for (var i = 0; i < maxTime; i++) {
-				for (var j = 0; j < notes; j++) {
-					allNotes.push({
-						pitch: j,
-						time: i,
-						user: 'GUS',
-						type: tabName
-					});
-				}
-			}*/
-
-			//collection.add(allNotes);
-
-			_.each(collection.where({
+		_hookUpTab: function(tabName) {
+			console.log(tabName);
+			_.each(this.collection.where({
 				type: tabName
-			}), this._renderNote);
+			}), this._hookUpNote);
 
 		},
 
-		_renderNote: function(noteModel) {
+		_hookUpNote: function(noteModel) {
 
-			/*Drawer.add*/
 			var rowid = '#cell-' + noteModel.get('time') + '-' + noteModel.get('pitch') + '-' + noteModel.get('type');
 			noteView = new NoteView({
 				el: $(rowid),
@@ -126,47 +51,44 @@ define([
 
 		},
 
-
-		isPlaying: false,
-
 		events: {
 			'click #play': 'togglePlay',
-			'click #synth_button': function() {
-				this.selectTab('synth')
-			},
-			'click #drums_button': function() {
-				this.selectTab('drums')
-			}
+			'keyup #tempo': 'setTempo',
+			'click .tab': 'selectTab',
+			'click #incrementor': 'tick'
 		},
 
-		selectTab: function(tab) {
-			if (currentTab != tab) {
-				currentTab = tab;
+		selectTab: function(e) {
+			//shitty
+			var tab = $(e.target).text();
+
+			if (this.currentTab != tab) {
+				this.currentTab = tab;
 				$(".roll").hide();
 				$("#" + tab).show();
 
 				$(".tab").removeClass('selected');
 				$("#" + tab + "_button").addClass('selected');
-				Drawer.setTickPosition(currentTime, currentTab);
+				this.setTickPosition(timing.currentTime);
 			}
 		},
 
 		togglePlay: function() {
-			if (!this.isPlaying) {
-				this.isPlaying = true;
-				this.play();
-				$("#play").html("Pause");
-			} else {
+			if (this.isPlaying) {
 				this.isPlaying = false;
 				this.pause();
 				$("#play").html("Play");
+			} else {
+				this.isPlaying = true;
+				this.play();
+				$("#play").html("Pause");
 			}
 		},
 
 		play: function() {
 			if (!this._playInterval) {
-				nextTick = (new Date).getTime();
-				this._playInterval = window.setInterval(this._interval, 0);
+				timing.nextTick = (new Date).getTime();
+				this._playInterval = window.setInterval(timing.interval, 0);
 			}
 		},
 
@@ -175,34 +97,45 @@ define([
 			this._playInterval = null;
 		},
 
-		_interval: (function() {
+		setTempo: function() {
 
-			var loops = 0,
-				maxFrameSkip = 10;
+			var newBPM = parseInt($('#tempo').val());
+			newBPM = Math.min(newBPM, 1500);
+			if (_.isNumber(newBPM) && newBPM >= 0) {
 
-			console.log(nextTick);
+				timing.bpm = newBPM;
+				timing.nextTick = (new Date).getTime();
+				timing.skipTicks = 60000 / timing.bpm;
+			}
+		},
 
-			return function() {
+		tick: function() {
+			this.setTickPosition(timing.currentTime);
+		},
 
-				loops = 0;
-
-				while ((new Date).getTime() > nextTick && loops < maxFrameSkip) {
-					//update player position
-
-					Drawer.setTickPosition(currentTime, currentTab);
-					Player.play(collection.findNotesByTime(currentTime));
-					currentTime = (currentTime + 1) % maxTime;
-
-					nextTick += skipTicks;
-					loops++;
+		setTickPosition: function(time) {
+			if (time >= 0 && time < timing.maxTime) {
+				var j,
+					atags = document.getElementsByClassName("cell"),
+					atotal = atags.length;
+				for (j = 0; j < atotal; j++) {
+					atags[j].className = atags[j].className.replace("cell-highlighted", "");
 				}
 
-				// update logic
-				// console.log("tick");
-
+				var i,
+					tags = document.getElementById("column-" + time + "-" + this.currentTab).getElementsByTagName("li"),
+					total = tags.length;
+				for (i = 0; i < total; i++) {
+					tags[i].className = tags[i].className + " cell-highlighted";
+				}
+				Player.play(this.collection.findNotesByTime(time));
 			}
+		},
 
-		})(),
+		isPlaying: false,
+
+		//Interval object to be cleared by pause and set by play
+		_playInterval: null,
 
 	});
 

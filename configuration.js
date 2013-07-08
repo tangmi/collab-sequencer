@@ -48,7 +48,7 @@ config.instruments = {
 					file: "808/kdrum.wav"
 				}, {
 					pitch: 11,
-					file: "hit.wav"
+					file: "808/hconga.wav"
 				}
 			]
 		}, {

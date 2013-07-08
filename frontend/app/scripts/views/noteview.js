@@ -29,7 +29,7 @@ define([
 
 		toggle: function() {
 			if (!this.model.get('highlighted')) {
-				Player.playPitch([this.model.get("pitch")]);
+				Player.playPitch(this.model.get("type"), this.model.get("pitch"));
 			}
 			this.model.set('highlighted', !this.model.get('highlighted'));
 			this.model.set('user', config.user);

@@ -16,6 +16,8 @@ define([
 		*/
 		init: function(options) {
 
+			console.log(options["tabs"]);
+
 			this._generateControls();
 
 			for (var i = 0; i < options.tabs.length; i++) {

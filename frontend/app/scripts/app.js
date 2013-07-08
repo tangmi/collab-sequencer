@@ -38,32 +38,16 @@ define([
 ], function(mainSetup, Backbone) {
 	Backbone.emulateHTTP = true;
 
+	var request = $.ajax({
+		url: config.endpoint + '/config'
+	})
+	request.done(function(res) {
+		mainSetup.init(JSON.parse(res));
+	});
+	request.fail(function(jqXHR, textStatus) {
+		console.log("Request failed: " + textStatus);
+	});
 
-	var initialConfig = {
-		tabs: [{
-				name: 'drums',
-				notes: 10,
-				initShow: true,
-				color: 'red'
-			}, {
-				name: 'synth',
-				notes: 7,
-				initShow: false,
-				color: 'green'
-			}, {
-				name: 'dickballs',
-				notes: 2,
-				initShow: false,
-				color: 'black '
-			}, {
-				name: 'cornbread',
-				notes: 3,
-				initShow: false,
-				color: 'purple'
-			}
-		]
-	};
 
-	mainSetup.init(initialConfig);
 
 });

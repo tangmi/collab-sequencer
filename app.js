@@ -56,3 +56,4 @@ app.get('/toggle/:type/:time/:pitch', api.toggle);
 app.get('/render', api.render);
 app.get('/clear', api.clear);
 app.get('/config', api.config);
+app.get('/username', api.getUsername);

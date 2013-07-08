@@ -11,6 +11,7 @@ config.instruments = {
 	time: 31, //0-index? actually 32 beats
 	tabs: [{
 			name: 'drums',
+			initShow: true, //this should get removed at some point
 			color: '#DA5858',
 			notes: [{
 					pitch: 0,

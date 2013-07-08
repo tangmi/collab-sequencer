@@ -1,5 +1,6 @@
 var collection = require('../collection');
 var config = require('../configuration');
+var animal = require('animal-id');
 
 // function Note(pitch, time, type, user, highlighted) {
 // 	this.pitch = pitch;
@@ -78,4 +79,11 @@ exports.clear = function(req, res) {
 exports.config = function(req, res) {
 	res.setHeader('Content-Type', 'text/plain');
 	res.send(config.instruments);
+};
+
+exports.getUsername = function(req, res) {
+	res.setHeader('Content-Type', 'application/json');
+	res.send({
+		"user": animal.getId()
+	});
 };

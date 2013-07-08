@@ -9,7 +9,8 @@
 	"dependencies": {
 		"express": "3.0.6",
 		"ejs": "*",
-		"redis": "latest"
+		"redis": "latest",
+		"animal-id": "0.0.1"
 	},
 	"devDependencies": {
 		"bower": "latest"

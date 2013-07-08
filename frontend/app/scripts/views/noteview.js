@@ -33,6 +33,7 @@ define([
 				Player.playPitch([this.model.get("pitch")]);
 			}
 			this.model.set('highlighted', !this.model.get('highlighted'));
+			this.model.set('user', config.user);
 			this.model.save();
 		},
 

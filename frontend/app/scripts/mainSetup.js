@@ -79,7 +79,7 @@ define([
 
 		_generateTab: function(tabData) {
 
-			var pitch = tabData.notes;
+			var pitch = tabData.notes.length;
 			var name = tabData.name;
 			var time = window.config.timing.maxTime;
 			var $tabs = $('#tabs');

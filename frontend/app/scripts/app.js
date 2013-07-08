@@ -48,6 +48,4 @@ define([
 		console.log("Request failed: " + textStatus);
 	});
 
-
-
 });

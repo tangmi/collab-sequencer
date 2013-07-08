@@ -8,9 +8,10 @@ config.redis = {
 };
 
 config.instruments = {
+	time: 31, //0-index? actually 32 beats
 	tabs: [{
 			name: 'drums',
-			color: 'red',
+			color: '#DA5858',
 			notes: [{
 					pitch: 0,
 					file: "808/hconga.wav"
@@ -51,7 +52,7 @@ config.instruments = {
 			]
 		}, {
 			name: 'synth',
-			color: 'green',
+			color: '#4E6A50',
 			notes: [{
 					pitch: 0,
 					file: "808/hconga.wav"
@@ -76,7 +77,7 @@ config.instruments = {
 				}
 			]
 		}, {
-			name: 'dickballs',
+			name: 'ball',
 			color: 'black',
 			notes: [{
 					pitch: 0,
@@ -88,7 +89,7 @@ config.instruments = {
 			]
 		}, {
 			name: 'cornbread',
-			color: 'purple',
+			color: '#B25D89',
 			notes: [{
 					pitch: 0,
 					file: "808/hconga.wav"

@@ -20,7 +20,6 @@ define([
 				$("#cell-" + this.model.get("time") +
 					"-" + this.model.get("pitch") +
 					"-" + this.model.get("type")).addClass("cell-selected");
-
 			}
 		},
 

@@ -29,6 +29,9 @@ define([
 					_this._hookUpTab(_this.tabs[i].name);
 				}
 			});
+
+			this.collection.fetchInitialData();
+
 			this.setTickPosition(0, false);
 		},
 

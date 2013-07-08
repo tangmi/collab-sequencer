@@ -49,7 +49,7 @@ app.get('/reset', function(req, res) {
 });
 
 //API
-app.post('/add', api.add);
+app.put('/add', api.add);
 app.get('/get', api.get);
 app.get('/get/:type/:time/:pitch', api.getModel);
 app.get('/toggle/:type/:time/:pitch', api.toggle);

@@ -9,6 +9,16 @@ define(['backbone', 'models/note'], function(Backbone, Note) {
 					success : function() { console.log("got data"); },
 					failure : function() { console.log("couldn't grab data"); } 
 			});
+
+			setInterval(function() { _this.fetchLiveData(); }, 2000);
+		},
+
+		fetchLiveData: function() {
+			this.fetch(
+				{	remove: false,
+					success : function() { console.log("got new data"); },
+					failure : function() { console.log("couldn't new grab data"); } 
+			});
 		},
 
 		model : Note,

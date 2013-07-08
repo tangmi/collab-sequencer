@@ -18,4 +18,10 @@ npm install
 npm start
 ```
 
+windows users have to install bower with `npm install -g bower`, then install bower stuff before `npm start`
+
+```bash
+bower install
+```
+
 requires a redis server running (see `configuration.js`)

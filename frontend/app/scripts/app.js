@@ -51,7 +51,7 @@ define([
 				initShow: false,
 				color: 'green'
 			}, {
-				name: 'dickballs',
+				name: 'ball',
 				notes: 2,
 				initShow: false,
 				color: 'black '

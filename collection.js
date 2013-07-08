@@ -14,57 +14,69 @@ var client = redis.createClient(redisConfig.port, redisConfig.host, redisConfig.
 */
 exports.data = {};
 
+var key = 'coll';
 exports.storeCollection = function(user) {
-	if(!user) {
+	if (!user) {
 		user = '';
 	}
-	client.hmset('cs-data', {
-		'collection': JSON.stringify(exports.data)
-	});
+
+	var data = {};
+	data[key] = JSON.stringify(exports.data)
+
+	client.hmset('cs-data', data);
 	console.log('=>', user + ':', 'Storing collection');
-	// console.log('=>', user + ':', 'Store collection', '\n' + exports.render(exports.data));
+	console.log('=>', user + ':', 'Store collection', '\n' + exports.render(exports.data));
 };
 
 exports.getCollection = function(user) {
-	if(!user) {
+	if (!user) {
 		user = '';
 	}
 	client.hgetall('cs-data', function(err, obj) {
 
-		if(obj) {
-			exports.data = JSON.parse(obj.collection);
-		} else {
+		try {
+			exports.data = JSON.parse(obj[key]);
+		} catch (e) {
 			exports.generateBaseCollection();
 			exports.storeCollection();
 		}
 		console.log('=>', user + ':', 'Retrieved collection');
-		// console.log('=>', user + ':', 'Get collection', '\n' + exports.render(exports.data));
+		console.log('=>', user + ':', 'Get collection', '\n' + exports.render(exports.data));
 	});
 };
 
 exports.generateBaseCollection = function() {
-	//TODO fix pitches to they are per intstrument
-	var pitches = 10, //0-10
-		times = 31, //0-31
-		user = 'GUS',
-		types = ['drums', 'synth'];
+	var tabs = notesConfig.tabs,
+		time = notesConfig.time,
+		pitches,
+		user = 'SYSTEM';
 
-	for (var i in types) {
-		var type = types[i];
-		exports.data[type] = [];
-		var t = 0;
-		for (t = 0; t <= times; t++) {
-			exports.data[type][t] = [];
+	var output = {};
+
+	var i,
+		tab,
+		l = tabs.length;
+	for (i = 0; i < l; i++) {
+		tab = tabs[i];
+		console.log(tab.name);
+		output[tab.name] = {};
+
+		pitches = tab.notes.length - 1;
+
+		for (t = 0; t <= time; t++) {
+			output[tab.name][t] = [];
 			var p = 0;
 			for (p = 0; p <= pitches; p++) {
-				exports.data[type][t][p] = {
-					'_toString': '#cell-' + t + '-' + p + '-' + type, //this is purely for niceness, could be a method on collection
+				output[tab.name][t][p] = {
+					'_toString': '#cell-' + t + '-' + p + '-' + tab.name, //this is purely for niceness, could be a method on collection
 					'user': user,
 					'highlighted': false
 				}
 			}
 		}
 	}
+
+	exports.data = output;
 }
 
 

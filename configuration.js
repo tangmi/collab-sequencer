@@ -8,6 +8,7 @@ config.redis = {
 };
 
 config.instruments = {
+	time: 31, //0-index? actually 32 beats
 	tabs: [{
 			name: 'drums',
 			color: 'red',
@@ -76,7 +77,7 @@ config.instruments = {
 				}
 			]
 		}, {
-			name: 'dickballs',
+			name: 'ball',
 			color: 'black',
 			notes: [{
 					pitch: 0,

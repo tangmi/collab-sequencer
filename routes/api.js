@@ -42,7 +42,7 @@ exports.add = function(req, res) {
 };
 
 
- //manual toglging of stuff
+ //manual toggling of stuff
 exports.toggle = function (req, res) {
 	res.setHeader('Content-Type', 'text/plain');
 

@@ -25,7 +25,7 @@ exports.storeCollection = function(user) {
 
 	client.hmset('cs-data', data);
 	console.log('=>', user + ':', 'Storing collection');
-	console.log('=>', user + ':', 'Store collection', '\n' + exports.render(exports.data));
+	// console.log('=>', user + ':', 'Store collection', '\n' + exports.render(exports.data));
 };
 
 exports.getCollection = function(user) {
@@ -41,7 +41,7 @@ exports.getCollection = function(user) {
 			exports.storeCollection();
 		}
 		console.log('=>', user + ':', 'Retrieved collection');
-		console.log('=>', user + ':', 'Get collection', '\n' + exports.render(exports.data));
+		// console.log('=>', user + ':', 'Get collection', '\n' + exports.render(exports.data));
 	});
 };
 
@@ -61,7 +61,7 @@ exports.generateBaseCollection = function() {
 		console.log(tab.name);
 		output[tab.name] = {};
 
-		pitches = tab.notes.length - 1;
+		pitches = tab.notes.length - 1; //minus one because we are zero-indexed on the server side
 
 		for (t = 0; t <= time; t++) {
 			output[tab.name][t] = [];

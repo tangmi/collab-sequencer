@@ -1,4 +1,5 @@
 var redisConfig = require('./configuration').redis;
+var notesConfig = require('./configuration').instruments;
 var redis = require("redis");
 var client = redis.createClient(redisConfig.port, redisConfig.host, redisConfig.options);
 

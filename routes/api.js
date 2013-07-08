@@ -1,4 +1,5 @@
 var collection = require('../collection');
+var config = require('../configuration');
 
 // function Note(pitch, time, type, user, highlighted) {
 // 	this.pitch = pitch;
@@ -67,6 +68,14 @@ exports.render = function(req, res) {
 	res.send(collection.render());
 };
 
-exports.clear = function() {
+exports.clear = function(req, res) {
+	res.setHeader('Content-Type', 'text/plain');
 	collection.generateBaseCollection();
+	collection.storeCollection('SYSTEM');
+	res.send(collection.render());
+};
+
+exports.config = function(req, res) {
+	res.setHeader('Content-Type', 'text/plain');
+	res.send(config.instruments);
 };

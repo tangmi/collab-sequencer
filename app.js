@@ -55,3 +55,4 @@ app.get('/get/:type/:time/:pitch', api.getModel);
 app.get('/toggle/:type/:time/:pitch', api.toggle);
 app.get('/render', api.render);
 app.get('/clear', api.clear);
+app.get('/config', api.config);

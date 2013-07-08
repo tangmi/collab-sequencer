@@ -68,7 +68,7 @@ exports.generateBaseCollection = function() {
 			var p = 0;
 			for (p = 0; p <= pitches; p++) {
 				output[tab.name][t][p] = {
-					'_toString': '#cell-' + t + '-' + p + '-' + tab.name, //this is purely for niceness, could be a method on collection
+					'_toString': 'cell-' + tab.name + '-' + t + '-' + p, //this is purely for niceness, could be a method on collection
 					'user': user,
 					'highlighted': false
 				}
@@ -93,7 +93,8 @@ var toObject = function() {
 					time: new Number(t),
 					user: note.user,
 					type: type,
-					highlighted: note.highlighted
+					highlighted: note.highlighted,
+					id: note._toString
 				});
 
 			}
@@ -111,7 +112,8 @@ exports.getModel = function(type, time, pitch) {
 		time: new Number(time),
 		user: note.user,
 		type: type,
-		highlighted: note.highlighted
+		highlighted: note.highlighted,
+		id: note._toString
 	};
 
 	return model;

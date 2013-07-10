@@ -56,26 +56,33 @@ config.instruments = {
 			color: '#4E6A50',
 			notes: [{
 					pitch: 0,
-					file: "808/hconga.wav"
+					file: "synth_test/hiC.mp3"
 				}, {
 					pitch: 1,
-					file: "808/mconga.wav"
+					file: "synth_test/B.mp3"
 				}, {
 					pitch: 2,
-					file: "808/lconga.wav"
+					file: "synth_test/A.mp3"
 				}, {
 					pitch: 3,
-					file: "808/htom.wav"
+					file: "synth_test/G.mp3"
 				}, {
 					pitch: 4,
-					file: "808/mtom.wav"
+					file: "synth_test/F.mp3"
 				}, {
 					pitch: 5,
-					file: "808/ltom.wav"
+					file: "synth_test/E.mp3"
 				}, {
 					pitch: 6,
-					file: "808/cymbal.wav"
+					file: "synth_test/D.mp3"
+				}, {
+					pitch: 7,
+					file: "synth_test/loC.mp3"
+				}, {
+					pitch: 8,
+					file: "synth_test/F.mp3"
 				}
+
 			]
 		}, {
 			name: 'ball',

@@ -114,6 +114,10 @@ define([
 						text: "(" + i + "," + j + ")"
 					}));
 				}
+				temp.append($("<li></li>", {
+					class: "timeHandle"
+				}));
+				
 				$roll.append(temp);
 			}
 

@@ -57,7 +57,8 @@ define([
 			'click #play': 'togglePlay',
 			'keyup #tempo': 'setTempo',
 			'click .tab': 'selectTab',
-			'click #incrementor': 'tick'
+			'click #incrementor': 'tick',
+			'click .timeHandle': 'moveTimeHandle'
 		},
 
 		selectTab: function(e) {
@@ -111,6 +112,14 @@ define([
 			}
 		},
 
+		moveTimeHandle: function(e) {
+			var $handleCol = $(e.target).parent();
+
+			//parse the row number from the parent column
+			var time = $handleCol.attr('id').split('-')[1];
+			this.setTickPosition(parseInt(time));
+		},
+
 		tick: function() {
 			this.setTickPosition(timing.currentTime);
 		},
@@ -125,12 +134,16 @@ define([
 					atags[j].className = atags[j].className.replace("cell-highlighted", "");
 				}
 
-				var i,
-					tags = document.getElementById("column-" + time + "-" + this.currentTab).getElementsByTagName("li"),
-					total = tags.length;
-				for (i = 0; i < total; i++) {
-					tags[i].className = tags[i].className + " cell-highlighted";
-				}
+				$('.timeHandle.highlighted').removeClass('highlighted');
+
+				var $col = $("#column-" + time + "-" + this.currentTab);
+				var $tags = $col.find("li.cell");
+				
+				$tags.addClass('cell-highlighted');
+				$col.find('.timeHandle').addClass('highlighted');
+
+				timing.currentTime = time;
+
 				if (isPlayed) {
 					Player.play(this.collection.findNotesByTime(time));
 				}

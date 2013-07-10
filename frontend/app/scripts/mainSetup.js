@@ -131,7 +131,7 @@ define([
 			});
 
 
-			Player.initialize(tabData.notes);
+			Player.initialize(name, tabData.notes);
 		}
 	};
 

@@ -2,6 +2,8 @@
 
 a collaborative music sequencer built for people who want to collaboratively sequence music.
 
+![screenshot](http://i.imgur.com/ycIJ5WH.png)
+
 built using:
 
 * [Node](http://nodejs.org/)

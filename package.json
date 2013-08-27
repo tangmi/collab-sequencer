@@ -10,7 +10,7 @@
     "express": "3.0.6",
     "ejs": "*",
     "animal-id": "0.0.1",
-    "dirty": "~0.9.7"
+    "node-persist": "0.0.1"
   },
   "devDependencies": {
     "bower": "latest"

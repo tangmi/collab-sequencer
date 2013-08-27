@@ -1,12 +1,7 @@
 var notesConfig = require('./configuration').instruments;
 
-var dirty = require('dirty');
-var db = dirty('notes.db');
-
-db.on('drain', function() {
-	console.log('All records are saved on disk now.');
-});
-
+var storage = require('node-persist');
+storage.initSync();
 
 /*
 
@@ -24,11 +19,10 @@ exports.storeCollection = function(user) {
 		user = '';
 	}
 
-	var data = JSON.stringify(exports.data)
+	var data = JSON.stringify(exports.data);
 
-	db.on('load', function() {
-		db.set('notes', data);
-	});
+	storage.setItem('notes', data);
+
 	console.log('=>', user + ':', 'Storing collection');
 	// console.log('=>', user + ':', 'Store collection', '\n' + exports.render(exports.data));
 };
@@ -37,19 +31,19 @@ exports.getCollection = function(user) {
 	if (!user) {
 		user = '';
 	}
-	db.on('load', function() {
-		var data = db.get('notes');
 
-		try {
-			exports.data = JSON.parse(data);
-		} catch (e) {
-			exports.generateBaseCollection();
-			exports.storeCollection();
-		}
-		console.log('=>', user + ':', 'Retrieved collection');
-		// console.log('=>', user + ':', 'Get collection', '\n' + exports.render(exports.data));
+	var obj = storage.getItem('notes');
 
-	});
+	console.log('=>', user + ':', 'Retrieved collection');
+	// console.log('=>', user + ':', 'Get collection', '\n' + exports.render(exports.data));
+
+	try {
+		exports.data = JSON.parse(obj);
+	} catch (e) {
+		exports.generateBaseCollection();
+		exports.storeCollection(user);
+	}
+
 };
 
 exports.generateBaseCollection = function() {

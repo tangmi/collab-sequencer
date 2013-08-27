@@ -84,16 +84,43 @@ exports.config = function(req, res) {
 var options = require('../configuration').options;
 var users = {};
 exports.getUsername = function(req, res) {
-	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	var ip;
+	if (options.oneNamePerBrowser) {
+		ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	} else {
+		ip = +new Date; //use the unix timestamp so it'll probably be unique
+	}
 
-	if (!users[ip] && options.oneNamePerBrowser) {
+	if (!users[ip]) {
 		users[ip] = animal.getId();
 		console.log('Assigning IP address', ip, 'with name', users[ip]);
 	}
 
 	res.setHeader('Content-Type', 'application/json');
 	res.send({
-		"user": options.oneNamePerBrowser ? users[ip] : animal.getId()
+		"user": users[ip]
 	});
 
+	userConnect(ip);
+};
+
+exports.getUsers = function(req, res) {
+	res.setHeader('Content-Type', 'application/json');
+	res.send(usersOnline);
+};
+
+var usersOnline = [];
+
+userConnect = function(ip) {
+	if (usersOnline.indexOf(users[ip]) === -1) {
+		usersOnline.push(users[ip]);
+		console.log('User', users[ip], '(' + ip + ') connected');
+	}
+};
+
+exports.userDisconnect = function(req, res) {
+	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	usersOnline.splice(usersOnline.indexOf(users[ip]));
+	console.log('User', users[ip], '(' + ip + ') disconnected');
+	res.send(200);
 };

@@ -57,3 +57,5 @@ app.get('/render', api.render);
 app.get('/clear', api.clear);
 app.get('/config', api.config);
 app.get('/username', api.getUsername);
+app.get('/users', api.getUsers);
+app.get('/user/disconnect', api.userDisconnect);

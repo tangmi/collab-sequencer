@@ -6,8 +6,8 @@ require.config({
 		},
 		backbone: {
 			deps: [
-					'underscore',
-					'jquery'
+				'underscore',
+				'jquery'
 			],
 			exports: 'Backbone'
 		},
@@ -18,7 +18,6 @@ require.config({
 		underscore: '../libs/underscore-amd/underscore'
 	}
 });
-
 
 //configuration for all everything everywhere
 var config = {
@@ -38,7 +37,7 @@ var config = {
 	var user;
 	var isSet = false;
 	config.__defineSetter__("user", function(val) {
-		if(!isSet) {
+		if (!isSet) {
 			user = val;
 			isSet = true;
 		}
@@ -49,10 +48,16 @@ var config = {
 })();
 
 define([
-		'mainSetup',
-		'backbone'
+	'mainSetup',
+	'backbone'
 ], function(mainSetup, Backbone) {
 	Backbone.emulateHTTP = true;
+
+	$(window).unload(function() {
+		$.ajax(config.endpoint + '/user/disconnect', {
+			timeout: 500
+		});
+	});
 
 	$.ajax(config.endpoint + '/username', {
 		timeout: 500

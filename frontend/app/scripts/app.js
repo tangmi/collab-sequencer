@@ -15,7 +15,8 @@ require.config({
 	paths: {
 		jquery: '../libs/jquery/jquery',
 		backbone: '../libs/backbone-amd/backbone',
-		underscore: '../libs/underscore-amd/underscore'
+		underscore: '../libs/underscore-amd/underscore',
+		MIDI: '../libs/MIDI.js/build/MIDI'
 	}
 });
 
@@ -50,7 +51,8 @@ var config = {
 
 define([
 		'mainSetup',
-		'backbone'
+		'backbone',
+		'MIDI'
 ], function(mainSetup, Backbone) {
 	Backbone.emulateHTTP = true;
 

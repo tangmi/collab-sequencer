@@ -42,6 +42,11 @@ define([
 
 		unhighlight: function() {
 			this.model.set('highlighted', false);
+		},
+
+		//A little broken
+		getUserColor() {
+			parseInt(config.user.replace("-", ""));
 		}
 
 	});

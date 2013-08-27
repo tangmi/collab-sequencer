@@ -1,6 +1,8 @@
 var collection = require('../collection');
 var config = require('../configuration');
 var animal = require('animal-id');
+var options = require('../configuration').options;
+
 
 // function Note(pitch, time, type, user, highlighted) {
 // 	this.pitch = pitch;
@@ -9,10 +11,20 @@ var animal = require('animal-id');
 // 	this.user = user;
 // 	this.highlighted = highlighted;
 // }
+var userTimeouts = {};
 
 exports.get = function(req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	res.send(collection.getData());
+
+	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	if (userTimeouts[ip]) {
+		userConnect(ip);
+		clearTimeout(userTimeouts[ip]);
+	}
+	userTimeouts[ip] = setTimeout(function() {
+		userDisconnect(ip);
+	}, 1000 * options.userTimeout);
 };
 
 exports.getModel = function(req, res) {
@@ -81,7 +93,6 @@ exports.config = function(req, res) {
 	res.send(config.instruments);
 };
 
-var options = require('../configuration').options;
 var users = {};
 exports.getUsername = function(req, res) {
 	var ip;
@@ -118,9 +129,13 @@ userConnect = function(ip) {
 	}
 };
 
-exports.userDisconnect = function(req, res) {
-	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+userDisconnect = function(ip) {
 	usersOnline.splice(usersOnline.indexOf(users[ip]));
 	console.log('User', users[ip], '(' + ip + ') disconnected');
+}
+
+exports.userDisconnect = function(req, res) {
+	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	userDisconnect(ip);
 	res.send(200);
 };

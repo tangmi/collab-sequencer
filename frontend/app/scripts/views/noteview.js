@@ -15,11 +15,15 @@ define([
 			if (!this.model.get('highlighted')) {
 				$("#cell-" + this.model.get("time") +
 					"-" + this.model.get("pitch") +
-					"-" + this.model.get("type")).removeClass("cell-selected");
+					"-" + this.model.get("type"))
+				.removeClass("cell-selected")
+				.css({ 'background-color': '#FFFFFF' });
 			} else {
 				$("#cell-" + this.model.get("time") +
 					"-" + this.model.get("pitch") +
-					"-" + this.model.get("type")).addClass("cell-selected");
+					"-" + this.model.get("type"))
+				.addClass("cell-selected")
+				.css({ 'background-color': this.model.getUserColor() });
 			}
 		},
 
@@ -31,8 +35,8 @@ define([
 			if (!this.model.get('highlighted')) {
 				Player.playPitch(this.model.get("type"), this.model.get("pitch"));
 			}
-			this.model.set('highlighted', !this.model.get('highlighted'));
 			this.model.set('user', config.user);
+			this.model.set('highlighted', !this.model.get('highlighted'));
 			this.model.save();
 		},
 

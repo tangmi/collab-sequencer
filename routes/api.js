@@ -3,7 +3,6 @@ var config = require('../configuration');
 var animal = require('animal-id');
 var options = require('../configuration').options;
 
-
 // function Note(pitch, time, type, user, highlighted) {
 // 	this.pitch = pitch;
 // 	this.time = time;

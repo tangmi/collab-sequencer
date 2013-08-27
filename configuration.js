@@ -1,5 +1,9 @@
 var config = {};
 
+config.options = {
+	oneNamePerBrowser: true //enforces a one-name-per-ip-address policy
+};
+
 config.instruments = {
 	time: 31, //0-index? actually 32 beats
 	tabs: [{

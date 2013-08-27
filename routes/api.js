@@ -81,9 +81,19 @@ exports.config = function(req, res) {
 	res.send(config.instruments);
 };
 
+var options = require('../configuration').options;
+var users = {};
 exports.getUsername = function(req, res) {
+	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+	if (!users[ip] && options.oneNamePerBrowser) {
+		users[ip] = animal.getId();
+		console.log('Assigning IP address', ip, 'with name', users[ip]);
+	}
+
 	res.setHeader('Content-Type', 'application/json');
 	res.send({
-		"user": animal.getId()
+		"user": options.oneNamePerBrowser ? users[ip] : animal.getId()
 	});
+
 };

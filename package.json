@@ -1,19 +1,19 @@
 {
-	"name": "collab-sequencer",
-	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"start": "node app",
-		"postinstall": "./node_modules/.bin/bower install"
-	},
-	"dependencies": {
-		"express": "3.0.6",
-		"ejs": "*",
-		"redis": "latest",
-		"animal-id": "0.0.1"
-	},
-	"devDependencies": {
-		"bower": "latest"
-	},
-	"engine": "node >= 0.10.x"
+  "name": "collab-sequencer",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app",
+    "postinstall": "./node_modules/.bin/bower install"
+  },
+  "dependencies": {
+    "express": "3.0.6",
+    "ejs": "*",
+    "animal-id": "0.0.1",
+    "dirty": "~0.9.7"
+  },
+  "devDependencies": {
+    "bower": "latest"
+  },
+  "engine": "node >= 0.10.x"
 }

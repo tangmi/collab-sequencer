@@ -11,7 +11,6 @@ built using:
 * [Backbone](http://backbonejs.org/)/[Underscore](http://underscorejs.org/)
 * [RequireJS](http://requirejs.org/)
 * [jQuery](http://jquery.com/)
-* [redis](http://redis.io/)
 
 grab all dependencies by building on any unix system with node installed:
 

@@ -1,7 +1,12 @@
-var redisConfig = require('./configuration').redis;
 var notesConfig = require('./configuration').instruments;
-var redis = require("redis");
-var client = redis.createClient(redisConfig.port, redisConfig.host, redisConfig.options);
+
+var dirty = require('dirty');
+var db = dirty('notes.db');
+
+db.on('drain', function() {
+	console.log('All records are saved on disk now.');
+});
+
 
 /*
 
@@ -14,16 +19,16 @@ var client = redis.createClient(redisConfig.port, redisConfig.host, redisConfig.
 */
 exports.data = {};
 
-var key = 'coll';
 exports.storeCollection = function(user) {
 	if (!user) {
 		user = '';
 	}
 
-	var data = {};
-	data[key] = JSON.stringify(exports.data)
+	var data = JSON.stringify(exports.data)
 
-	client.hmset('cs-data', data);
+	db.on('load', function() {
+		db.set('notes', data);
+	});
 	console.log('=>', user + ':', 'Storing collection');
 	// console.log('=>', user + ':', 'Store collection', '\n' + exports.render(exports.data));
 };
@@ -32,16 +37,18 @@ exports.getCollection = function(user) {
 	if (!user) {
 		user = '';
 	}
-	client.hgetall('cs-data', function(err, obj) {
+	db.on('load', function() {
+		var data = db.get('notes');
 
 		try {
-			exports.data = JSON.parse(obj[key]);
+			exports.data = JSON.parse(data);
 		} catch (e) {
 			exports.generateBaseCollection();
 			exports.storeCollection();
 		}
 		console.log('=>', user + ':', 'Retrieved collection');
 		// console.log('=>', user + ':', 'Get collection', '\n' + exports.render(exports.data));
+
 	});
 };
 

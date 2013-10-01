@@ -1,7 +1,7 @@
 var notesConfig = require('./configuration').instruments;
 
 var Storage = require('node-document-storage-fs');
-var storage = new Storage();
+var storage = new Storage(require('./configuration').storeLocation, {});
 
 /*
 

@@ -1,61 +1,34 @@
 define([], function() {
 	var Player = {
 
-		sounds: {},
+		files: {},
 
 		initialize: function(name, rows) {
-			this.sounds[name] = [];
-			this._loading[name] = [];
-			this._deferredPlay[name] = [];
 			for (var i in rows) {
+				if (!this.files[name]) {
+					this.files[name] = {};
+				}
+				this.files[name][rows[i].pitch] = rows[i].file;
+
 				this.load({
 					instrument: name,
-					file: rows[i].file,
 					pitch: rows[i].pitch
 				});
 			}
 		},
 
-		_loading: {},
 		load: function(row) {
-
-			if (this.sounds[row.instrument][row.pitch]) {
-				return;
-			}
-
-			var sound = new Audio();
-			sound.src = '/sounds/' + row.file;
+			var sound = new Audio('/sounds/' + this.files[row.instrument][row.pitch]);
 			sound.preload = true;
-			sound.instrument = row.instrument
-			sound.pitch = row.pitch;
-			document.body.appendChild(sound);
-
-			this._loading[row.instrument][row.pitch] = true;
-
 			sound.load();
-			var _this = this;
-			sound.addEventListener('canplay', function() { // When audio has loaded enough to play
-				_this._loading[this.instrument][this.pitch] = false;
-				if (_this._deferredPlay[this.instrument][this.pitch]) {
-					_this.sound(this.instrument, this.pitch);
-				}
-			}, false);
-
-			sound.addEventListener("error", function(e) {
-				console.log("Logging playback error: " + e);
-			});
-
-			this.sounds[row.instrument][row.pitch] = sound;
 		},
 
-		_deferredPlay: {},
 		playPitch: function(instrument, pitch) {
-			if (this._loading[instrument][pitch]) {
-				this._deferredPlay[instrument][pitch] = true;
-			} else {
-				this.sounds[instrument][pitch].currentTime = 0;
-				this.sounds[instrument][pitch].play();
-			}
+			var audio = new Audio('/sounds/' + this.files[instrument][pitch]);
+			// audio.addEventListener("ended", function() {
+			// 	document.removeChild(this);
+			// }, false);
+			audio.play();
 		},
 
 		play: function(rowsToPlay) {

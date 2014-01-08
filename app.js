@@ -1,15 +1,13 @@
-var express = require('express');
-// var routes = require('./routes');
-var api = require('./routes/api');
-var http = require('http');
-var path = require('path');
+var express = require('express')
+  , path = require('path')
+  , fs = require('fs')
+  , collection = require('./collection');
 
-// var sass = require('node-sass');
-var fs = require('fs');
-
-var collection = require('./collection');
-
-var app = express();
+var app = express()
+  , http = require('http')
+  , server = http.createServer(app)
+  , io = require('socket.io')
+  , api = require('./routes/api')(io);
 
 app.configure(function() {
 	app.set('port', process.env.PORT || 3000);
@@ -29,10 +27,23 @@ app.configure('development', function() {
 	app.use(express.errorHandler());
 });
 
-http.createServer(app).listen(app.get('port'), function() {
+
+
+server.listen(app.get('port'), function() {
 	console.log("Collab-sequencer server listening on port " + app.get('port'));
 	collection.initialize();
 });
+
+io = io.listen(server);
+
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+
+
 
 // //CORS
 // app.all('/*', function(req, res, next) {

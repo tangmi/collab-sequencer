@@ -6,7 +6,7 @@ define([
 		'views/noteview'
 ], function(Backbone, Player, NoteCollection, Note, NoteView) {
 
-	var timing = window.config.timing;
+	var timing = CONFIG.timing;
 
 	var View = Backbone.View.extend({
 
@@ -29,8 +29,6 @@ define([
 					_this._hookUpTab(_this.tabs[i].name);
 				}
 			});
-
-			this.collection.fetchInitialData();
 
 			this.setTickPosition(0, false);
 		},

@@ -4,8 +4,9 @@ define([
 		'views/notationview',
 		'collections/notecollection',
 		'models/note',
-		'views/noteview'
-], function(Backbone, Player, NotationView, NoteCollection, Note, NoteView) {
+		'views/noteview',
+		'views/userview'
+], function(Backbone, Player, NotationView, NoteCollection, Note, NoteView, UserView) {
 
 	var MainSetup = {
 
@@ -24,12 +25,12 @@ define([
 
 			//This is the wrong place to do this but It has to be added after most of the 
 			//rest of the global config has been initialized due to immediate evaluation
-			window.config.timing.interval = (function() {
+			CONFIG.timing.interval = (function() {
 				var $incrementor = $('#incrementor');
 				var loops = 0;
 				var maxFrameSkip = 10;
 				//Scoping....
-				var timing = window.config.timing;
+				var timing = CONFIG.timing;
 
 				return function() {
 					loops = 0;
@@ -48,12 +49,14 @@ define([
 			})();
 
 			//Same deal here, would rather keep one global object
-			window.config.timing.skipTicks /= window.config.timing.bpm;
+			CONFIG.timing.skipTicks /= CONFIG.timing.bpm;
 
 			//Create interactive controls and then bind a view to them
 			new NotationView({
 				tabs: options.tabs
 			});
+
+			new UserView();
 		},
 
 		_generateControls: function() {
@@ -79,7 +82,7 @@ define([
 
 			var pitch = tabData.notes.length;
 			var name = tabData.name;
-			var time = window.config.timing.maxTime;
+			var time = CONFIG.timing.maxTime;
 			var $tabs = $('#tabs');
 
 			var $newTab = $("<div></div>", {

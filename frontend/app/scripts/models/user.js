@@ -1,18 +1,12 @@
 define([
-	'jquery',
-	'underscore',
 	'backbone'
-], function($, _, Backbone) {
+], function(Backbone) {
 
 	var Note = Backbone.Model.extend({
 		
-		initialize: function() {
-			this.on('change:highlighted', function() {
-				console.log('yeah');
-			});
-		},
+		url : CONFIG.endpoint + '/add',
 
-		defaults: {
+		defaults : {
 			pitch : 0, 			//To be interpreted, a little more durable for octaves / drums
 			time : 0, 			//column
 			user : 'Gus',		//User who placed note

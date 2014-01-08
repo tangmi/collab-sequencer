@@ -15,62 +15,78 @@ require.config({
 	paths: {
 		jquery: '../libs/jquery/jquery',
 		backbone: '../libs/backbone-amd/backbone',
-		underscore: '../libs/underscore-amd/underscore'
+		underscore: '../libs/underscore-amd/underscore',
+		socketio: '../libs/socket.io'
 	}
 });
 
-//configuration for all everything everywhere
-var config = {
-	endpoint: 'http://localhost:3000',
-	timing: {
-		skipTicks: 60000, //calculated later
-		nextTick: 0,
-		currentTime: 0,
-		maxTime: 32,
-		bpm: 200
-	},
-	user: 'default'
-};
 
-(function() {
+require(['socketio'], function(io) {
+
+	//CONFIGuration for all everything everywhere
+	window.CONFIG = {
+		endpoint: 'http://localhost:3000',
+		timing: {
+			skipTicks: 60000, //calculated later
+			nextTick: 0,
+			currentTime: 0,
+			maxTime: 32,
+			bpm: 200
+		},
+		user: 'default',
+		models: {},
+		views: {},
+		collections: {},
+		socket: io.connect(this.endpoint)
+	};
+});
+
+
+
+/*(function() {
 	//for a one-time setting of the user
 	var user;
 	var isSet = false;
-	config.__defineSetter__("user", function(val) {
+	CONFIG.__defineSetter__("user", function(val) {
 		if (!isSet) {
 			user = val;
 			isSet = true;
 		}
 	});
-	config.__defineGetter__("user", function() {
+	CONFIG.__defineGetter__("user", function() {
 		return user;
 	});
-})();
+})();*/
 
-define([
+
+
+
+require([
 	'mainSetup',
-	'backbone'
-], function(mainSetup, Backbone) {
+	'backbone',
+	'socketio'
+], function(mainSetup, Backbone, io) {
 	Backbone.emulateHTTP = true;
 
 	$(window).unload(function() {
-		$.ajax(config.endpoint + '/user/disconnect', {
+		$.ajax(CONFIG.endpoint + '/user/disconnect', {
 			timeout: 500
 		});
 	});
 
-	$.ajax(config.endpoint + '/username', {
+	console.log('adsf');
+	$.ajax(CONFIG.endpoint + '/username', {
 		timeout: 500
 	}).done(function(data) {
 		if (typeof data.user !== 'undefined') {
-			config.user = data.user;
-			console.log('set user: ' + config.user);
+			CONFIG.user = data.user;
+			console.log('set user: ' + CONFIG.user);
 		}
 
 		//we should have some case where it can't get a unique user ID for us
 	}).always(function() {
 		var request = $.ajax({
-			url: config.endpoint + '/config'
+			url: CONFIG.endpoint + '/config'
 		})
 		request.done(function(res) {
 			mainSetup.init(JSON.parse(res));

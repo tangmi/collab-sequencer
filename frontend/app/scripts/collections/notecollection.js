@@ -2,9 +2,21 @@ define(['backbone', 'models/note'], function(Backbone, Note) {
 
 	var NoteCollection = Backbone.Collection.extend({
 
-		fetchInitialData: function() {
+		initialize: function() {
+
 			var _this = this;
-			_this.fetch({
+
+			console.log(CONFIG);
+
+			CONFIG.socket.on('add-note', function(data) {
+				_this.add(data);
+			});
+
+			CONFIG.socket.on('remove-note', function(data) {
+				_this.remove(data);
+			});
+
+			this.fetch({
 				reset: true,
 				success: function() {
 					console.log("got data");
@@ -13,21 +25,11 @@ define(['backbone', 'models/note'], function(Backbone, Note) {
 					console.log("couldn't grab data");
 				}
 			});
-
-			setInterval(function() { _this.fetchLiveData(); }, 2000);
-		},
-
-		fetchLiveData: function() {
-			this.fetch(
-				{	remove: false,
-					success : function() { console.log("got new data"); },
-					failure : function() { console.log("couldn't new grab data"); } 
-			});
 		},
 
 		model: Note,
 
-		url: config.endpoint + '/get',
+		url: CONFIG.endpoint + '/get',
 
 		findNotesByTime: function(t) {
 			return _.map(this.where({

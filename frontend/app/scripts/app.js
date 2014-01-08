@@ -41,13 +41,15 @@ require(['socketio'], function(io) {
 	};
 });
 
-
-
 /*(function() {
 	//for a one-time setting of the user
 	var user;
 	var isSet = false;
+<<<<<<< HEAD
 	CONFIG.__defineSetter__("user", function(val) {
+=======
+	config.__defineSetter__("user", function(val) {
+>>>>>>> master
 		if (!isSet) {
 			user = val;
 			isSet = true;

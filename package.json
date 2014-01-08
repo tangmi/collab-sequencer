@@ -11,7 +11,9 @@
     "ejs": "*",
     "animal-id": "0.0.1",
     "node-persist": "0.0.1",
-    "socket.io": "0.9.16"
+    "socket.io": "0.9.16",
+    "node-document-storage-fs": "~0.1.0",
+    "node-env-flag": "~0.1.0"
   },
   "devDependencies": {
     "bower": "latest"

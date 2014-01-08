@@ -1,7 +1,7 @@
 var notesConfig = require('./configuration').instruments;
 
-var storage = require('node-persist');
-storage.initSync();
+var Storage = require('node-document-storage-fs');
+var storage = new Storage(require('./configuration').storeLocation, {});
 
 /*
 
@@ -14,36 +14,47 @@ storage.initSync();
 */
 exports.data = {};
 
-exports.storeCollection = function(user) {
+exports.storeCollection = function(user, cb) {
+	var callback = typeof cb === 'function' ? cb : function() {};
+
 	if (!user) {
 		user = '';
 	}
 
 	var data = JSON.stringify(exports.data);
 
-	storage.setItem('notes', data);
+	storage.set('notes', data, function(err, results) {
 
-	console.log('=>', user + ':', 'Storing collection');
-	// console.log('=>', user + ':', 'Store collection', '\n' + exports.render(exports.data));
+		console.log('=>', user + ':', 'Storing collection');
+		// console.log('=>', user + ':', 'Store collection', '\n' + exports.render(exports.data));
+
+		callback(err, results[0]);
+	});
+
 };
 
-exports.getCollection = function(user) {
+exports.getCollection = function(user, cb) {
+	var callback = typeof cb === 'function' ? cb : function() {};
 	if (!user) {
 		user = '';
 	}
 
-	var obj = storage.getItem('notes');
+	storage.get('notes', function(err, results) {
 
-	console.log('=>', user + ':', 'Retrieved collection');
-	// console.log('=>', user + ':', 'Get collection', '\n' + exports.render(exports.data));
+		var obj = results[0];
 
-	try {
-		exports.data = JSON.parse(obj);
-	} catch (e) {
-		exports.generateBaseCollection();
-		exports.storeCollection(user);
-	}
+		console.log('=>', user + ':', 'Retrieved collection');
+		// console.log('=>', user + ':', 'Get collection', '\n' + exports.render(exports.data));
 
+		try {
+			exports.data = JSON.parse(obj);
+		} catch (e) {
+			exports.generateBaseCollection();
+			exports.storeCollection(user);
+		}
+
+		callback(err, obj);
+	});
 };
 
 exports.generateBaseCollection = function() {

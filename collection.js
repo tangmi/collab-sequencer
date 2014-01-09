@@ -1,4 +1,12 @@
-var notesConfig = require('./configuration').instruments;
+var notesConfig = require('./configuration').instruments,
+	timeMax = notesConfig.time + 1, //config is zero based
+	instrumentsPitchCount = (function() {
+		var out = [];
+		notesConfig.tabs.forEach(function(element, index, array) {
+			out[element.name] = element.notes.length;
+		});
+		return out;
+	})();
 
 var path = require('path');
 
@@ -36,10 +44,31 @@ Note = model.register('Note', function() {
 	});
 });
 
-function getNote(data, cb) {
-	assertNotUndefined(data.instrument, 'get needs instrument');
-	assertNotUndefined(data.time, 'get needs time');
-	assertNotUndefined(data.pitch, 'get needs pitch');
+function createNote(data, cb) {
+	assertNotUndefined(data.instrument, 'create needs instrument');
+	assertNotUndefined(data.time, 'create needs time');
+	assertNotUndefined(data.pitch, 'create needs pitch');
+	assertNotUndefined(data.user, 'create needs user');
+
+	assertNoteIsValid(data);
+
+	var input = {
+		instrument: data.instrument,
+		time: data.time,
+		pitch: data.pitch,
+		user: data.user,
+		highlighted: false
+	};
+
+	var note = Note.create(input);
+
+	saveNote(note, cb);
+}
+
+function readNote(data, cb) {
+	assertNotUndefined(data.instrument, 'read needs instrument');
+	assertNotUndefined(data.time, 'read needs time');
+	assertNotUndefined(data.pitch, 'read needs pitch');
 
 	var query = {
 		instrument: data.instrument,
@@ -50,23 +79,25 @@ function getNote(data, cb) {
 		if (err) {
 			throw err;
 		}
-
 		cb(note);
 	});
 }
 
-function setNote(data, cb) {
-	assertNotUndefined(data.instrument, 'set needs instrument');
-	assertNotUndefined(data.time, 'set needs time');
-	assertNotUndefined(data.pitch, 'set needs pitch');
-	assertNotUndefined(data.user, 'set needs user');
-	assertNotUndefined(data.highlighted, 'set needs highlighted');
+function updateNote(data, cb) {
+	assertNotUndefined(data.instrument, 'update needs instrument');
+	assertNotUndefined(data.time, 'update needs time');
+	assertNotUndefined(data.pitch, 'update needs pitch');
+	assertNotUndefined(data.user, 'update needs user');
+	assertNotUndefined(data.highlighted, 'update needs highlighted');
 
-	getNote(data, function(note) {
+	assertNoteIsValid(data);
+
+	readNote(data, function(note) {
 		if (note == null) {
-			createNote(data, function(newNote) {
-				cb(newNote);
-			});
+			throw new Error('Could not find note in store');
+			// createNote(data, function(newNote) {
+			// 	cb(newNote);
+			// });
 			return;
 		}
 
@@ -79,22 +110,23 @@ function setNote(data, cb) {
 	});
 }
 
-function createNote(data, cb) {
-	assertNotUndefined(data.instrument, 'create needs instrument');
-	assertNotUndefined(data.time, 'create needs time');
-	assertNotUndefined(data.pitch, 'create needs pitch');
-	assertNotUndefined(data.user, 'create needs user');
+function destroyNote(data, cb) {
+	assertNotUndefined(data.instrument, 'destroy needs instrument');
+	assertNotUndefined(data.time, 'destroy needs time');
+	assertNotUndefined(data.pitch, 'destroy needs pitch');
 
-	var input = {
+	var query = {
 		instrument: data.instrument,
 		time: data.time,
-		pitch: data.pitch,
-		user: data.user
+		pitch: data.pitch
 	};
 
-	var note = Note.create(input);
-
-	saveNote(note, cb);
+	Note.remove(query, function(err, data) {
+		if (err) {
+			throw err;
+		}
+		cb(data);
+	});
 }
 
 function saveNote(note, cb) {
@@ -120,14 +152,14 @@ function getAllNotes(cb) {
 module.exports.get = function(data, cb) {
 	console.log('GET NOTE');
 
-	getNote(data, function(note) {
+	readNote(data, function(note) {
 		cb(noteModelTransform(note));
 	});
 };
 module.exports.set = function(data, cb) {
 	console.log('SET NOTE');
 
-	setNote(data, function(note) {
+	updateNote(data, function(note) {
 		cb(noteModelTransform(note));
 	});
 };
@@ -135,8 +167,10 @@ module.exports.set = function(data, cb) {
 module.exports.getAll = function(cb) {
 	console.log('GET ALL NOTES');
 
+	//fill with empty notes
+
 	getAllNotes(function(notes) {
-		notes.forEach(function (element, index, array) {
+		notes.forEach(function(element, index, array) {
 			array[index] = noteModelTransform(array[index]);
 		});
 
@@ -154,6 +188,18 @@ function assertNotUndefined(prop, msg) {
 	}
 }
 
+function assertNoteIsValid(data) {
+	if (data.time < 0 || data.time >= timeMax) {
+		throw new Error('note has an invalid time (0 <= t < ' + timeMax + ')');
+	}
+	if (!instrumentsPitchCount[data.instrument]) {
+		throw new Error('note has an invalid instrument (' + data.instrument + ')');
+	}
+	if (data.pitch < 0 || data.pitch >= instrumentsPitchCount[data.instrument]) {
+		throw new Error('note has an invalid pitch (0 <= p < ' + instrumentsPitchCount[data.instrument] + ')');
+	}
+}
+
 //transforms a mde/model to an object that backbone wants
 var properties = (function() {
 	var arr = [];
@@ -166,7 +212,7 @@ var properties = (function() {
 function noteModelTransform(note) {
 	var out = {};
 
-	for(var i = 0; i < properties.length; i++) {
+	for (var i = 0; i < properties.length; i++) {
 		var propertyName = properties[i];
 		out[propertyName] = note[propertyName];
 	}
@@ -189,79 +235,142 @@ function getEmptyNote(data) {
 
 	var note = Note.create(input);
 
-	return noteModelTransform(note);
+	return note;
 }
 
 
+/*
+	other things
+ */
 
+module.exports.cleanCollection = function(cb) {
+	Note.remove({}, function(err, data) {
+		if (err) {
+			throw err;
+		}
+		cb(data);
+	});
+};
+
+module.exports.initializeCollection = function(cb) {
+	var stime = +new Date;
+
+	var notes = [];
+
+	this.cleanCollection(function() {
+		for (var instrument in instrumentsPitchCount) {
+			var pitchCount = instrumentsPitchCount[instrument];
+			for (var p = 0; p < pitchCount; p++) {
+				for (var t = 0; t < timeMax; t++) {
+					var note = getEmptyNote({
+						instrument: instrument,
+						pitch: p,
+						time: t
+					});
+					notes.push(note);
+				}
+			}
+		}
+
+		Note.save(notes, function(err, data) {
+			if (err) {
+				throw err;
+			}
+			console.log('INITIALIZED COLLECTION (' + ((+new Date - stime) / 1000) + 'ms)');
+			cb(data);
+		});
+
+	});
+};
+
+///test
 module.exports.set({
-	pitch: 5,
+	pitch: 11,
 	time: 1,
-	user: 'Michael',
 	instrument: 'drums',
+	user: 'Michael',
 	highlighted: true
 }, function(note) {
 	console.log(note);
 });
 
-module.exports.get({
-	instrument: 'drums',
-	time: 1,
-	pitch: 5
-}, function(note) {
-	console.log(note);
-});
+// module.exports.get({
+// 	pitch: 5,
+// 	time: 1,
+// 	instrument: 'drums'
+// }, function(note) {
+// 	console.log(note);
+// });
 
-module.exports.getAll(function(notes) {
-	console.log(notes);
-})
+// module.exports.getAll(function(notes) {
+// 	console.log(notes);
+// })
 
-console.log(getEmptyNote({
-	instrument: 'drums',
-	time: 1,
-	pitch: 5
-}));
+// console.log(getEmptyNote({
+// 	instrument: 'drums',
+// 	time: 1,
+// 	pitch: 5
+// }));
 
+
+// destroyNote({
+// 	pitch: 5,
+// 	time: 1,
+// 	instrument: 'drums'
+// }, function(a) {
+// 	console.log(a);
+// });
 
 //TODO: update render method, fix API calls by storage update
 
 //renders the board as text
 exports.render = function() {
-	var temp = {};
-	var out = '';
-	//inverts the matrix
-	for (type in exports.data) {
-		temp[type] = [];
-		for (t in exports.data[type]) {
-			for (p in exports.data[type][t]) {
-				if (typeof(temp[type][p]) === 'undefined') {
-					temp[type][p] = [];
-				}
-				temp[type][p][t] = exports.data[type][t][p];
+
+	var output = {}; // output[instrument][pitch][time]
+
+	module.exports.getAll(function(notes) {
+		notes.forEach(function(element, index, array) {
+			var instrument = element.instrument,
+				pitch = element.pitch,
+				time = element.time;
+			if (typeof output[instrument] === 'undefined') {
+				output[instrument] = [];
 			}
+			if (typeof output[instrument][pitch] === 'undefined') {
+				output[instrument][pitch] = [];
+			}
+			output[instrument][pitch][time] = element.highlighted ? 'X' : '.';
+		});
+	});
+
+
+	var tabs = {};
+
+	for(var instrument in output) {
+		var pitches = [];
+		for(var p = 0; p < output[instrument].length; p++) {
+			pitches.push(output[instrument][p].join(' '));
 		}
+		tabs[instrument] = pitches.join('\n');
 	}
 
-	//renders matrix
-	for (type in temp) {
-		// console.log(temp[type]);
-		out += type + '\n';
-		for (t in temp[type]) {
-			for (p in temp[type][t]) {
-				var note = temp[type][t][p];
-				out += note.highlighted ? 'X' : '.';
-				out += ' ';
-			}
-			out += '\n';
-		}
-		out += '\n';
+	var text = '';
+	for(var instrument in tabs) {
+		text += instrument + '\n';
+		text += tabs[instrument] + '\n\n';
 	}
 
-	return out;
+	return text;
 };
 
-
 exports.initialize = function() {
-	// exports.getCollection('SYSTEM');
-	// console.log(dataToJson(data));
+	this.getAll(function(data) {
+		if (data.length == 0) {
+			//initialize only if there's nothing there
+			module.exports.initializeCollection(function() {
+
+			});
+		}
+		exports.render();
+	});
 };

@@ -11,7 +11,8 @@
     "ejs": "*",
     "animal-id": "0.0.1",
     "socket.io": "0.9.16",
-    "model": "~0.4.15"
+    "model": "~0.4.15",
+    "level": "~0.18.0"
   },
   "devDependencies": {
     "bower": "latest"

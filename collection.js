@@ -40,9 +40,12 @@ Note = model.register('Note', function() {
 	this.defineProperties(noteProperties);
 
 	//set up the storage adapter, can be set to one of many (as per mde/model)
-	this.setAdapter('filesystem', {
-		'location': path.join(__dirname, '.model-fs'),
-		'filename': 'note'
+	// this.setAdapter('filesystem', {
+	// 	'location': path.join(__dirname, '.model-fs'),
+	// 	'filename': 'note'
+	// });
+	this.setAdapter('level', {
+		'db': path.join(__dirname, '.db'),
 	});
 	// this.setAdapter('memory');
 });

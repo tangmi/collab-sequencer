@@ -1,7 +1,8 @@
 var notesConfig = require('./configuration').instruments,
 	timeMax = notesConfig.time + 1, //config is zero based
 	instrumentsPitchCount = (function() {
-		var out = [];
+		//get an object where the key is the instrument name and the value is the pitch vount
+		var out = {};
 		notesConfig.tabs.forEach(function(element, index, array) {
 			out[element.name] = element.notes.length;
 		});
@@ -37,13 +38,18 @@ var noteProperties = {
 
 Note = model.register('Note', function() {
 	this.defineProperties(noteProperties);
-	// this.setAdapter('memory');
+
+	//set up the storage adapter, can be set to one of many (as per mde/model)
 	this.setAdapter('filesystem', {
 		'location': path.join(__dirname, '.model-fs'),
 		'filename': 'note'
 	});
+	// this.setAdapter('memory');
 });
 
+/*
+	CRUD functionality
+ */
 function createNote(data, cb) {
 	assertNotUndefined(data.instrument, 'create needs instrument');
 	assertNotUndefined(data.time, 'create needs time');
@@ -129,6 +135,9 @@ function destroyNote(data, cb) {
 	});
 }
 
+/*
+	helper functions for CRUD functionality
+ */
 function saveNote(note, cb) {
 	note.save(function(err, data) {
 		if (err) {
@@ -149,6 +158,9 @@ function getAllNotes(cb) {
 	});
 }
 
+/*
+	Export get/getAll/set
+ */
 module.exports.get = function(data, cb) {
 	console.log('GET NOTE');
 
@@ -220,6 +232,7 @@ function noteModelTransform(note) {
 	return out;
 }
 
+//return an empty (default) note, placed by the SYSTEM, at a specified instrument, time, and pitch
 function getEmptyNote(data) {
 	assertNotUndefined(data.instrument, 'create needs instrument');
 	assertNotUndefined(data.time, 'create needs time');
@@ -284,15 +297,15 @@ module.exports.initializeCollection = function(cb) {
 };
 
 ///test
-module.exports.set({
-	pitch: 11,
-	time: 1,
-	instrument: 'drums',
-	user: 'Michael',
-	highlighted: true
-}, function(note) {
-	console.log(note);
-});
+// module.exports.set({
+// 	pitch: 11,
+// 	time: 1,
+// 	instrument: 'drums',
+// 	user: 'Michael',
+// 	highlighted: true
+// }, function(note) {
+// 	console.log(note);
+// });
 
 // module.exports.get({
 // 	pitch: 5,

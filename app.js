@@ -63,10 +63,11 @@ app.get('/reset', function(req, res) {
 app.put('/add', api.add);
 app.get('/get', api.get);
 app.get('/get/:type/:time/:pitch', api.getModel);
-app.get('/toggle/:type/:time/:pitch', api.toggle);
-app.get('/render', api.render);
-app.get('/clear', api.clear);
 app.get('/config', api.config);
+
 app.get('/username', api.getUsername);
 app.get('/users', api.getUsers);
 app.get('/user/disconnect', api.userDisconnect);
+
+app.get('/render', api.render);
+app.get('/clear', api.clear);

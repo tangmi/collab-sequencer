@@ -1,6 +1,5 @@
-
 //Socket is passed in on initialization
-module.exports = function(io) { 
+module.exports = function(io) {
 
 	exports = {};
 
@@ -18,19 +17,22 @@ module.exports = function(io) {
 	// }
 	var userTimeouts = {};
 
-
 	exports.get = function(req, res) {
 		res.setHeader('Content-Type', 'application/json');
-		res.send(collection.getData());
+		collection.getAll(function(data) {
+			var minifiedData = JSON.stringify(data);
+			res.send(minifiedData);
+		});
 
-		var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-		if (userTimeouts[ip]) {
-			userConnect(ip);
-			clearTimeout(userTimeouts[ip]);
-		}
-		userTimeouts[ip] = setTimeout(function() {
-			userDisconnect(ip);
-		}, 1000 * options.userTimeout);
+		//keep user registerred as long asn they're polling?
+		// var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+		// if (userTimeouts[ip]) {
+		// 	userConnect(ip);
+		// 	clearTimeout(userTimeouts[ip]);
+		// }
+		// userTimeouts[ip] = setTimeout(function() {
+		// 	userDisconnect(ip);
+		// }, 1000 * options.userTimeout);
 	};
 
 	exports.getModel = function(req, res) {
@@ -40,58 +42,37 @@ module.exports = function(io) {
 			t = req.params.time,
 			type = req.params.type;
 
-		console.log(type + " " + t + " " + p)
+		console.log(type + " " + t + " " + p);
 
-		res.send(collection.getModel(type, t, p));
+		collection.get({
+			instrument: type,
+			pitch: p,
+			time: t
+		}, function(data) {
+			var minifiedData = JSON.stringify(data);
+			res.send(minifiedData);
+		});
 	};
 
 
 	exports.add = function(req, res) {
 		var p = req.body.pitch,
 			t = req.body.time,
-			type = req.body.type;
+			type = req.body.type,
+			highlighted = req.body.highlighted,
+			user = req.body.user;
 
-		collection.data[type][t][p].highlighted = req.body.highlighted;
-		collection.data[type][t][p].user = req.body.user;
+		collection.set({
+			instrument: type,
+			pitch: p,
+			time: t,
+			user: user,
+			highlighted: highlighted
+		}, function(data) {
+			var minifiedData = JSON.stringify(data);
+			res.send(minifiedData);
+		})
 
-		console.log("=> " + collection.data[type][t][p].user + ": set " + collection.data[type][t][p]._toString + " to " + collection.data[type][t][p].highlighted);
-
-		collection.storeCollection(collection.data[type][t][p].user);
-		res.send(200);
-	};
-
-
-	//manual toggling of stuff
-	exports.toggle = function(req, res) {
-		res.setHeader('Content-Type', 'text/plain');
-
-		var p = req.params.pitch,
-			t = req.params.time,
-			type = req.params.type;
-
-		collection.data[type][t][p].highlighted = !collection.data[type][t][p].highlighted;
-		collection.data[type][t][p].user = "SYSTEM";
-
-
-
-		var note = collection.data[type][t][p];
-		var msg = "=> " + note.user + ": set " + note._toString + " to " + note.highlighted;
-		console.log(msg);
-
-		collection.storeCollection(note.user);
-		res.send(collection.render() + '\n' + msg);
-	};
-
-	exports.render = function(req, res) {
-		res.setHeader('Content-Type', 'text/plain');
-		res.send(collection.render());
-	};
-
-	exports.clear = function(req, res) {
-		res.setHeader('Content-Type', 'text/plain');
-		collection.generateBaseCollection();
-		collection.storeCollection('SYSTEM');
-		res.send(collection.render());
 	};
 
 	exports.config = function(req, res) {
@@ -144,6 +125,20 @@ module.exports = function(io) {
 		var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 		userDisconnect(ip);
 		res.send(200);
+	};
+
+
+	//server debug stuff
+	exports.render = function(req, res) {
+		res.setHeader('Content-Type', 'text/plain');
+		res.send(collection.render());
+	};
+
+	exports.clear = function(req, res) {
+		res.setHeader('Content-Type', 'text/plain');
+		collection.generateBaseCollection();
+		collection.storeCollection('SYSTEM');
+		res.send(collection.render());
 	};
 
 	return exports;

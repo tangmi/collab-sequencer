@@ -3,8 +3,6 @@ define([
 ], function(Backbone) {
 
 	var Note = Backbone.Model.extend({
-		
-		url : CONFIG.endpoint + '/add',
 
 		defaults : {
 			pitch : 0, 			//To be interpreted, a little more durable for octaves / drums

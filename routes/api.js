@@ -40,12 +40,12 @@ module.exports = function(io) {
 
 		var p = req.params.pitch,
 			t = req.params.time,
-			type = req.params.type;
+			i = req.params.instrument;
 
-		console.log(type + " " + t + " " + p);
+		console.log(i + " " + t + " " + p);
 
 		collection.get({
-			instrument: type,
+			instrument: i,
 			pitch: p,
 			time: t
 		}, function(data) {
@@ -58,12 +58,12 @@ module.exports = function(io) {
 	exports.add = function(req, res) {
 		var p = req.body.pitch,
 			t = req.body.time,
-			type = req.body.type,
+			i = req.body.instrument,
 			highlighted = req.body.highlighted,
 			user = req.body.user;
 
 		collection.set({
-			instrument: type,
+			instrument: i,
 			pitch: p,
 			time: t,
 			user: user,

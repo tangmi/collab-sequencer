@@ -8,8 +8,9 @@ define([
 		initialize: function() { 
 
 			var _this = this;
-			CONFIG.socket.on('news', function(res) {
-				_this.getUserList(res);
+
+			CONFIG.socket.on('user-connect', function(res) {
+				_this.addUser(res.name);
 			});
 
 		},
@@ -18,6 +19,10 @@ define([
 			_.each(userList, function(name) {
 				$el.append('<div>' + name + '</div>');
 			});
+		},
+
+		addUser: function(user) {
+			$el.append('<div>' + user + '</div>');
 		},
 
 		el: '#users',

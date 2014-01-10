@@ -36,14 +36,6 @@ server.listen(app.get('port'), function() {
 
 io = io.listen(server);
 
-io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
-});
-
-
 
 // //CORS
 // app.all('/*', function(req, res, next) {
@@ -59,10 +51,25 @@ app.get('/reset', function(req, res) {
 	res.send(200);
 });
 
+io.sockets.on('connection', function (socket) {
+
+	socket.on('edit-note', function(data) {
+		collection.set(data);
+		socket.emit('edit-note', data);
+	});
+
+});
+
+
+
+
+
+
+
+
 //API
 app.put('/add', api.add);
 app.get('/get', api.get);
-app.get('/get/:type/:time/:pitch', api.getModel);
 app.get('/config', api.config);
 
 app.get('/username', api.getUsername);

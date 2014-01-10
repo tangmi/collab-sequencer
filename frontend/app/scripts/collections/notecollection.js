@@ -6,14 +6,8 @@ define(['backbone', 'models/note'], function(Backbone, Note) {
 
 			var _this = this;
 
-			console.log(CONFIG);
-
-			CONFIG.socket.on('add-note', function(data) {
-				_this.add(data);
-			});
-
-			CONFIG.socket.on('remove-note', function(data) {
-				_this.remove(data);
+			CONFIG.socket.on('edit-note', function(data) {
+				_this.setNote(data);
 			});
 
 			this.fetch({
@@ -38,9 +32,15 @@ define(['backbone', 'models/note'], function(Backbone, Note) {
 			}), function(note) {
 				return note.attributes;
 			});
+		},
+
+		setNote: function(note) {
+			this.findWhere({
+				pitch: note.pitch,
+				time: note.time,
+				instrument: note.instrument
+			}).set(note);
 		}
-
-
 
 	});
 

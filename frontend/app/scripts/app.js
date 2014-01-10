@@ -97,5 +97,4 @@ require([
 			console.log("Request failed: " + textStatus);
 		});
 	});
-
 });

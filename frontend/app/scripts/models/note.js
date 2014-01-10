@@ -17,7 +17,7 @@ define([
 			time : 0, 			//column
 			user : 'Gus',		//User who placed note
 			highlighted : false,//whether the note will play
-			type : 'none'		//board that the note belongs to
+			instrument : 'none'		//board that the note belongs to
 		}
 
 	});

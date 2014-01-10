@@ -15,11 +15,11 @@ define([
 			if (!this.model.get('highlighted')) {
 				$("#cell-" + this.model.get("time") +
 					"-" + this.model.get("pitch") +
-					"-" + this.model.get("type")).removeClass("cell-selected");
+					"-" + this.model.get("instrument")).removeClass("cell-selected");
 			} else {
 				$("#cell-" + this.model.get("time") +
 					"-" + this.model.get("pitch") +
-					"-" + this.model.get("type")).addClass("cell-selected");
+					"-" + this.model.get("instrument")).addClass("cell-selected");
 			}
 		},
 
@@ -29,8 +29,12 @@ define([
 
 		toggle: function() {
 			if (!this.model.get('highlighted')) {
-				Player.playPitch(this.model.get("type"), this.model.get("pitch"));
+				Player.playPitch(this.model.get("instrument"), this.model.get("pitch"));
+				CONFIG.socket.emit('add', this.model.toJSON());
+			} else {
+				CONFIG.socket.emit('remove', this.model.toJSON());
 			}
+
 			this.model.set('highlighted', !this.model.get('highlighted'));
 			this.model.set('user', config.user);
 			this.model.save();

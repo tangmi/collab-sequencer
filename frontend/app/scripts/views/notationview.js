@@ -42,7 +42,7 @@ define([
 
 		_hookUpNote: function(noteModel) {
 
-			var rowid = '#cell-' + noteModel.get('time') + '-' + noteModel.get('pitch') + '-' + noteModel.get('type');
+			var rowid = '#cell-' + noteModel.get('time') + '-' + noteModel.get('pitch') + '-' + noteModel.get('instrument');
 			noteView = new NoteView({
 				el: $(rowid),
 				model: noteModel

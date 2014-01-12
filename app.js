@@ -20,13 +20,10 @@ app.configure(function() {
 	app.use(app.router);
 	app.use(express.static(path.join(__dirname, 'frontend/app')));
 });
-
 app.configure('production', function() {});
-
 app.configure('development', function() {
 	app.use(express.errorHandler());
 });
-
 
 
 server.listen(app.get('port'), function() {
@@ -34,7 +31,18 @@ server.listen(app.get('port'), function() {
 	collection.initialize();
 });
 
+
+
 io = io.listen(server);
+io.sockets.on('connection', function (socket) {
+
+	socket.on('edit-note', function(data) {
+		console.log('\n\nedit-note');
+		io.sockets.emit('edit-note', data);
+	});
+
+});
+
 
 
 // //CORS
@@ -50,22 +58,6 @@ app.get('/reset', function(req, res) {
 	collection.initialize();
 	res.send(200);
 });
-
-io.sockets.on('connection', function (socket) {
-
-	socket.on('edit-note', function(data) {
-		collection.set(data);
-		socket.emit('edit-note', data);
-	});
-
-});
-
-
-
-
-
-
-
 
 //API
 app.put('/add', api.add);

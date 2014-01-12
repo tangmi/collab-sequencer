@@ -34,7 +34,7 @@ define([], function() {
 		play: function(rowsToPlay) {
 			for (var i = 0; i < rowsToPlay.length; i++) {
 				var row = rowsToPlay[i];
-				this.playPitch(row.type, row.pitch);
+				this.playPitch(row.instrument, row.pitch);
 			}
 		}
 

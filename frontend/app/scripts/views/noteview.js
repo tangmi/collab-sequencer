@@ -28,16 +28,15 @@ define([
 		},
 
 		toggle: function() {
+			
 			if (!this.model.get('highlighted')) {
 				Player.playPitch(this.model.get("instrument"), this.model.get("pitch"));
-				CONFIG.socket.emit('add', this.model.toJSON());
-			} else {
-				CONFIG.socket.emit('remove', this.model.toJSON());
 			}
 
 			this.model.set('highlighted', !this.model.get('highlighted'));
-			this.model.set('user', config.user);
-			this.model.save();
+			this.model.set('user', CONFIG.user);
+
+			CONFIG.socket.emit('edit-note', this.model.toJSON());
 		},
 
 		highlight: function() {

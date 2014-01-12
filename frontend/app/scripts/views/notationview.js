@@ -35,7 +35,7 @@ define([
 
 		_hookUpTab: function(tabName) {
 			_.each(this.collection.where({
-				type: tabName
+				instrument: tabName
 			}), this._hookUpNote);
 
 		},

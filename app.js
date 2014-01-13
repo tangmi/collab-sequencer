@@ -30,13 +30,6 @@ server.listen(app.get('port'), function() {
 });
 
 var io = socketIo.listen(server);
-io.sockets.on('connection', function(socket) {
-
-	socket.on('edit-note', function(data) {
-		console.log('\n\nedit-note');
-		io.sockets.emit('edit-note', data);
-	});
-});
 
 var api = require('./api')(io);
 

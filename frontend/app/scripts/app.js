@@ -76,7 +76,6 @@ require([
 		});
 	});
 
-	console.log('adsf');
 	$.ajax(CONFIG.endpoint + '/username', {
 		timeout: 500
 	}).done(function(data) {
@@ -84,7 +83,6 @@ require([
 			CONFIG.user = data.user;
 			console.log('set user: ' + CONFIG.user);
 		}
-
 		//we should have some case where it can't get a unique user ID for us
 	}).always(function() {
 		var request = $.ajax({

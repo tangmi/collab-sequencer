@@ -5,7 +5,7 @@ define([
 		'collections/notecollection',
 		'models/note',
 		'views/noteview',
-		'views/userview'
+		'views/chatview'
 ], function(Backbone, Player, NotationView, NoteCollection, Note, NoteView, UserView) {
 
 	var MainSetup = {

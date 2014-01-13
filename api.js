@@ -3,23 +3,31 @@ module.exports = function(io) {
 
 	var actions = [];
 
-	var users = require('./routes/users'),
-		chat = require('./routes/chat');
-
-	var config = require('./configuration'),
-		options = config.options;
-
-
 	//no route means root route
 	define(function(app) {
 		//GET /config
 		app.get('config', function(req, res) {
-			var minifiedData = JSON.stringify(config.instruments);
+			var minifiedData = JSON.stringify(require('./configuration').instruments);
 			res.send(minifiedData);
 		});
 	});
 
 	define('notes', function(notes, app) {
+		io.sockets.on('connection', function(socket) {
+			socket.on('edit-note', function(data) {
+				console.log(data.user + ': edited note ' + JSON.stringify(data));
+				notes.set({
+					instrument: data.instrument,
+					pitch: data.pitch,
+					time: data.time,
+					user: data.user,
+					highlighted: data.highlighted
+				}, function(data) {
+					io.sockets.emit('edit-note', data);
+				});
+			});
+		});
+
 		//PUT /notes
 		app.put('', function(req, res) {
 			var p = req.body.pitch,
@@ -67,6 +75,10 @@ module.exports = function(io) {
 	});
 
 	define('users', function(users, app) {
+		io.sockets.on('connection', function(socket) {
+			console.log('user connected');
+		});
+		
 		app.get('new', function(req, res) {
 			//assign new username?
 		});

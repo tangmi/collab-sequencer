@@ -1,4 +1,5 @@
-var notesConfig = require('./configuration').instruments,
+var storePath = require('../configuration').storePath;
+var notesConfig = require('../configuration').instruments,
 	timeMax = notesConfig.time + 1, //config is zero based
 	instrumentsPitchCount = (function() {
 		//get an object where the key is the instrument name and the value is the pitch vount
@@ -45,7 +46,7 @@ Note = model.register('Note', function() {
 	// 	'filename': 'note'
 	// });
 	this.setAdapter('level', {
-		'db': path.join(__dirname, '.db'),
+		'db': storePath,
 	});
 	// this.setAdapter('memory');
 });
@@ -53,6 +54,7 @@ Note = model.register('Note', function() {
 /*
 	CRUD functionality
  */
+
 function createNote(data, cb) {
 	assertNotUndefined(data.instrument, 'create needs instrument');
 	assertNotUndefined(data.time, 'create needs time');
@@ -141,6 +143,7 @@ function destroyNote(data, cb) {
 /*
 	helper functions for CRUD functionality
  */
+
 function saveNote(note, cb) {
 	note.save(function(err, data) {
 		if (err) {
@@ -236,6 +239,7 @@ function noteModelTransform(note) {
 }
 
 //return an empty (default) note, placed by the SYSTEM, at a specified instrument, time, and pitch
+
 function getEmptyNote(data) {
 	assertNotUndefined(data.instrument, 'create needs instrument');
 	assertNotUndefined(data.time, 'create needs time');
@@ -340,7 +344,7 @@ module.exports.initializeCollection = function(cb) {
 //TODO: update render method, fix API calls by storage update
 
 //renders the board as text
-exports.render = function() {
+exports.render = function(cb) {
 
 	var output = {}; // output[instrument][pitch][time]
 
@@ -356,27 +360,28 @@ exports.render = function() {
 				output[instrument][pitch] = [];
 			}
 			output[instrument][pitch][time] = element.highlighted ? 'X' : '.';
+
 		});
-	});
 
+		var tabs = {};
 
-	var tabs = {};
+		for (var instrument in output) {
+			var pitches = [];
+			for (var p = 0; p < output[instrument].length; p++) {
+				pitches.push(output[instrument][p].join(' '));
 
-	for(var instrument in output) {
-		var pitches = [];
-		for(var p = 0; p < output[instrument].length; p++) {
-			pitches.push(output[instrument][p].join(' '));
+			}
+			tabs[instrument] = pitches.join('\n');
 		}
-		tabs[instrument] = pitches.join('\n');
-	}
 
-	var text = '';
-	for(var instrument in tabs) {
-		text += instrument + '\n';
-		text += tabs[instrument] + '\n\n';
-	}
-
-	return text;
+		var text = '';
+		for (var instrument in tabs) {
+			text += instrument + '\n';
+			text += tabs[instrument] + '\n\n';
+		}
+		
+		cb(text);
+	});
 };
 
 exports.initialize = function() {
@@ -387,6 +392,6 @@ exports.initialize = function() {
 
 			});
 		}
-		exports.render();
+		// exports.render();
 	});
 };

@@ -5,7 +5,7 @@ config.options = {
 	userTimeout: 5 //in seconds
 };
 
-config.storeLocation = '/tmp/collab-sequencer';
+config.storePath = require('path').join(__dirname, '.db');
 
 config.instruments = {
 	time: 31, //0-index? actually 32 beats

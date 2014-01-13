@@ -1,5 +1,5 @@
 //Passed socket component
-function(io) {
+function thing(io) {
 
 	/*io.sockets.on('connection', function (socket) {
 

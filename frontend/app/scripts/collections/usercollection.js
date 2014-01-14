@@ -1,6 +1,6 @@
 define(['backbone', 'models/user'], function(Backbone, User) {
 
-	var NoteCollection = Backbone.Collection.extend({
+	var UserCollection = Backbone.Collection.extend({
 
 		initialize: function() {
 
@@ -20,7 +20,7 @@ define(['backbone', 'models/user'], function(Backbone, User) {
 
 		model: User,
 
-		url: CONFIG.endpoint + '/getUsers',
+		url: CONFIG.endpoint + '/users',
 
 		getInitialData: function() {
 
@@ -37,5 +37,5 @@ define(['backbone', 'models/user'], function(Backbone, User) {
 
 	});
 
-	return NoteCollection;
+	return UserCollection;
 });

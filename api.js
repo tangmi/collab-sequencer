@@ -19,10 +19,10 @@ module.exports = function(io) {
 			var users = require('./routes/users');
 
 			socket.on('edit-note', function(data) {
-				console.log(data.user + ': edited note ' + JSON.stringify(data));
 
 				var user = users.getUser(addr);
 				if (user) {
+					console.log(user + ': edited note ' + JSON.stringify(data));
 					notes.set({
 						instrument: data.instrument,
 						pitch: data.pitch,
@@ -32,6 +32,8 @@ module.exports = function(io) {
 					}, function(data) {
 						socket.broadcast.emit('edit-note', data);
 					});
+				} else {
+					console.log('BAD USER: ' + addr);
 				}
 			});
 		});

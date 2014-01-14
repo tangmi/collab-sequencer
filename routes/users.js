@@ -14,8 +14,8 @@ exports.getAll = function(cb) {
 };
 
 exports.getUser = function(addr) {
-	if (require('../configuration').options.oneNamePerBrowser) {
-		return users[usersOnline[0]];
+	if (!require('../configuration').options.oneNamePerBrowser) {
+		return users[usersOnline[0]] || 'SYSTEM';
 	} else {
 		return users[addr];
 	}

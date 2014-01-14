@@ -389,8 +389,10 @@ exports.initialize = function() {
 		if (data.length == 0) {
 			//initialize only if there's nothing there
 			module.exports.initializeCollection(function() {
-
+				console.log('No collection found, created one.');
 			});
+		} else {
+			console.log('Notes collection loaded.');
 		}
 		// exports.render();
 	});

@@ -19,7 +19,6 @@ module.exports = function(io) {
 			var users = require('./routes/users');
 
 			socket.on('edit-note', function(data) {
-
 				var user = users.getUser(addr);
 				if (user) {
 					console.log(user + ': edited note ' + JSON.stringify(data));

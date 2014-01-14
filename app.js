@@ -1,6 +1,4 @@
-var express = require('express'),
-	path = require('path'),
-	fs = require('fs');
+var express = require('express');
 
 var app = express(),
 	http = require('http'),
@@ -15,7 +13,7 @@ app.configure(function() {
 	// app.use(express.cookieParser('your secret here'));
 	// app.use(express.session());
 	// app.use(app.router);
-	app.use(express.static(path.join(__dirname, 'frontend/app')));
+	app.use(express.static(require('path').join(__dirname, 'frontend/app')));
 });
 
 app.configure('production', function() {

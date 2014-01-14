@@ -23,7 +23,7 @@ module.exports = function(io) {
 					user: data.user,
 					highlighted: data.highlighted
 				}, function(data) {
-					io.sockets.emit('edit-note', data);
+					socket.broadcast.emit('edit-note', data);
 				});
 			});
 		});
@@ -82,7 +82,10 @@ module.exports = function(io) {
 			console.log(addr, 'connect');
 
 			users.getUsername(addr, function(username) {
-				io.sockets.emit('user-connect', {
+				socket.emit('assign-username', {
+					user: username
+				});
+				socket.broadcast.emit('user-connect', {
 					user: username
 				});
 			});

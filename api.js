@@ -118,7 +118,7 @@ module.exports = function(io) {
 		app.get('chats', function(req, res) {
 			var addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-			user.chat.getMessages(function(messages) {
+			users.chat.getMessages(function(messages) {
 				res.send(messages);
 			});
 		})

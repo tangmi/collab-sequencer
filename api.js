@@ -118,19 +118,16 @@ module.exports = function(io) {
 		});
 
 		app.get('chats', function(req, res) {
-			var addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
 			users.chat.getMessages(function(messages) {
 				res.send(messages);
 			});
 		})
 
 		app.get('new', function(req, res) {
-			// res.send(501);
-			// return;
+			res.send(501);
+			return;
 
 			var addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
 			users.getUsername(addr, function(username) {
 				res.send({
 					user: username
@@ -154,7 +151,6 @@ module.exports = function(io) {
 			return;
 
 			var addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
 			users.disconnect(addr, function(username) {
 				res.send({
 					user: username

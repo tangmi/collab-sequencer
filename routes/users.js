@@ -9,7 +9,7 @@ exports.getAll = function(cb) {
 
 exports.getUsername = function(addr, cb) {
 	var ip;
-	if (options.oneNamePerBrowser) {
+	if (require('../configuration').options.oneNamePerBrowser) {
 		ip = addr;
 	} else {
 		ip = +new Date; //use the unix timestamp so it'll probably be unique

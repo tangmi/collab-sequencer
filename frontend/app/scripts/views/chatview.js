@@ -28,10 +28,21 @@ define([
 				_this.render();
 			});
 
+			this.addUser({id: 'boggy'});
+			this.addUser({id: 'soggy'});
+			this.addUser({id: 'doggy'});
+
+			this.postMessage({data: "hi guys"});
+			this.postMessage({data: "yeah hi"});
+			this.postMessage({data: "wow good site 9/10"});
+			this.postMessage({data: "wow good site 8/10"});
+
+
 		},
 
 		render: function() {
-			var _this = this;			
+			var _this = this;
+			console.log('asdf');			
 			_.each(this.collection.models, function(user) {
 				_this.addUser(user);
 			});

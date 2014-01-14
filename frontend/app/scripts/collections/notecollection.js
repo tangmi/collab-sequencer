@@ -23,7 +23,7 @@ define(['backbone', 'models/note'], function(Backbone, Note) {
 
 		model: Note,
 
-		url: CONFIG.endpoint + '/get',
+		url: CONFIG.endpoint + '/notes',
 
 		findNotesByTime: function(t) {
 			return _.map(this.where({

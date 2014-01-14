@@ -4,7 +4,13 @@ var animal = require('animal-id');
 var userTimeouts = {};
 
 exports.getAll = function(cb) {
-	cb(usersOnline);
+	var out = [];
+	usersOnline.forEach(function(element, index, array) {
+		out.push({
+			id: element
+		});
+	});
+	cb(out);
 };
 
 exports.getUsername = function(addr, cb) {

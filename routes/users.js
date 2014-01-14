@@ -43,6 +43,7 @@ function disconnect(ip) {
 }
 
 var messages = [];
+var maxMessagesSaved = 10;
 exports.chat = {
 	addMessage: function(addr, body, cb) {
 		//any validation goes here
@@ -53,7 +54,11 @@ exports.chat = {
 			body: body
 		};
 		messages.push(msg);
-		
+
+		if(messages.length > maxMessagesSaved) {
+			messages.shift();
+		}
+
 		cb({
 			timestamp: msg.timestamp,
 			username: msg.username,

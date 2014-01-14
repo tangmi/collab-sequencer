@@ -10,19 +10,21 @@ var app = express(),
 app.configure(function() {
 	app.set('port', process.env.PORT || 3000);
 	app.use(express.favicon());
-	app.use(express.logger('dev'));
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-	app.use(express.cookieParser('your secret here'));
-	app.use(express.session());
+	// app.use(express.cookieParser('your secret here'));
+	// app.use(express.session());
 	// app.use(app.router);
 	app.use(express.static(path.join(__dirname, 'frontend/app')));
 });
-app.configure('production', function() {});
+
+app.configure('production', function() {
+	app.use(express.logger('short'));
+});
 app.configure('development', function() {
+	app.use(express.logger('dev'));
 	app.use(express.errorHandler());
 });
-
 
 server.listen(app.get('port'), function() {
 	console.log("Collab-sequencer server listening on port " + app.get('port'));
@@ -30,13 +32,15 @@ server.listen(app.get('port'), function() {
 });
 
 var io = socketIo.listen(server);
-io.enable('browser client minification');
-io.set('log level', 1);
+io.enable('browser client minification'); //minify sent js client file
+io.set('log level', 1); //reduce logging
 
+//pseudo framework for api routing
 var api = require('./api')(io);
-
 for(var i = 0; i < api.length; i++) {
 	var route = api[i];
 	// console.log(route.verb.toUpperCase() + ' ' + route.path + ' added');
+	
+	//add routes defined by api to express app
 	app[route.verb](route.path, route.fn);
 }

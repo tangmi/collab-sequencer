@@ -150,7 +150,7 @@ function saveNote(note, cb) {
 			console.log(err);
 			throw err;
 		}
-		console.log('note saved');
+		// console.log('note saved');
 		cb(data);
 	});
 }
@@ -168,14 +168,14 @@ function getAllNotes(cb) {
 	Export get/getAll/set
  */
 module.exports.get = function(data, cb) {
-	console.log('GET NOTE');
+	// console.log('GET NOTE');
 
 	readNote(data, function(note) {
 		cb(noteModelTransform(note));
 	});
 };
 module.exports.set = function(data, cb) {
-	console.log('SET NOTE');
+	// console.log('SET NOTE');
 
 	updateNote(data, function(note) {
 		cb(noteModelTransform(note));
@@ -183,7 +183,7 @@ module.exports.set = function(data, cb) {
 };
 
 module.exports.getAll = function(cb) {
-	console.log('GET ALL NOTES');
+	// console.log('GET ALL NOTES');
 
 	//fill with empty notes
 
@@ -296,7 +296,7 @@ module.exports.initializeCollection = function(cb) {
 			if (err) {
 				throw err;
 			}
-			console.log('INITIALIZED COLLECTION (' + ((+new Date - stime) / 1000) + 'ms)');
+			console.log('initialized collection (' + ((+new Date - stime) / 1000) + 'ms)');
 			cb(data);
 		});
 

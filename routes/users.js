@@ -67,6 +67,7 @@ exports.chat = {
 			username: users[addr],
 			body: body
 		};
+		
 		messages.push(msg);
 
 		if(messages.length > maxMessagesSaved) {
@@ -89,6 +90,7 @@ exports.chat = {
 				body: msg.body
 			});
 		}
+		console.log(out);
 		cb(out);
 	}
 };

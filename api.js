@@ -101,7 +101,7 @@ module.exports = function(io) {
 			});
 
 			socket.on('message', function(data) {
-				users.chat.newMessage(addr, data, function(message) {
+				users.chat.addMessage(addr, data, function(message) {
 					io.sockets.emit('message', message);
 				});
 			});

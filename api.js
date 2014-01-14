@@ -81,12 +81,14 @@ module.exports = function(io) {
 
 			console.log(addr, 'connect');
 
-			users.getUsername(addr, function(username) {
-				socket.emit('assign-username', {
-					id: username
-				});
-				io.sockets.emit('user-connect', {
-					id: username
+			socket.on('request-username', function() {
+				users.getUsername(addr, function(username) {
+					socket.emit('assign-username', {
+						id: username
+					});
+					io.sockets.emit('user-connect', {
+						id: username
+					});
 				});
 			});
 

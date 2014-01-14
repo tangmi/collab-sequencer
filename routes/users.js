@@ -13,6 +13,14 @@ exports.getAll = function(cb) {
 	cb(out);
 };
 
+exports.getUser = function(addr) {
+	if (require('../configuration').options.oneNamePerBrowser) {
+		return users[usersOnline[0]];
+	} else {
+		return users[addr];
+	}
+}
+
 exports.getUsername = function(addr, cb) {
 	var ip;
 	if (require('../configuration').options.oneNamePerBrowser) {

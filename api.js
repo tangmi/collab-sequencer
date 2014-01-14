@@ -14,17 +14,25 @@ module.exports = function(io) {
 
 	define('notes', function(notes, app) {
 		io.sockets.on('connection', function(socket) {
+			var addr = socket.handshake.address.address;
+
+			var users = require('./routes/users');
+
 			socket.on('edit-note', function(data) {
 				console.log(data.user + ': edited note ' + JSON.stringify(data));
-				notes.set({
-					instrument: data.instrument,
-					pitch: data.pitch,
-					time: data.time,
-					user: data.user,
-					highlighted: data.highlighted
-				}, function(data) {
-					socket.broadcast.emit('edit-note', data);
-				});
+
+				var user = users.getUser(addr);
+				if (user) {
+					notes.set({
+						instrument: data.instrument,
+						pitch: data.pitch,
+						time: data.time,
+						user: user,
+						highlighted: data.highlighted
+					}, function(data) {
+						socket.broadcast.emit('edit-note', data);
+					});
+				}
 			});
 		});
 
@@ -78,8 +86,6 @@ module.exports = function(io) {
 
 		io.sockets.on('connection', function(socket) {
 			var addr = socket.handshake.address.address;
-
-			console.log(addr, 'connect');
 
 			socket.on('request-username', function() {
 				users.getUsername(addr, function(username) {

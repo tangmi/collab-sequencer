@@ -33,7 +33,7 @@ module.exports = function(io) {
 						socket.broadcast.emit('edit-note', data);
 					});
 				} else {
-					console.log('BAD USER: ' + addr);
+					console.warn('bad user: ' + addr);
 				}
 			});
 		});

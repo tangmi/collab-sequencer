@@ -31,7 +31,6 @@ exports.getUsername = function(addr, cb) {
 
 	if (!users[ip]) {
 		users[ip] = animal.getId();
-		console.log('Assigning IP address', ip, 'with name', users[ip]);
 	}
 
 	connect(ip);
@@ -47,13 +46,13 @@ exports.disconnect = function(addr, cb) {
 function connect(ip) {
 	if (usersOnline.indexOf(users[ip]) === -1) {
 		usersOnline.push(users[ip]);
-		console.log('User', users[ip], '(' + ip + ') connected');
+		console.log(users[ip] + ': connected (' + ip + ')');
 	}
 };
 
 function disconnect(ip) {
 	usersOnline.splice(usersOnline.indexOf(users[ip]));
-	console.log('User', users[ip], '(' + ip + ') disconnected');
+	console.log(users[ip] + ': disconnected (' + ip + ')');
 }
 
 var messages = [];
@@ -90,7 +89,6 @@ exports.chat = {
 				body: msg.body
 			});
 		}
-		console.log(out);
 		cb(out);
 	}
 };

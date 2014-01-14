@@ -1,7 +1,7 @@
 var config = {};
 
 config.options = {
-	//oneNamePerBrowser: true, //enforces a one-name-per-ip-address policy
+	oneNamePerBrowser: process.env.NODE_ENV == 'production', //enforces a one-name-per-ip-address policy
 	userTimeout: 5 //in seconds
 };
 

@@ -30,6 +30,8 @@ server.listen(app.get('port'), function() {
 });
 
 var io = socketIo.listen(server);
+io.enable('browser client minification');
+io.set('log level', 1);
 
 var api = require('./api')(io);
 

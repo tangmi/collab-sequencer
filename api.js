@@ -79,6 +79,8 @@ module.exports = function(io) {
 		io.sockets.on('connection', function(socket) {
 			var addr = socket.handshake.address.address;
 
+			console.log(addr, 'connect');
+
 			users.getUsername(addr, function(username) {
 				socket.emit('user-connect', {
 					user: username
@@ -111,8 +113,8 @@ module.exports = function(io) {
 		})
 
 		app.get('new', function(req, res) {
-			res.send(501);
-			return;
+			// res.send(501);
+			// return;
 
 			var addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 

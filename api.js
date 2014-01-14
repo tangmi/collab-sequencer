@@ -75,24 +75,80 @@ module.exports = function(io) {
 	});
 
 	define('users', function(users, app) {
+
 		io.sockets.on('connection', function(socket) {
-			console.log('user connected');
+			var addr = socket.handshake.address.address;
+
+			users.getUsername(addr, function(username) {
+				socket.emit('user-connect', {
+					user: username
+				});
+			});
+
+			socket.on('message', function(data) {
+				users.chat.newMessage(addr, data, function(message) {
+					socket.emit('message', message);
+				});
+			});
 		});
-		
+
+		io.sockets.on('disconnect', function(socket) {
+			var addr = socket.handshake.address.address;
+
+			users.disconnect(addr, function(username) {
+				socket.emit('user-disconnect', {
+					user: username
+				});
+			});
+		});
+
+		app.get('chats', function(req, res) {
+			var addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+			user.chat.getMessages(function(messages) {
+				res.send(messages);
+			});
+		})
+
 		app.get('new', function(req, res) {
-			//assign new username?
+			res.send(501);
+			return;
+
+			var addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+			users.getUsername(addr, function(username) {
+				res.send({
+					user: username
+				});
+			});
 		});
+
 		app.get('', function(req, res) {
 			//get list of users
+			users.getAll(function(users) {
+				res.send(users);
+			});
 		});
+
 		app.get('/:username', function(req, res) {
 			//get specific user with req.params.username
 		});
+
 		app.delete('', function(req, res) {
-			//delete user/disconnect
+			res.send(501);
+			return;
+
+			var addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+			users.disconnect(addr, function(username) {
+				res.send({
+					user: username
+				});
+			});
 		});
+
 	});
-	
+
 	function use(verb, path, fn) {
 		actions.push({
 			verb: verb,

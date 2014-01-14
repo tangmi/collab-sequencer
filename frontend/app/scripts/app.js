@@ -16,7 +16,7 @@ require.config({
 		jquery: '../libs/jquery/jquery',
 		backbone: '../libs/backbone-amd/backbone',
 		underscore: '../libs/underscore-amd/underscore',
-		socketio: '../libs/socket.io'
+		socketio: '../socket.io/socket.io'
 	}
 });
 
@@ -87,9 +87,9 @@ require([
 	}).always(function() {
 		var request = $.ajax({
 			url: CONFIG.endpoint + '/config'
-		})
+		});
 		request.done(function(res) {
-			mainSetup.init(JSON.parse(res));
+			mainSetup.init(res);
 		});
 		request.fail(function(jqXHR, textStatus) {
 			console.log("Request failed: " + textStatus);

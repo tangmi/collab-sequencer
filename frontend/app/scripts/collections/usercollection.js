@@ -23,6 +23,7 @@ define(['backbone', 'models/user'], function(Backbone, User) {
 		url: CONFIG.endpoint + '/getUsers',
 
 		getInitialData: function() {
+
 			this.fetch({
 				reset: true,
 				success: function() {

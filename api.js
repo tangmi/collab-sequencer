@@ -83,10 +83,10 @@ module.exports = function(io) {
 
 			users.getUsername(addr, function(username) {
 				socket.emit('assign-username', {
-					user: username
+					id: username
 				});
 				socket.broadcast.emit('user-connect', {
-					user: username
+					id: username
 				});
 			});
 
@@ -102,7 +102,7 @@ module.exports = function(io) {
 
 			users.disconnect(addr, function(username) {
 				io.sockets.emit('user-disconnect', {
-					user: username
+					id: username
 				});
 			});
 		});

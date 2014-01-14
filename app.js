@@ -16,8 +16,12 @@ app.configure(function() {
 	app.use(express.static(require('path').join(__dirname, 'frontend/app')));
 });
 
+var io = socketIo.listen(server);
+
 app.configure('production', function() {
 	app.use(express.logger('short'));
+	io.enable('browser client minification'); //minify sent js client file
+	io.set('log level', 1); //reduce logging
 });
 app.configure('development', function() {
 	app.use(express.logger('dev'));
@@ -29,9 +33,6 @@ server.listen(app.get('port'), function() {
 	require('./routes/notes').initialize();
 });
 
-var io = socketIo.listen(server);
-io.enable('browser client minification'); //minify sent js client file
-io.set('log level', 1); //reduce logging
 
 //pseudo framework for api routing
 var api = require('./api')(io);

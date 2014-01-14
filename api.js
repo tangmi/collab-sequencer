@@ -85,7 +85,7 @@ module.exports = function(io) {
 				socket.emit('assign-username', {
 					id: username
 				});
-				socket.broadcast.emit('user-connect', {
+				io.sockets.emit('user-connect', {
 					id: username
 				});
 			});

@@ -82,14 +82,14 @@ module.exports = function(io) {
 			console.log(addr, 'connect');
 
 			users.getUsername(addr, function(username) {
-				socket.emit('user-connect', {
+				io.sockets.emit('user-connect', {
 					user: username
 				});
 			});
 
 			socket.on('message', function(data) {
 				users.chat.newMessage(addr, data, function(message) {
-					socket.emit('message', message);
+					io.sockets.emit('message', message);
 				});
 			});
 		});
@@ -98,7 +98,7 @@ module.exports = function(io) {
 			var addr = socket.handshake.address.address;
 
 			users.disconnect(addr, function(username) {
-				socket.emit('user-disconnect', {
+				io.sockets.emit('user-disconnect', {
 					user: username
 				});
 			});

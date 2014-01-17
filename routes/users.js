@@ -66,7 +66,11 @@ exports.chat = {
 			username: users[addr],
 			body: body
 		};
-		
+
+		if (!require('../configuration').oneNamePerBrowser) {
+			username: msg.username = 'default';
+		}
+
 		messages.push(msg);
 
 		if(messages.length > maxMessagesSaved) {

@@ -1,8 +1,9 @@
 define([
 		'backbone',
 		'socketio',
+		'underscore',
 		'collections/usercollection'
-], function(Backbone, Socket, UserCollection) {
+], function(Backbone, Socket, _, UserCollection) {
 
 	var View = Backbone.View.extend({
 
@@ -10,13 +11,23 @@ define([
 
 		collection: new UserCollection(),
 
-		events: { 'click button': 'sendMessage' },
+		events: { 
+			'click button': 'sendMessage',
+			'keypress input':  'postMessageOnEnter' 
+		},
 
 		initialize: function() { 
 
+			
 			var _this = this;
+			//Listen for message postings
 			CONFIG.socket.on('message', function(message) {
 				_this.postMessage(message);
+			});
+
+			//Listen for users leaving
+			CONFIG.socket.on('user-disconnect', function(data) {
+				_this.removeUser(data.id);
 			});
 
 			this.getOldMessages();
@@ -64,13 +75,25 @@ define([
 			 });
 		},
 
+		postMessageOnEnter: function(e) {
+			if (e.which == 13) {
+				this.sendMessage();
+			}
+		},
+
 		postMessage: function(message) {
-			this.$messages.append('<div>' + message.body + '</div>');
+			var date = new Date(message.timestamp);
+			var mins = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+			message.timestamp = date.getHours() % 12 + ':' + mins;
+
+			this.$messages.append(
+				_.template( $('#message-template').html(), message)
+			);
 		},
 
 		sendMessage: function() {
-			console.log('push');
 			CONFIG.socket.emit('message', this.$input.val());
+			this.$input.val('');
 		}
 	});
 

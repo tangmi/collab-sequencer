@@ -26,13 +26,26 @@
 
     <div id="chat">
         <div id="users"></div>
-        <div id="messages"></div>
+        <ul id="messages"></ul>
         <input></input>
         <button></button>
     </div>
 
-        <!-- build:js scripts/main.js -->
-        <script data-main="scripts/app" src="libs/requirejs/require.js"></script>
-        <!-- endbuild -->
+    <!-- build:js scripts/main.js -->
+    <script data-main="scripts/app" src="libs/requirejs/require.js"></script>
+    <!-- endbuild -->
+
+    <script id="message-template" type="text/template">
+      <li class="post">
+        <span>
+            <%= username %>
+        </span>
+        (<%= timestamp %>)
+        <span>
+            <%= body %>
+        </span>
+      </li>
+    </script>
+
 </body>
 </html>

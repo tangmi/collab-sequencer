@@ -41,25 +41,6 @@ require(['socketio'], function(io) {
 	};
 });
 
-/*(function() {
-	//for a one-time setting of the user
-	var user;
-	var isSet = false;
-<<<<<<< HEAD
-	CONFIG.__defineSetter__("user", function(val) {
-=======
-	config.__defineSetter__("user", function(val) {
->>>>>>> master
-		if (!isSet) {
-			user = val;
-			isSet = true;
-		}
-	});
-	CONFIG.__defineGetter__("user", function() {
-		return user;
-	});
-})();*/
-
 
 
 
@@ -76,11 +57,7 @@ require([
 	});
 	CONFIG.socket.emit('request-username');
 
-	$(window).unload(function() {
-		$.ajax(CONFIG.endpoint + '/user/disconnect', {
-			timeout: 500
-		});
-	});
+
 
 	var request = $.ajax({
 		url: CONFIG.endpoint + '/config'

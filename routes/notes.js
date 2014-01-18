@@ -56,12 +56,19 @@ Note = model.register('Note', function() {
  */
 
 function createNote(data, cb) {
-	assertNotUndefined(data.instrument, 'create needs instrument');
-	assertNotUndefined(data.time, 'create needs time');
-	assertNotUndefined(data.pitch, 'create needs pitch');
-	assertNotUndefined(data.user, 'create needs user');
+	try {
+		assertNotUndefined(data.instrument, 'create needs instrument');
+		assertNotUndefined(data.time, 'create needs time');
+		assertNotUndefined(data.pitch, 'create needs pitch');
+		assertNotUndefined(data.user, 'create needs user');
 
-	assertNoteIsValid(data);
+		assertNoteIsValid(data);
+	} catch (e) {
+		cb({
+			err: e
+		});
+		return;
+	}
 
 	var input = {
 		instrument: data.instrument,
@@ -77,9 +84,16 @@ function createNote(data, cb) {
 }
 
 function readNote(data, cb) {
-	assertNotUndefined(data.instrument, 'read needs instrument');
-	assertNotUndefined(data.time, 'read needs time');
-	assertNotUndefined(data.pitch, 'read needs pitch');
+	try {
+		assertNotUndefined(data.instrument, 'read needs instrument');
+		assertNotUndefined(data.time, 'read needs time');
+		assertNotUndefined(data.pitch, 'read needs pitch');
+	} catch (e) {
+		cb({
+			err: e
+		});
+		return;
+	}
 
 	var query = {
 		instrument: data.instrument,
@@ -88,27 +102,46 @@ function readNote(data, cb) {
 	};
 	Note.first(query, function(err, note) {
 		if (err) {
-			throw err;
+			cb({
+				err: err
+			});
+			return;
 		}
 		cb(note);
 	});
 }
 
 function updateNote(data, cb) {
-	assertNotUndefined(data.instrument, 'update needs instrument');
-	assertNotUndefined(data.time, 'update needs time');
-	assertNotUndefined(data.pitch, 'update needs pitch');
-	assertNotUndefined(data.user, 'update needs user');
-	assertNotUndefined(data.highlighted, 'update needs highlighted');
+	try {
+		assertNotUndefined(data.instrument, 'update needs instrument');
+		assertNotUndefined(data.time, 'update needs time');
+		assertNotUndefined(data.pitch, 'update needs pitch');
+		assertNotUndefined(data.user, 'update needs user');
+		assertNotUndefined(data.highlighted, 'update needs highlighted');
 
-	assertNoteIsValid(data);
+		assertNoteIsValid(data);
+	} catch (e) {
+		cb({
+			err: e
+		});
+		return;
+	}
+
+	if (!canUserUpdateNote(data.user)) {
+		cb({
+			err: 'User is spamming'
+		});
+		return;
+	}
 
 	readNote(data, function(note) {
 		if (note == null) {
-			throw new Error('Could not find note in store');
 			// createNote(data, function(newNote) {
 			// 	cb(newNote);
 			// });
+			cb({
+				err: 'Could not find note in store ' + JSON.stringify(data)
+			});
 			return;
 		}
 
@@ -122,9 +155,16 @@ function updateNote(data, cb) {
 }
 
 function destroyNote(data, cb) {
-	assertNotUndefined(data.instrument, 'destroy needs instrument');
-	assertNotUndefined(data.time, 'destroy needs time');
-	assertNotUndefined(data.pitch, 'destroy needs pitch');
+	try {
+		assertNotUndefined(data.instrument, 'destroy needs instrument');
+		assertNotUndefined(data.time, 'destroy needs time');
+		assertNotUndefined(data.pitch, 'destroy needs pitch');
+	} catch (e) {
+		cb({
+			err: e
+		});
+		return;
+	}
 
 	var query = {
 		instrument: data.instrument,
@@ -134,7 +174,10 @@ function destroyNote(data, cb) {
 
 	Note.remove(query, function(err, data) {
 		if (err) {
-			throw err;
+			cb({
+				err: err
+			});
+			return;
 		}
 		cb(data);
 	});
@@ -147,8 +190,10 @@ function destroyNote(data, cb) {
 function saveNote(note, cb) {
 	note.save(function(err, data) {
 		if (err) {
-			console.log(err);
-			throw err;
+			cb({
+				err: err
+			});
+			return;
 		}
 		// console.log('note saved');
 		cb(data);
@@ -158,7 +203,10 @@ function saveNote(note, cb) {
 function getAllNotes(cb) {
 	Note.all({}, function(err, notes) {
 		if (err) {
-			throw err;
+			cb({
+				err: err
+			});
+			return;
 		}
 		cb(notes);
 	});
@@ -218,6 +266,28 @@ function assertNoteIsValid(data) {
 	}
 }
 
+var cooldownUsers = [];
+var cooldownTime = 250;
+
+function canUserUpdateNote(user) {
+
+	function removeCooldownUser() {
+		// console.log('remove user');
+		cooldownUsers[user] = null;
+	}
+
+	if (cooldownUsers[user]) {
+		// console.log('reset user');
+		clearTimeout(cooldownUsers[user]);
+		return false;
+	}
+
+	// console.log('add user');
+	cooldownUsers[user] = setTimeout(removeCooldownUser, cooldownTime);;
+
+	return true;
+}
+
 //transforms a mde/model to an object that backbone wants
 var properties = (function() {
 	var arr = [];
@@ -233,6 +303,10 @@ function noteModelTransform(note) {
 	for (var i = 0; i < properties.length; i++) {
 		var propertyName = properties[i];
 		out[propertyName] = note[propertyName];
+	}
+
+	if (note.err) {
+		out.err = note.err;
 	}
 
 	return out;
@@ -379,7 +453,7 @@ exports.render = function(cb) {
 			text += instrument + '\n';
 			text += tabs[instrument] + '\n\n';
 		}
-		
+
 		cb(text);
 	});
 };

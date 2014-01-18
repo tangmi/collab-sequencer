@@ -21,7 +21,6 @@ module.exports = function(io) {
 			socket.on('edit-note', function(data) {
 				var user = users.getUser(addr);
 				if (user) {
-					console.log(user + ': edited note ' + JSON.stringify(data));
 					notes.set({
 						instrument: data.instrument,
 						pitch: data.pitch,
@@ -29,6 +28,11 @@ module.exports = function(io) {
 						user: user,
 						highlighted: data.highlighted
 					}, function(data) {
+						if(data.err) {
+							console.log(user + ': ' + data.err);
+							return;
+						}
+						console.log(user + ': edited note ' + JSON.stringify(data));
 						socket.broadcast.emit('edit-note', data);
 					});
 				} else {

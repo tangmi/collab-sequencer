@@ -10,6 +10,8 @@ define([
 
 	var View = Backbone.View.extend({
 
+		ASDFKEYCODES: [65, 83, 68, 70, 71, 72, 74, 75, 76, 186, 222],
+
 		//tabs: (passed dynamically in initialization) list of tabs
 		el: "#app",
 		collection: new NoteCollection(),
@@ -18,6 +20,7 @@ define([
 
 		initialize: function() {
 			$(document).on('keydown', _.bind(this.handleKeyInput, this));
+			$(window).resize(_.bind(this._adjustChatSize, this));
 
 			$("#tempo").val(timing.bpm);
 			this.$chat = $('#chat-wrapper');
@@ -139,6 +142,8 @@ define([
 				this.arrowNavigate(false);
 			} else if (e.keyCode == 32) {
 				this.togglePlay();
+			} else if (_.contains(this.ASDFKEYCODES, e.keyCode)) {
+				Player.playPitch(this.currentTab, _.indexOf(this.ASDFKEYCODES, e.keyCode));
 			}
 
 		},

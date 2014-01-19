@@ -109,7 +109,7 @@ button:active {
 	opacity: 1.0;
 }
 .tab:not(.selected) {
-	height: 15px;
+	height: 12px;
 	vertical-align: bottom;
 }
 

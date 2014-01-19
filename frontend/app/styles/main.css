@@ -2,8 +2,7 @@
 
 
 body {
-	// font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-	margin-top: 50px;
+	font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
 	background: #A68064;
 }
 
@@ -15,7 +14,7 @@ a {
 #app, #chat {
 	font-family: 'Carrois Gothic SC', sans-serif;
 
-	width: 1100px;
+	width: 877px;
 	margin: 0 auto;
 }
 
@@ -34,6 +33,8 @@ a {
 	border-radius: 4px;
 
 	padding: 13px;
+
+	margin-top: 50px;
 }
 
 #app h1 {
@@ -43,41 +44,59 @@ a {
 
 }
 
-#controls {
-	padding-bottom: 13px;
+input {
+	width: 40px;
+	height: 20px;
+	font-size:1em;
+    box-shadow: 
+      inset 2px 2px 0 rgba(0,0,0,0.1),
+            2px 2px 0 rgba(0,0,0,0.1); 
+    background-color: ;
+    border: 3px solid #768d87;
 }
-#controls button {
 
-	width: 50px;
-	height: 35px;
-	margin-right: 13px;
+button {
+
+	width: 45px;
+	height: 25px;
+	margin-right: 8px;
 	border-radius: 2px;
 	border: 0px;
 
-	background: #ffffff; /* Old browsers */
-	background: -moz-radial-gradient(center, ellipse cover, #ffffff 0%, #ededed 100%); /* FF3.6+ */
-	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#ffffff), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
-	background: -webkit-radial-gradient(center, ellipse cover, #ffffff 0%,#ededed 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-radial-gradient(center, ellipse cover, #ffffff 0%,#ededed 100%); /* Opera 12+ */
-	background: -ms-radial-gradient(center, ellipse cover, #ffffff 0%,#ededed 100%); /* IE10+ */
-	background: radial-gradient(ellipse at center, #ffffff 0%,#ededed 100%); /* W3C */
-	box-shadow: 0px 1px rgba(255,255,255,0.33), 0px -1px rgba(0,0,0,0.33);
-
+	background-color:#768d87;
+	-moz-border-radius:8px;
+	-webkit-border-radius:8px;
+	border-radius:1px;
+	border:1px solid #566963;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:arial;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2b665e;
 }
-#controls input {
-	width: 50px;
-	height: 30px;
-	font-size:1em;
+
+button:hover {
+	background-color:#6c7c7c;
+}
+
+button:active {
+	position:relative;
+	top:1px;
+}
+
+#controls {
+	padding-bottom: 13px;
 }
 
 .tab {
-	width: 100px;
-	height: 20px;
+	width: 75px;
+	height: 15px;
 	opacity: 0.6;
 	display: inline-block;
 
 	text-align: center;
-	font-size: 12pt;
+	font-size: 10pt;
 	color: white;
 	margin-right: 4px;
 	padding: 5px 0;
@@ -117,8 +136,8 @@ a {
 
 
 	display: block;
-	width: 30px;
-	height: 25px;
+	width: 23px;
+	height: 19px;
 	margin: 4px 2px;
 
 	font-size: 0px;
@@ -172,7 +191,7 @@ a {
 }
 
 .timeHandle.highlighted {
-	margin: 10px 10px 5px 10px;
+	margin: 10px 7px 5px 7px;
 }
 
 
@@ -180,6 +199,7 @@ a {
 
 #chat {
 	margin-top: 20px;
+	height: 100%;
 }
 
 #users {
@@ -188,7 +208,29 @@ a {
 	display: inline-block;
 }
 
-#messages {
-	width: 30%;
-	display: inline-block;
+#messages, #users {
+	overflow-x: scroll;
+	height: 100%;
 }
+
+#messages {
+	width: 80%;
+	display: inline-block;
+	margin: 0px;
+}
+
+#messages li {
+	margin: 0px;
+	list-style: none;
+}
+
+#chat-controls input {
+	width: 160px;
+	margin-top: 8px
+}
+
+
+
+
+
+

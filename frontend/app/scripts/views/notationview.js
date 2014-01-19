@@ -17,7 +17,11 @@ define([
 
 
 		initialize: function() {
+			$(document).on('keydown', _.bind(this.handleKeyInput, this));
+
 			$("#tempo").val(timing.bpm);
+			this.$chat = $('#chat-wrapper');
+
 
 			this.tabs = this.options.tabs;
 			this.currentTab = this.tabs[0].name;
@@ -31,6 +35,7 @@ define([
 			});
 
 			this.setTickPosition(0, false);
+			this._adjustChatSize();
 		},
 
 		_hookUpTab: function(tabName) {
@@ -48,7 +53,12 @@ define([
 				model: noteModel
 			});
 			noteView.render();
+		},
 
+		_adjustChatSize: function() {
+			this.$chat.height(
+				$(window).height() - this.$el.height() - 150
+			);
 		},
 
 		events: {
@@ -72,6 +82,8 @@ define([
 				$("#" + tab + "_button").addClass('selected');
 				this.setTickPosition(timing.currentTime, false);
 			}
+
+			this._adjustChatSize();
 		},
 
 		togglePlay: function() {
@@ -117,6 +129,31 @@ define([
 			var time = $handleCol.attr('id').split('-')[1];
 			this.setTickPosition(parseInt(time));
 		},
+
+		handleKeyInput: function(e) {
+			if (document.activeElement.nodeName != "BODY") { return; }
+			if (e.keyCode == 39 && !this.isPlaying) {
+				this.arrowNavigate(true);
+			}
+			else if (e.keyCode == 37 && !this.isPlaying) {
+				this.arrowNavigate(false);
+			} else if (e.keyCode == 32) {
+				this.togglePlay();
+			}
+
+		},
+
+		arrowNavigate: function(left) {
+           if (left) {
+               this.setTickPosition(
+                    (CONFIG.timing.currentTime + 1) % CONFIG.timing.maxTime, false
+               );
+           } else {
+               this.setTickPosition(
+                     (CONFIG.timing.currentTime + CONFIG.timing.maxTime - 1) % CONFIG.timing.maxTime, false
+               );
+           }
+       	},
 
 		tick: function() {
 			this.setTickPosition(timing.currentTime);

@@ -89,6 +89,8 @@ define([
 			this.$messages.append(
 				_.template( $('#message-template').html(), message)
 			);
+
+			this.$messages.scrollTop(99999);
 		},
 
 		sendMessage: function() {
